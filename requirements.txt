@@ -1,0 +1,3 @@
+-e git+https://github.com/openstack/horizon.git#egg=horizon
+-e git+https://github.com/stackforge/python-mistralclient.git#egg=python-mistralclient
+PyYAML>=3.1.0
