@@ -15,8 +15,21 @@
 # limitations under the License.
 
 from django.utils.translation import ugettext_lazy as _
+from django.template.loader import render_to_string
 
 from horizon import tables
+
+
+TYPES = {
+    'SUCCESS': 'label-success',
+    'ERROR': 'label-important'
+}
+
+
+def label(x):
+    return render_to_string("mistral/executions/_label.html",
+                            {"label": x,
+                             "type": TYPES.get(x)})
 
 
 class ExecutionsTable(tables.DataTable):
@@ -24,7 +37,7 @@ class ExecutionsTable(tables.DataTable):
                        verbose_name=_("ID"),
                        link=("horizon:mistral:executions:tasks"))
     wb_name = tables.Column("workbook_name", verbose_name=_("Workbook"))
-    state = tables.Column("state", verbose_name=_("State"))
+    state = tables.Column("state", verbose_name=_("State"), filters=[label])
 
     class Meta:
         name = "executions"
@@ -36,7 +49,7 @@ class TaskTable(tables.DataTable):
     name = tables.Column("name", verbose_name=_("Name"))
     parameters = tables.Column("parameters", verbose_name=_("Parameters"))
     output = tables.Column("output", verbose_name=_("Output"))
-    state = tables.Column("state", verbose_name=_("State"))
+    state = tables.Column("state", verbose_name=_("State"), filters=[label])
 
     class Meta:
         name = "tasks"
