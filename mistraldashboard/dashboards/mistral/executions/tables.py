@@ -34,7 +34,8 @@ class ExecutionsTable(tables.DataTable):
 class TaskTable(tables.DataTable):
     id = tables.Column("id", verbose_name=_("ID"))
     name = tables.Column("name", verbose_name=_("Name"))
-    action = tables.Column("action", verbose_name=_("Action"))
+    parameters = tables.Column("parameters", verbose_name=_("Parameters"))
+    output = tables.Column("output", verbose_name=_("Output"))
     state = tables.Column("state", verbose_name=_("State"))
 
     class Meta:
