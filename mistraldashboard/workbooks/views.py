@@ -19,9 +19,9 @@ from django.core.urlresolvers import reverse_lazy
 from horizon import tables
 from horizon import forms
 
-from mistraldashboard.dashboards.mistral import api
-from mistraldashboard.dashboards.mistral.workbooks.tables import WorkbooksTable
-from mistraldashboard.dashboards.mistral.workbooks.forms import ExecuteForm
+from mistraldashboard import api
+from mistraldashboard.workbooks.tables import WorkbooksTable
+from mistraldashboard.workbooks.forms import ExecuteForm
 
 
 class IndexView(tables.DataTableView):

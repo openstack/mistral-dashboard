@@ -17,12 +17,22 @@
 from django.utils.translation import ugettext_lazy as _
 
 import horizon
-from mistraldashboard.dashboards.mistral import dashboard
 
 
-class Executions(horizon.Panel):
-    name = _("Executions")
-    slug = 'executions'
+class Default(horizon.Panel):
+    name = _("Default")
+    slug = 'default'
+    urls = 'mistraldashboard.workbooks.urls'
+    nav = False
 
 
-dashboard.MistralDashboard.register(Executions)
+class MistralDashboard(horizon.Dashboard):
+    name = _("Mistral")
+    slug = "mistral"
+    panels = ('default', 'workbooks', 'executions',)
+    default_panel = 'default'
+    roles = ('admin',)
+
+
+horizon.register(MistralDashboard)
+MistralDashboard.register(Default)

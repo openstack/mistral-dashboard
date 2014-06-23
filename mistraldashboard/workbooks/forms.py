@@ -22,7 +22,7 @@ from horizon import exceptions
 from horizon import forms
 from horizon import messages
 
-from mistraldashboard.dashboards.mistral import api
+from mistraldashboard import api
 
 
 class ExecuteForm(forms.SelfHandlingForm):

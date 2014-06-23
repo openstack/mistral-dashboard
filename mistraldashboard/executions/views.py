@@ -16,10 +16,9 @@
 
 from horizon import tables
 
-from mistraldashboard.dashboards.mistral import api
-from mistraldashboard.dashboards.mistral.executions.tables \
-    import ExecutionsTable
-from mistraldashboard.dashboards.mistral.executions.tables import TaskTable
+from mistraldashboard import api
+from mistraldashboard.executions.tables import ExecutionsTable
+from mistraldashboard.executions.tables import TaskTable
 
 
 class IndexView(tables.DataTableView):

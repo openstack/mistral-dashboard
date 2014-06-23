@@ -14,16 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import patterns  # noqa
-from django.conf.urls import url  # noqa
+from django.utils.translation import ugettext_lazy as _
 
-from mistraldashboard.dashboards.mistral.executions.views import IndexView
-from mistraldashboard.dashboards.mistral.executions.views import TaskView
+import horizon
 
-EXECUTIONS = r'^(?P<execution_id>[^/]+)/%s$'
+from mistraldashboard import dashboard
 
-urlpatterns = patterns(
-    '',
-    url(r'^$', IndexView.as_view(), name='index'),
-    url(EXECUTIONS % 'tasks', TaskView.as_view(), name='tasks'),
-)
+
+class Workbooks(horizon.Panel):
+    name = _("Workbooks")
+    slug = 'workbooks'
+
+
+dashboard.MistralDashboard.register(Workbooks)
