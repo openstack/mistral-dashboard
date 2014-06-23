@@ -27,8 +27,7 @@ class IndexView(tables.DataTableView):
 
     def get_data(self):
         client = api.mistralclient(self.request)
-        return [item for wb in client.workbooks.list()
-                for item in client.executions.list(wb.name)]
+        return client.executions.list(None)
 
 
 class TaskView(tables.DataTableView):
@@ -37,6 +36,4 @@ class TaskView(tables.DataTableView):
 
     def get_data(self):
         client = api.mistralclient(self.request)
-        return [item for wb in client.workbooks.list()
-                for item in client.tasks.list(wb.name,
-                                              self.kwargs['execution_id'])]
+        return client.tasks.list(None, self.kwargs['execution_id'])
