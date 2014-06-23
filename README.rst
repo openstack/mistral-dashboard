@@ -13,8 +13,8 @@ The following should get you started::
     $ ln -s /opt/stack/mistral-dashboard/_50_mistral.py.example \
       /opt/stack/horizon/openstack_dashboard/local/enabled/_50_mistral.py
 
-Since Mistral only supports Identity v3, you may need to edit the
-``local_settings.py`` file to point to proper OPENSTACK_KEYSTONE_URL::
+Since Mistral only supports Identity v3, you must ensure that the dashboard
+points the proper OPENSTACK_KEYSTONE_URL in ``local_settings.py`` file::
 
     OPENSTACK_API_VERSIONS = {
         "identity": 3,
@@ -26,8 +26,8 @@ Also, make sure you have changed OPENSTACK_HOST to point to your Keystone
 server and check all endpoints are accessible. You may want to change
 OPENSTACK_ENDPOINT_TYPE to "publicURL" if some of them are not.
 
-Depending on your setup, you may also need to add a service and endpoints to
-keystone::
+Register Mistral service and Mistral endpoints on Keystone (required if Mistral
+and Horizon dashboard run on a different boxes)::
 
     $ MISTRAL_URL="http://[host]:[port]/v1"
     $ keystone service-create --name mistral --type workflow
