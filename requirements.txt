@@ -1,2 +1,2 @@
--e git+https://github.com/stackforge/python-mistralclient.git#egg=python-mistralclient
+python-mistralclient
 PyYAML>=3.1.0
