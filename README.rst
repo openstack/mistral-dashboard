@@ -6,15 +6,20 @@ Horizon plugin for Mistral.
 
 Setup Instructions
 ==================
+This instruction assumes that Horizon is already installed and it's installation
+folder is <horizon>. Detailed information on how to install Horizon can be
+found at http://docs.openstack.org/developer/horizon/quickstart.html#setup.
+
+The installation folder of Mistral Dashboard will be referred to as <mistral-dashboard>.
 
 The following should get you started::
 
-    $ sudo pip install -e /opt/stack/mistral-dashboard
-    $ ln -s /opt/stack/mistral-dashboard/_50_mistral.py.example \
-      /opt/stack/horizon/openstack_dashboard/local/enabled/_50_mistral.py
+    $ sudo pip install -e <mistral-dashboard>
+    $ ln -s <mistral-dashboard>/_50_mistral.py.example \
+      <horizon>/openstack_dashboard/local/enabled/_50_mistral.py
 
 Since Mistral only supports Identity v3, you must ensure that the dashboard
-points the proper OPENSTACK_KEYSTONE_URL in ``local_settings.py`` file::
+points the proper OPENSTACK_KEYSTONE_URL in <horizon>/openstack_dashboard/local/local_settings.py file::
 
     OPENSTACK_API_VERSIONS = {
         "identity": 3,
