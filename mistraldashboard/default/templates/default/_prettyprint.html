@@ -1,0 +1,9 @@
+{% if short %}
+<div class="codeblock" tabindex="-1">
+    <pre lang="json" class="short">{{ short }}</pre>
+    <pre lang="json" class="full">{{ full }}</pre>
+{% else %}
+<div class="codeblock">
+    <pre lang="json" class="short">{{ full }}</pre>
+{% endif %}
+</div>

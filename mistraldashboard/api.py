@@ -22,7 +22,7 @@ SERVICE_TYPE = 'workflow'
 
 
 def mistralclient(request):
-    return mistral_client.Client(
+    return mistral_client.client(
         username=request.user.username,
         auth_token=request.user.token.id,
         project_id=request.user.tenant_id,

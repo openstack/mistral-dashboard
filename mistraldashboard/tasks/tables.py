@@ -23,42 +23,22 @@ from mistraldashboard.default.utils import humantime
 from mistraldashboard.default.utils import prettyprint
 
 
-class ExecutionsTable(tables.DataTable):
-    id = tables.Column("id", verbose_name=_("ID"))  # ,
-                       # link=("horizon:mistral:executions:tasks"))
+class TaskTable(tables.DataTable):
+    id = tables.Column("id", verbose_name=_("ID"))
+    name = tables.Column("name", verbose_name=_("Name"))
 
-    workflow_name = tables.Column("workflow_name", verbose_name=_("Workflow"))
-
-    input = tables.Column("input",
-                          verbose_name=_("Input"),
-                          filters=[prettyprint])
+    parameters = tables.Column("parameters",
+                               verbose_name=_("Parameters"),
+                               filters=[prettyprint])
     output = tables.Column("output",
                            verbose_name=_("Output"),
                            filters=[prettyprint])
-
     created_at = tables.Column("created_at",
                                verbose_name=_("Created at"),
                                filters=[humantime])
     updated_at = tables.Column("updated_at",
                                verbose_name=_("Updated at"),
                                filters=[humantime])
-
-    state = tables.Column("state", verbose_name=_("State"), filters=[label])
-
-    class Meta:
-        name = "executions"
-        verbose_name = _("Executions")
-
-
-class TaskTable(tables.DataTable):
-    id = tables.Column("id", verbose_name=_("ID"))
-    name = tables.Column("name", verbose_name=_("Name"))
-
-    parameters = tables.Column("parameters", verbose_name=_("Parameters"))
-    output = tables.Column("output", verbose_name=_("Output"))
-
-    created_at = tables.Column("created_at", verbose_name=_("Created at"))
-    updated_at = tables.Column("updated_at", verbose_name=_("Updated at"))
 
     state = tables.Column("state", verbose_name=_("State"), filters=[label])
 

@@ -19,8 +19,15 @@ from django.utils.translation import ugettext_lazy as _
 from horizon import tables
 
 
-def tags_to_string(workbook):
-    return ', '.join(workbook.tags) if workbook.tags else None
+class ExecuteWorkflow(tables.LinkAction):
+    name = "execute"
+    verbose_name = _("Execute")
+    url = "horizon:mistral:workflows:execute"
+    classes = ("ajax-modal", "btn-edit")
+
+
+def tags_to_string(workflow):
+    return ', '.join(workflow.tags) if workflow.tags else None
 
 
 class WorkbooksTable(tables.DataTable):
@@ -32,5 +39,6 @@ class WorkbooksTable(tables.DataTable):
         return datum.name
 
     class Meta:
-        name = "workbooks"
-        verbose_name = _("Workbooks")
+        name = "workflows"
+        verbose_name = _("Workflows")
+        row_actions = (ExecuteWorkflow,)

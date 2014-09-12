@@ -18,16 +18,9 @@ from django.utils.translation import ugettext_lazy as _
 
 import horizon
 
-from mistraldashboard.default.panel import Default
 
-
-class MistralDashboard(horizon.Dashboard):
-    name = _("Mistral")
-    slug = "mistral"
-    panels = ('default', 'workbooks', 'workflows', 'executions', 'tasks',)
-    default_panel = 'default'
-    roles = ('admin',)
-
-
-horizon.register(MistralDashboard)
-MistralDashboard.register(Default)
+class Default(horizon.Panel):
+    name = _("Default")
+    slug = 'default'
+    urls = 'mistraldashboard.workbooks.urls'
+    nav = False

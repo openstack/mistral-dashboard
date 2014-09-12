@@ -14,20 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.utils.translation import ugettext_lazy as _
+from horizon import tables
 
-import horizon
-
-from mistraldashboard.default.panel import Default
-
-
-class MistralDashboard(horizon.Dashboard):
-    name = _("Mistral")
-    slug = "mistral"
-    panels = ('default', 'workbooks', 'workflows', 'executions', 'tasks',)
-    default_panel = 'default'
-    roles = ('admin',)
+from mistraldashboard import api
+from mistraldashboard.tasks.tables import TaskTable
 
 
-horizon.register(MistralDashboard)
-MistralDashboard.register(Default)
+class IndexView(tables.DataTableView):
+    table_class = TaskTable
+    template_name = 'mistral/tasks/index.html'
+
+    def get_data(self):
+        client = api.mistralclient(self.request)
+        return client.tasks.list()

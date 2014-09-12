@@ -14,14 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.core.urlresolvers import reverse_lazy
-
 from horizon import tables
-from horizon import forms
 
 from mistraldashboard import api
 from mistraldashboard.workbooks.tables import WorkbooksTable
-from mistraldashboard.workbooks.forms import ExecuteForm
 
 
 class IndexView(tables.DataTableView):
@@ -30,19 +26,3 @@ class IndexView(tables.DataTableView):
 
     def get_data(self):
         return api.mistralclient(self.request).workbooks.list()
-
-
-class ExecuteView(forms.ModalFormView):
-    form_class = ExecuteForm
-    template_name = 'mistral/workbooks/execute.html'
-    success_url = reverse_lazy("horizon:mistral:executions:index")
-
-    def get_context_data(self, **kwargs):
-        context = super(ExecuteView, self).get_context_data(**kwargs)
-        context["workbook_name"] = self.kwargs['workbook_name']
-        return context
-
-    def get_initial(self, **kwargs):
-        return {
-            'workbook_name': self.kwargs['workbook_name']
-        }
