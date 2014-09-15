@@ -24,8 +24,8 @@ from mistraldashboard.default.utils import prettyprint
 
 
 class ExecutionsTable(tables.DataTable):
-    id = tables.Column("id", verbose_name=_("ID"))  # ,
-                       # link=("horizon:mistral:executions:tasks"))
+    id = tables.Column("id", verbose_name=_("ID"),
+                       link="horizon:mistral:executions:tasks")
 
     workflow_name = tables.Column("workflow_name", verbose_name=_("Workflow"))
 

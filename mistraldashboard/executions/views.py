@@ -36,4 +36,4 @@ class TaskView(tables.DataTableView):
 
     def get_data(self):
         client = api.mistralclient(self.request)
-        return client.tasks.list()
+        return client.tasks.list(self.kwargs['execution_id'])
