@@ -37,6 +37,3 @@ nosetests.xml
 .pydevproject
 .idea
 .DS_Store
-mistraldashboard/local/local_settings.py
-mistraldashboard/local/.secret_key_store
-static

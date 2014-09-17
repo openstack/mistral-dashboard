@@ -1,0 +1,19 @@
+.codeblock {
+    position: relative;
+
+    .short {
+        cursor: pointer;
+    }
+
+    .full {
+        display: none;
+    }
+
+    &:focus .short {
+        display: none;
+    }
+
+    &:focus .full {
+        display: block;
+    }
+}
