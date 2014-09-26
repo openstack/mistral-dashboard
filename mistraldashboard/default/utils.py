@@ -20,7 +20,9 @@ import json
 
 TYPES = {
     'SUCCESS': 'label-success',
-    'ERROR': 'label-important'
+    'ERROR': 'label-danger',
+    'DELAYED': 'label-default',
+    'RUNNING': 'label-info'
 }
 
 
