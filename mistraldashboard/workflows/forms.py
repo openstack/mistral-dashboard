@@ -25,17 +25,22 @@ from mistraldashboard import api
 
 
 class ExecuteForm(forms.SelfHandlingForm):
-    workflow_name = forms.CharField(label=_("Workflow"),
-                                    required=True,
-                                    widget=forms.TextInput(
-                                        attrs={'readonly': 'readonly'}))
-    workflow_input = forms.CharField(label=_("Input"),
-                                     required=False,
-                                     initial="{}",
-                                     widget=forms.widgets.Textarea())
-    task_name = forms.CharField(label=_("Task name"),
-                                required=False,
-                                widget=forms.TextInput())
+    workflow_name = forms.CharField(
+        label=_("Workflow"),
+        required=True,
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
+    )
+    workflow_input = forms.CharField(
+        label=_("Input"),
+        required=False,
+        initial="{}",
+        widget=forms.widgets.Textarea()
+    )
+    task_name = forms.CharField(
+        label=_("Task name"),
+        required=False,
+        widget=forms.TextInput()
+    )
 
     def handle(self, request, data):
         try:
@@ -43,6 +48,7 @@ class ExecuteForm(forms.SelfHandlingForm):
 
             msg = _('Execution has been created with id "%s".') % ex.id
             messages.success(request, msg)
+
             return True
         except Exception:
             msg = _('Failed to execute workflow "%s".') % data['workflow_name']

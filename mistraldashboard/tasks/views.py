@@ -25,5 +25,4 @@ class IndexView(tables.DataTableView):
     template_name = 'mistral/tasks/index.html'
 
     def get_data(self):
-        client = api.mistralclient(self.request)
-        return client.tasks.list()
+        return api.mistralclient(self.request).tasks.list()

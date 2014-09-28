@@ -31,7 +31,10 @@ def mistralclient(request):
         # additional troubles for those who still rely on v2.0 stack-wise.
         auth_url=getattr(settings, 'OPENSTACK_KEYSTONE_URL'),
         # Todo: add SECONDARY_ENDPOINT_TYPE support
-        endpoint_type=getattr(settings,
-                              'OPENSTACK_ENDPOINT_TYPE',
-                              'internalURL'),
-        service_type=SERVICE_TYPE)
+        endpoint_type=getattr(
+            settings,
+            'OPENSTACK_ENDPOINT_TYPE',
+            'internalURL'
+        ),
+        service_type=SERVICE_TYPE
+    )
