@@ -20,12 +20,12 @@ from horizon import tables
 from horizon import forms
 
 from mistraldashboard import api
-from mistraldashboard.workflows.tables import WorkbooksTable
+from mistraldashboard.workflows.tables import WorkflowsTable
 from mistraldashboard.workflows.forms import ExecuteForm
 
 
 class IndexView(tables.DataTableView):
-    table_class = WorkbooksTable
+    table_class = WorkflowsTable
     template_name = 'mistral/workflows/index.html'
 
     def get_data(self):
@@ -39,10 +39,10 @@ class ExecuteView(forms.ModalFormView):
 
     def get_context_data(self, **kwargs):
         context = super(ExecuteView, self).get_context_data(**kwargs)
+
         context["workflow_name"] = self.kwargs['workflow_name']
+
         return context
 
     def get_initial(self, **kwargs):
-        return {
-            'workflow_name': self.kwargs['workflow_name']
-        }
+        return {'workflow_name': self.kwargs['workflow_name']}

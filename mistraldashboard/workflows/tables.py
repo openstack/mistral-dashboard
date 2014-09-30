@@ -30,7 +30,7 @@ def tags_to_string(workflow):
     return ', '.join(workflow.tags) if workflow.tags else None
 
 
-class WorkbooksTable(tables.DataTable):
+class WorkflowsTable(tables.DataTable):
     name = tables.Column("name", verbose_name=_("Name"))
     description = tables.Column("description", verbose_name=_("Description"))
     tags = tables.Column(tags_to_string, verbose_name=_("Tags"))

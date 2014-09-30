@@ -24,24 +24,35 @@ from mistraldashboard.default.utils import prettyprint
 
 
 class ExecutionsTable(tables.DataTable):
-    id = tables.Column("id", verbose_name=_("ID"),
-                       link="horizon:mistral:executions:tasks")
+    id = tables.Column(
+        "id",
+        verbose_name=_("ID"),
+        link="horizon:mistral:executions:tasks"
+    )
 
     workflow_name = tables.Column("workflow_name", verbose_name=_("Workflow"))
 
-    input = tables.Column("input",
-                          verbose_name=_("Input"),
-                          filters=[prettyprint])
-    output = tables.Column("output",
-                           verbose_name=_("Output"),
-                           filters=[prettyprint])
+    input = tables.Column(
+        "input",
+        verbose_name=_("Input"),
+        filters=[prettyprint]
+    )
+    output = tables.Column(
+        "output",
+        verbose_name=_("Output"),
+        filters=[prettyprint]
+    )
 
-    created_at = tables.Column("created_at",
-                               verbose_name=_("Created at"),
-                               filters=[humantime])
-    updated_at = tables.Column("updated_at",
-                               verbose_name=_("Updated at"),
-                               filters=[humantime])
+    created_at = tables.Column(
+        "created_at",
+        verbose_name=_("Created at"),
+        filters=[humantime]
+    )
+    updated_at = tables.Column(
+        "updated_at",
+        verbose_name=_("Updated at"),
+        filters=[humantime]
+    )
 
     state = tables.Column("state", verbose_name=_("State"), filters=[label])
 
