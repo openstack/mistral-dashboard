@@ -31,14 +31,6 @@ Also, make sure you have changed OPENSTACK_HOST to point to your Keystone
 server and check all endpoints are accessible. You may want to change
 OPENSTACK_ENDPOINT_TYPE to "publicURL" if some of them are not.
 
-Register Mistral service and Mistral endpoints on Keystone (required if Mistral
-and Horizon dashboard run on a different boxes)::
-
-    $ MISTRAL_URL="http://[host]:[port]/v1"
-    $ keystone service-create --name mistral --type workflow
-    $ keystone endpoint-create --service_id mistral --publicurl $MISTRAL_URL \
-      --adminurl $MISTRAL_URL --internalurl $MISTRAL_URL
-
 When you're ready, you would need to either restart your apache::
 
     $ sudo service apache2 restart

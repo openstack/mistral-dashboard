@@ -18,7 +18,7 @@ from django.conf import settings
 
 from mistralclient.api import client as mistral_client
 
-SERVICE_TYPE = 'workflow'
+SERVICE_TYPE = 'workflowv2'
 
 
 def mistralclient(request):
