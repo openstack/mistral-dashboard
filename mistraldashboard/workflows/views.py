@@ -29,7 +29,7 @@ class IndexView(tables.DataTableView):
     template_name = 'mistral/workflows/index.html'
 
     def get_data(self):
-        return api.mistralclient(self.request).workflows.list()
+        return api.workflow_list(self.request)
 
 
 class ExecuteView(forms.ModalFormView):

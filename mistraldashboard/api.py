@@ -38,3 +38,36 @@ def mistralclient(request):
         ),
         service_type=SERVICE_TYPE
     )
+
+
+def execution_create(request, **data):
+    """Creates new execution."""
+
+    return mistralclient(request).executions.create(**data)
+
+
+def execution_list(request):
+    """Returns all executions."""
+
+    return mistralclient(request).executions.list()
+
+
+def task_list(request, execution_id=None):
+    """Returns all tasks.
+
+    :param execution_id: Workflow execution ID associated with list of Tasks
+    """
+
+    return mistralclient(request).tasks.list(execution_id)
+
+
+def workflow_list(request):
+    """Returns all workflows."""
+
+    return mistralclient(request).workflows.list()
+
+
+def workbook_list(request):
+    """Returns all workbooks."""
+
+    return mistralclient(request).workbooks.list()

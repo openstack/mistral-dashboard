@@ -25,4 +25,4 @@ class IndexView(tables.DataTableView):
     template_name = 'mistral/workbooks/index.html'
 
     def get_data(self):
-        return api.mistralclient(self.request).workbooks.list()
+        return api.workbook_list(self.request)

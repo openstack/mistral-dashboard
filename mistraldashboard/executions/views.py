@@ -26,7 +26,7 @@ class IndexView(tables.DataTableView):
     template_name = 'mistral/executions/index.html'
 
     def get_data(self):
-        return api.mistralclient(self.request).executions.list()
+        return api.execution_list(self.request)
 
 
 class TaskView(tables.DataTableView):
@@ -34,6 +34,4 @@ class TaskView(tables.DataTableView):
     template_name = 'mistral/executions/index.html'
 
     def get_data(self):
-        return api.mistralclient(self.request).tasks.list(
-            self.kwargs['execution_id']
-        )
+        return api.task_list(self.kwargs['execution_id'])

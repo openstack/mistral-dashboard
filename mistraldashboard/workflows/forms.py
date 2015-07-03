@@ -44,7 +44,7 @@ class ExecuteForm(forms.SelfHandlingForm):
 
     def handle(self, request, data):
         try:
-            ex = api.mistralclient(request).executions.create(**data)
+            ex = api.execution_create(request, **data)
 
             msg = _('Execution has been created with id "%s".') % ex.id
             messages.success(request, msg)
