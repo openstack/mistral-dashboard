@@ -15,8 +15,10 @@
 # limitations under the License.
 
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 from mistralclient.api import client as mistral_client
+from mistraldashboard.handle_errors import handle_errors
 
 SERVICE_TYPE = 'workflowv2'
 
@@ -46,27 +48,31 @@ def execution_create(request, **data):
     return mistralclient(request).executions.create(**data)
 
 
+@handle_errors(_("Unable to retrieve executions."), [])
 def execution_list(request):
     """Returns all executions."""
 
     return mistralclient(request).executions.list()
 
 
+@handle_errors(_("Unable to retrieve tasks."), [])
 def task_list(request, execution_id=None):
     """Returns all tasks.
 
-    :param execution_id: Workflow execution ID associated with list of Tasks
+    :param execution_id: Workflow execution ID associated with list of tasks
     """
 
     return mistralclient(request).tasks.list(execution_id)
 
 
+@handle_errors(_("Unable to retrieve workflows."), [])
 def workflow_list(request):
     """Returns all workflows."""
 
     return mistralclient(request).workflows.list()
 
 
+@handle_errors(_("Unable to retrieve workbooks."), [])
 def workbook_list(request):
     """Returns all workbooks."""
 
