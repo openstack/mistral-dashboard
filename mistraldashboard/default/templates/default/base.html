@@ -2,9 +2,5 @@
 
 {% block css %}
   {% include "_stylesheets.html" %}
-
-  {% load compress %}
-  {% compress css %}
   <link href='{{ STATIC_URL }}mistraldashboard/scss/style.scss' type='text/scss' media='screen' rel='stylesheet' />
-  {% endcompress %}
 {% endblock %}
