@@ -16,6 +16,7 @@
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from horizon.utils import memoized
 
 from mistralclient.api import client as mistral_client
 from mistraldashboard.handle_errors import handle_errors
@@ -23,6 +24,7 @@ from mistraldashboard.handle_errors import handle_errors
 SERVICE_TYPE = 'workflowv2'
 
 
+@memoized.memoized
 def mistralclient(request):
     return mistral_client.client(
         username=request.user.username,
