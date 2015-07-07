@@ -17,6 +17,7 @@
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import tables
+from horizon.utils import filters
 
 
 class ExecuteWorkflow(tables.LinkAction):
@@ -30,10 +31,35 @@ def tags_to_string(workflow):
     return ', '.join(workflow.tags) if workflow.tags else None
 
 
+def cut(workflow, length=100):
+    inputs = workflow.input
+
+    if inputs and len(inputs) > length:
+        return "%s..." % inputs[:length]
+    else:
+        return inputs
+
+
 class WorkflowsTable(tables.DataTable):
     name = tables.Column("name", verbose_name=_("Name"))
-    description = tables.Column("description", verbose_name=_("Description"))
     tags = tables.Column(tags_to_string, verbose_name=_("Tags"))
+    inputs = tables.Column(cut, verbose_name=_("Input"))
+    created = tables.Column(
+        "created_at",
+        verbose_name=_("Created"),
+        filters=(
+            filters.parse_isotime,
+            filters.timesince_or_never
+        )
+    )
+    updated = tables.Column(
+        "updated_at",
+        verbose_name=_("Updated"),
+        filters=(
+            filters.parse_isotime,
+            filters.timesince_or_never
+        )
+    )
 
     def get_object_id(self, datum):
         return datum.name
