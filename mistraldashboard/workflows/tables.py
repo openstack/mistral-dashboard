@@ -41,7 +41,11 @@ def cut(workflow, length=100):
 
 
 class WorkflowsTable(tables.DataTable):
-    name = tables.Column("name", verbose_name=_("Name"))
+    name = tables.Column(
+        "name",
+        verbose_name=_("Name"),
+        link="horizon:mistral:workflows:detail"
+    )
     tags = tables.Column(tags_to_string, verbose_name=_("Tags"))
     inputs = tables.Column(cut, verbose_name=_("Input"))
     created = tables.Column(

@@ -17,13 +17,13 @@
 from django.conf.urls import patterns  # noqa
 from django.conf.urls import url  # noqa
 
-from mistraldashboard.workflows.views import IndexView
-from mistraldashboard.workflows.views import ExecuteView
+from mistraldashboard.workflows import views
 
 WORKFLOWS = r'^(?P<workflow_name>[^/]+)/%s$'
 
 urlpatterns = patterns(
     '',
-    url(r'^$', IndexView.as_view(), name='index'),
-    url(WORKFLOWS % 'execute', ExecuteView.as_view(), name='execute'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(WORKFLOWS % 'execute', views.ExecuteView.as_view(), name='execute'),
+    url(WORKFLOWS % 'detail', views.DetailView.as_view(), name='detail'),
 )
