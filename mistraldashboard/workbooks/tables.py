@@ -17,6 +17,7 @@
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import tables
+from horizon.utils import filters
 
 
 def tags_to_string(workbook):
@@ -25,8 +26,23 @@ def tags_to_string(workbook):
 
 class WorkbooksTable(tables.DataTable):
     name = tables.Column("name", verbose_name=_("Name"))
-    description = tables.Column("description", verbose_name=_("Description"))
     tags = tables.Column(tags_to_string, verbose_name=_("Tags"))
+    created = tables.Column(
+        "created_at",
+        verbose_name=_("Created"),
+        filters=(
+            filters.parse_isotime,
+            filters.timesince_or_never
+        )
+    )
+    updated = tables.Column(
+        "updated_at",
+        verbose_name=_("Updated"),
+        filters=(
+            filters.parse_isotime,
+            filters.timesince_or_never
+        )
+    )
 
     def get_object_id(self, datum):
         return datum.name
