@@ -88,3 +88,12 @@ def workbook_list(request):
     """Returns all workbooks."""
 
     return mistralclient(request).workbooks.list()
+
+
+def workbook_get(request, workbook_name):
+    """Get specific workbook.
+
+    :param workbook_name: Workbook name
+    """
+
+    return mistralclient(request).workbooks.get(workbook_name)

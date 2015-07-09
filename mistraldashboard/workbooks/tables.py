@@ -25,7 +25,11 @@ def tags_to_string(workbook):
 
 
 class WorkbooksTable(tables.DataTable):
-    name = tables.Column("name", verbose_name=_("Name"))
+    name = tables.Column(
+        "name",
+        verbose_name=_("Name"),
+        link="horizon:mistral:workbooks:detail"
+    )
     tags = tables.Column(tags_to_string, verbose_name=_("Tags"))
     created = tables.Column(
         "created_at",
