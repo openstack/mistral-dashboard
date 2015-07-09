@@ -14,8 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
+from django.utils.translation import ugettext_lazy as _
+from django.views import generic
 
+from horizon import exceptions
 from horizon import tables
 from horizon import forms
 
@@ -30,6 +34,31 @@ class IndexView(tables.DataTableView):
 
     def get_data(self):
         return api.workflow_list(self.request)
+
+
+class DetailView(generic.TemplateView):
+    template_name = 'mistral/workflows/detail.html'
+    page_title = _("Workflow Definition")
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        workflow = self.get_data(self.request, **kwargs)
+        context['definition'] = (
+            workflow.definition or
+            'This workflow was created as part of workbook %s'
+            % workflow.name.split('.')[0])
+        return context
+
+    def get_data(self, request, **kwargs):
+        try:
+            workflow_name = kwargs['workflow_name']
+            workflow = api.workflow_get(request, workflow_name)
+        except Exception:
+            msg = _('Unable to get workflow "%s".') % workflow_name
+            redirect = reverse('horizon:mistral:workflows:index')
+            exceptions.handle(self.request, msg, redirect=redirect)
+
+        return workflow
 
 
 class ExecuteView(forms.ModalFormView):

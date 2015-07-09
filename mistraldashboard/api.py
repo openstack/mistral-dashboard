@@ -74,6 +74,15 @@ def workflow_list(request):
     return mistralclient(request).workflows.list()
 
 
+def workflow_get(request, workflow_name):
+    """Get specific workflow.
+
+    :param workflow_name: Workflow name
+    """
+
+    return mistralclient(request).workflows.get(workflow_name)
+
+
 @handle_errors(_("Unable to retrieve workbooks."), [])
 def workbook_list(request):
     """Returns all workbooks."""
