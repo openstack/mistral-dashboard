@@ -15,6 +15,13 @@ The installation folder of Mistral Dashboard will be referred to as <mistral-das
 The following should get you started::
 
     $ sudo pip install -e <mistral-dashboard>
+
+Or if you're planning to run Horizon server in a virtual environment (see below):
+
+    $ tox -evenv -- pip install -e ../mistral-dashboard/
+
+and then
+
     $ ln -s <mistral-dashboard>/_50_mistral.py.example \
       <horizon>/openstack_dashboard/local/enabled/_50_mistral.py
 
