@@ -20,12 +20,12 @@ from django.utils.translation import ugettext_lazy as _
 from django.views import generic
 
 from horizon import exceptions
-from horizon import tables
 from horizon import forms
+from horizon import tables
 
 from mistraldashboard import api
-from mistraldashboard.workflows.tables import WorkflowsTable
 from mistraldashboard.workflows.forms import ExecuteForm
+from mistraldashboard.workflows.tables import WorkflowsTable
 
 
 class IndexView(tables.DataTableView):

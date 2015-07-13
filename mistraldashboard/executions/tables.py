@@ -18,8 +18,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from horizon import tables
 
-from mistraldashboard.default.utils import label
 from mistraldashboard.default.utils import humantime
+from mistraldashboard.default.utils import label
 from mistraldashboard.default.utils import prettyprint
 
 
