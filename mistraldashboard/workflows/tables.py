@@ -20,6 +20,14 @@ from horizon import tables
 from horizon.utils import filters
 
 
+class CreateWorkflow(tables.LinkAction):
+    name = "create"
+    verbose_name = _("Create Workflow")
+    url = "horizon:mistral:workflows:select_definition"
+    classes = ("ajax-modal",)
+    icon = "plus"
+
+
 class ExecuteWorkflow(tables.LinkAction):
     name = "execute"
     verbose_name = _("Execute")
@@ -71,4 +79,5 @@ class WorkflowsTable(tables.DataTable):
     class Meta:
         name = "workflows"
         verbose_name = _("Workflows")
+        table_actions = (CreateWorkflow,)
         row_actions = (ExecuteWorkflow,)
