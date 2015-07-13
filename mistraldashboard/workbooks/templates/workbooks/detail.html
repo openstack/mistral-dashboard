@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Workbook Definition" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_page_header.html" with title=_("Workbook Definition") %}
+{% endblock page_header %}
+
+{% block main %}
+  <div class="detail">
+    <pre>{{ definition }}</pre>
+  </div>
+{% endblock %}

@@ -14,6 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
+from django.views import generic
+
+from horizon import exceptions
 from horizon import tables
 
 from mistraldashboard import api
@@ -26,3 +31,26 @@ class IndexView(tables.DataTableView):
 
     def get_data(self):
         return api.workbook_list(self.request)
+
+
+class DetailView(generic.TemplateView):
+    template_name = 'mistral/workbooks/detail.html'
+    page_title = _("Workbook Definition")
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        workbook = self.get_data(self.request, **kwargs)
+        context['definition'] = workbook.definition
+
+        return context
+
+    def get_data(self, request, **kwargs):
+        try:
+            workbook_name = kwargs['workbook_name']
+            workbook = api.workbook_get(request, workbook_name)
+        except Exception:
+            msg = _('Unable to get workbook "%s".') % workbook_name
+            redirect = reverse('horizon:mistral:workbooks:index')
+            exceptions.handle(self.request, msg, redirect=redirect)
+
+        return workbook

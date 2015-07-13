@@ -17,11 +17,12 @@
 from django.conf.urls import patterns  # noqa
 from django.conf.urls import url  # noqa
 
-from mistraldashboard.workbooks.views import IndexView
+from mistraldashboard.workbooks import views
 
 WORKBOOKS = r'^(?P<workbook_name>[^/]+)/%s$'
 
 urlpatterns = patterns(
     '',
-    url(r'^$', IndexView.as_view(), name='index'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(WORKBOOKS % 'detail', views.DetailView.as_view(), name='detail'),
 )
