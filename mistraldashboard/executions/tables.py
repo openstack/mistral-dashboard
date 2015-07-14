@@ -56,7 +56,7 @@ class ExecutionsTable(tables.DataTable):
 
     state = tables.Column("state", verbose_name=_("State"), filters=[label])
 
-    class Meta:
+    class Meta(object):
         name = "executions"
         verbose_name = _("Executions")
 
@@ -73,6 +73,6 @@ class TaskTable(tables.DataTable):
 
     state = tables.Column("state", verbose_name=_("State"), filters=[label])
 
-    class Meta:
+    class Meta(object):
         name = "tasks"
         verbose_name = _("Tasks")

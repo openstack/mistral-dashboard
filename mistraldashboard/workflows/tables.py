@@ -68,7 +68,7 @@ class WorkflowsTable(tables.DataTable):
     def get_object_id(self, datum):
         return datum.name
 
-    class Meta:
+    class Meta(object):
         name = "workflows"
         verbose_name = _("Workflows")
         row_actions = (ExecuteWorkflow,)

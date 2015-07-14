@@ -51,6 +51,6 @@ class WorkbooksTable(tables.DataTable):
     def get_object_id(self, datum):
         return datum.name
 
-    class Meta:
+    class Meta(object):
         name = "workbooks"
         verbose_name = _("Workbooks")
