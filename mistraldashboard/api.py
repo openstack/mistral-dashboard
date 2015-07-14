@@ -101,6 +101,15 @@ def workflow_validate(request, workflow_definition):
     return mistralclient(request).workflows.validate(workflow_definition)
 
 
+def workflow_delete(request, workflow_name):
+    """Delete workflow.
+
+    :param workflow_name: Workflow name
+    """
+
+    return mistralclient(request).workflows.delete(workflow_name)
+
+
 @handle_errors(_("Unable to retrieve workbooks."), [])
 def workbook_list(request):
     """Returns all workbooks."""
