@@ -15,13 +15,16 @@
 # limitations under the License.
 
 from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic
 
 from horizon import exceptions
+from horizon import forms
 from horizon import tables
 
 from mistraldashboard import api
+from mistraldashboard.workbooks import forms as mistral_forms
 from mistraldashboard.workbooks.tables import WorkbooksTable
 
 
@@ -54,3 +57,39 @@ class DetailView(generic.TemplateView):
             exceptions.handle(self.request, msg, redirect=redirect)
 
         return workbook
+
+
+class SelectDefinitionView(forms.ModalFormView):
+    template_name = 'mistral/workbooks/select_definition.html'
+    modal_header = _("Select Definition")
+    form_id = "select_definition"
+    form_class = mistral_forms.DefinitionForm
+    submit_label = _("Next")
+    submit_url = reverse_lazy("horizon:mistral:workbooks:select_definition")
+    success_url = reverse_lazy('horizon:mistral:workbooks:create')
+    page_title = _("Select Definition")
+
+    def get_form_kwargs(self):
+        kwargs = super(SelectDefinitionView, self).get_form_kwargs()
+        kwargs['next_view'] = CreateView
+
+        return kwargs
+
+
+class CreateView(forms.ModalFormView):
+    template_name = 'mistral/workbooks/create.html'
+    modal_header = _("Create Workbook")
+    form_id = "create_workbook"
+    form_class = mistral_forms.CreateForm
+    submit_label = _("Create")
+    submit_url = reverse_lazy("horizon:mistral:workbooks:create")
+    success_url = reverse_lazy('horizon:mistral:workbooks:index')
+    page_title = _("Create Workbook")
+
+    def get_initial(self):
+        initial = {}
+
+        if 'definition' in self.kwargs:
+            initial['definition'] = self.kwargs['definition']
+
+        return initial

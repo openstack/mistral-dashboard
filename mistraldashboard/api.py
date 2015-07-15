@@ -115,3 +115,21 @@ def workbook_get(request, workbook_name):
     """
 
     return mistralclient(request).workbooks.get(workbook_name)
+
+
+def workbook_create(request, workbook_definition):
+    """Create workbook.
+
+    :param workbook_definition: Workbook definition
+    """
+
+    return mistralclient(request).workbooks.create(workbook_definition)
+
+
+def workbook_validate(request, workbook_definition):
+    """Validate workbook.
+
+    :param workbook_definition: Workbook definition
+    """
+
+    return mistralclient(request).workbooks.validate(workbook_definition)

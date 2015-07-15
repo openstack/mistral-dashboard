@@ -20,6 +20,14 @@ from horizon import tables
 from horizon.utils import filters
 
 
+class CreateWorkbook(tables.LinkAction):
+    name = "create"
+    verbose_name = _("Create Workbook")
+    url = "horizon:mistral:workbooks:select_definition"
+    classes = ("ajax-modal",)
+    icon = "plus"
+
+
 def tags_to_string(workbook):
     return ', '.join(workbook.tags) if workbook.tags else None
 
@@ -54,3 +62,4 @@ class WorkbooksTable(tables.DataTable):
     class Meta:
         name = "workbooks"
         verbose_name = _("Workbooks")
+        table_actions = (CreateWorkbook,)
