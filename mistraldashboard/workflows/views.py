@@ -94,6 +94,19 @@ class SelectDefinitionView(forms.ModalFormView):
         return kwargs
 
 
+class ChangeDefinitionView(SelectDefinitionView):
+    modal_header = _("Update Definition")
+    submit_url = reverse_lazy("horizon:mistral:workflows:change_definition")
+    success_url = reverse_lazy('horizon:mistral:workflows:update')
+    page_title = _("Update Definition")
+
+    def get_form_kwargs(self):
+        kwargs = super(ChangeDefinitionView, self).get_form_kwargs()
+        kwargs['next_view'] = UpdateView
+
+        return kwargs
+
+
 class CreateView(forms.ModalFormView):
     template_name = 'mistral/workflows/create.html'
     modal_header = _("Create Workflow")
@@ -111,3 +124,13 @@ class CreateView(forms.ModalFormView):
             initial['definition'] = self.kwargs['definition']
 
         return initial
+
+
+class UpdateView(CreateView):
+    template_name = 'mistral/workflows/update.html'
+    modal_header = _("Update Workflow")
+    form_id = "update_workflow"
+    form_class = mistral_forms.UpdateForm
+    submit_label = _("Update")
+    submit_url = reverse_lazy("horizon:mistral:workflows:update")
+    page_title = _("Update Workflow")
