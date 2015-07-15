@@ -24,6 +24,10 @@ WORKFLOWS = r'^(?P<workflow_name>[^/]+)/%s$'
 urlpatterns = patterns(
     '',
     url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^select_definition$',
+        views.SelectDefinitionView.as_view(),
+        name='select_definition'),
+    url(r'^create$', views.CreateView.as_view(), name='create'),
     url(WORKFLOWS % 'execute', views.ExecuteView.as_view(), name='execute'),
     url(WORKFLOWS % 'detail', views.DetailView.as_view(), name='detail'),
 )

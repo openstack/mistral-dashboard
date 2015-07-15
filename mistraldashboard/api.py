@@ -83,6 +83,24 @@ def workflow_get(request, workflow_name):
     return mistralclient(request).workflows.get(workflow_name)
 
 
+def workflow_create(request, workflows_definition):
+    """Create workflow.
+
+    :param workflows_definition: Workflows definition
+    """
+
+    return mistralclient(request).workflows.create(workflows_definition)
+
+
+def workflow_validate(request, workflow_definition):
+    """Validate workflow.
+
+    :param workflow_definition: Workflow definition
+    """
+
+    return mistralclient(request).workflows.validate(workflow_definition)
+
+
 @handle_errors(_("Unable to retrieve workbooks."), [])
 def workbook_list(request):
     """Returns all workbooks."""

@@ -24,7 +24,7 @@ from horizon import forms
 from horizon import tables
 
 from mistraldashboard import api
-from mistraldashboard.workflows.forms import ExecuteForm
+from mistraldashboard.workflows import forms as mistral_forms
 from mistraldashboard.workflows.tables import WorkflowsTable
 
 
@@ -62,7 +62,7 @@ class DetailView(generic.TemplateView):
 
 
 class ExecuteView(forms.ModalFormView):
-    form_class = ExecuteForm
+    form_class = mistral_forms.ExecuteForm
     template_name = 'mistral/workflows/execute.html'
     success_url = reverse_lazy("horizon:mistral:executions:index")
 
@@ -75,3 +75,39 @@ class ExecuteView(forms.ModalFormView):
 
     def get_initial(self, **kwargs):
         return {'workflow_name': self.kwargs['workflow_name']}
+
+
+class SelectDefinitionView(forms.ModalFormView):
+    template_name = 'mistral/workflows/select_definition.html'
+    modal_header = _("Select Definition")
+    form_id = "select_definition"
+    form_class = mistral_forms.DefinitionForm
+    submit_label = _("Next")
+    submit_url = reverse_lazy("horizon:mistral:workflows:select_definition")
+    success_url = reverse_lazy('horizon:mistral:workflows:create')
+    page_title = _("Select Definition")
+
+    def get_form_kwargs(self):
+        kwargs = super(SelectDefinitionView, self).get_form_kwargs()
+        kwargs['next_view'] = CreateView
+
+        return kwargs
+
+
+class CreateView(forms.ModalFormView):
+    template_name = 'mistral/workflows/create.html'
+    modal_header = _("Create Workflow")
+    form_id = "create_workflow"
+    form_class = mistral_forms.CreateForm
+    submit_label = _("Create")
+    submit_url = reverse_lazy("horizon:mistral:workflows:create")
+    success_url = reverse_lazy('horizon:mistral:workflows:index')
+    page_title = _("Create Workflow")
+
+    def get_initial(self):
+        initial = {}
+
+        if 'definition' in self.kwargs:
+            initial['definition'] = self.kwargs['definition']
+
+        return initial
