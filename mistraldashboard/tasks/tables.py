@@ -24,7 +24,10 @@ from mistraldashboard.default.utils import prettyprint
 
 
 class TaskTable(tables.DataTable):
-    id = tables.Column("id", verbose_name=_("ID"))
+    id = tables.Column(
+        "id",
+        verbose_name=_("ID"),
+        link="horizon:mistral:tasks:result")
     name = tables.Column("name", verbose_name=_("Name"))
 
     parameters = tables.Column(

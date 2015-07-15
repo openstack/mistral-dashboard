@@ -14,10 +14,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
+from django.views import generic
+
+from horizon import exceptions
 from horizon import tables
 
 from mistraldashboard import api
 from mistraldashboard.tasks.tables import TaskTable
+
+
+class ResultView(generic.TemplateView):
+    template_name = 'mistral/tasks/result.html'
+    page_title = _("Task Result")
+
+    def get_context_data(self, **kwargs):
+        context = super(ResultView, self).get_context_data(**kwargs)
+        task = self.get_data(self.request, **kwargs)
+        context['result'] = task.result
+        return context
+
+    def get_data(self, request, **kwargs):
+        try:
+            task_id = kwargs['task_id']
+            task = api.task_get(request, task_id)
+        except Exception:
+            msg = _('Unable to get task "%s".') % task_id
+            redirect = reverse('horizon:mistral:tasks:index')
+            exceptions.handle(self.request, msg, redirect=redirect)
+
+        return task
 
 
 class IndexView(tables.DataTableView):

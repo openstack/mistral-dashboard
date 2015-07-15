@@ -67,6 +67,15 @@ def task_list(request, execution_id=None):
     return mistralclient(request).tasks.list(execution_id)
 
 
+def task_get(request, task_id=None):
+    """Get specific task.
+
+    :param task_id: Task ID
+    """
+
+    return mistralclient(request).tasks.get(task_id)
+
+
 @handle_errors(_("Unable to retrieve workflows."), [])
 def workflow_list(request):
     """Returns all workflows."""
