@@ -15,9 +15,12 @@
 # limitations under the License.
 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ungettext_lazy
 
 from horizon import tables
 from horizon.utils import filters
+
+from mistraldashboard import api
 
 
 class CreateWorkflow(tables.LinkAction):
@@ -26,6 +29,27 @@ class CreateWorkflow(tables.LinkAction):
     url = "horizon:mistral:workflows:select_definition"
     classes = ("ajax-modal",)
     icon = "plus"
+
+
+class DeleteWorkflow(tables.DeleteAction):
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            u"Delete Workflow",
+            u"Delete Workflows",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            u"Deleted Workflow",
+            u"Deleted Workflows",
+            count
+        )
+
+    def delete(self, request, workflow_name):
+        api.workflow_delete(request, workflow_name)
 
 
 class ExecuteWorkflow(tables.LinkAction):
@@ -79,5 +103,5 @@ class WorkflowsTable(tables.DataTable):
     class Meta(object):
         name = "workflows"
         verbose_name = _("Workflows")
-        table_actions = (CreateWorkflow,)
-        row_actions = (ExecuteWorkflow,)
+        table_actions = (CreateWorkflow, DeleteWorkflow)
+        row_actions = (ExecuteWorkflow, DeleteWorkflow)
