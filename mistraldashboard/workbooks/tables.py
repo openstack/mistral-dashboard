@@ -15,9 +15,12 @@
 # limitations under the License.
 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ungettext_lazy
 
 from horizon import tables
 from horizon.utils import filters
+
+from mistraldashboard import api
 
 
 class CreateWorkbook(tables.LinkAction):
@@ -26,6 +29,27 @@ class CreateWorkbook(tables.LinkAction):
     url = "horizon:mistral:workbooks:select_definition"
     classes = ("ajax-modal",)
     icon = "plus"
+
+
+class DeleteWorkbook(tables.DeleteAction):
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            u"Delete Workbook",
+            u"Delete Workbooks",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            u"Deleted Workbook",
+            u"Deleted Workbooks",
+            count
+        )
+
+    def delete(self, request, workbook_name):
+        api.workbook_delete(request, workbook_name)
 
 
 def tags_to_string(workbook):
@@ -62,4 +86,5 @@ class WorkbooksTable(tables.DataTable):
     class Meta:
         name = "workbooks"
         verbose_name = _("Workbooks")
-        table_actions = (CreateWorkbook,)
+        table_actions = (CreateWorkbook, DeleteWorkbook)
+        row_actions = (DeleteWorkbook,)
