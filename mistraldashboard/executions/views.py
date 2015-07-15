@@ -34,4 +34,4 @@ class TaskView(tables.DataTableView):
     template_name = 'mistral/executions/index.html'
 
     def get_data(self):
-        return api.task_list(self.kwargs['execution_id'])
+        return api.task_list(self.request, self.kwargs['execution_id'])
