@@ -110,6 +110,15 @@ def workflow_delete(request, workflow_name):
     return mistralclient(request).workflows.delete(workflow_name)
 
 
+def workflow_update(request, workflows_definition):
+    """Update workflow.
+
+    :param workflows_definition: Workflows definition
+    """
+
+    return mistralclient(request).workflows.update(workflows_definition)
+
+
 @handle_errors(_("Unable to retrieve workbooks."), [])
 def workbook_list(request):
     """Returns all workbooks."""

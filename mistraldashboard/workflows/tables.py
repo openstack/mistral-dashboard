@@ -31,6 +31,14 @@ class CreateWorkflow(tables.LinkAction):
     icon = "plus"
 
 
+class UpdateWorkflow(tables.LinkAction):
+    name = "update"
+    verbose_name = _("Update Workflow")
+    url = "horizon:mistral:workflows:change_definition"
+    classes = ("ajax-modal",)
+    icon = "pencil"
+
+
 class DeleteWorkflow(tables.DeleteAction):
     @staticmethod
     def action_present(count):
@@ -103,5 +111,5 @@ class WorkflowsTable(tables.DataTable):
     class Meta(object):
         name = "workflows"
         verbose_name = _("Workflows")
-        table_actions = (CreateWorkflow, DeleteWorkflow)
+        table_actions = (CreateWorkflow, UpdateWorkflow, DeleteWorkflow)
         row_actions = (ExecuteWorkflow, DeleteWorkflow)

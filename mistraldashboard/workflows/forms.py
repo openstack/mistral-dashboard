@@ -143,3 +143,18 @@ class CreateForm(forms.SelfHandlingForm):
             msg = _('Failed to create workflow.')
             redirect = reverse('horizon:mistral:workflows:index')
             exceptions.handle(request, msg, redirect=redirect)
+
+
+class UpdateForm(CreateForm):
+
+    def handle(self, request, data):
+        try:
+            api.workflow_update(request, data['definition'])
+            msg = _('Successfully updated workflow.')
+            messages.success(request, msg)
+
+            return True
+        except Exception:
+            msg = _('Failed to update workflow.')
+            redirect = reverse('horizon:mistral:workflows:index')
+            exceptions.handle(request, msg, redirect=redirect)
