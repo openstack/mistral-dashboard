@@ -169,3 +169,12 @@ def workbook_delete(request, workbook_definition):
     """
 
     return mistralclient(request).workbooks.delete(workbook_definition)
+
+
+def workbook_update(request, workbook_definition):
+    """Update workbook.
+
+    :param workbook_definition: Workbook definition
+    """
+
+    return mistralclient(request).workbooks.update(workbook_definition)

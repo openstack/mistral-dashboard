@@ -27,6 +27,10 @@ urlpatterns = patterns(
     url(r'^select_definition$',
         views.SelectDefinitionView.as_view(),
         name='select_definition'),
+    url(r'^change_definition$',
+        views.ChangeDefinitionView.as_view(),
+        name='change_definition'),
     url(r'^create$', views.CreateView.as_view(), name='create'),
+    url(r'^update$', views.UpdateView.as_view(), name='update'),
     url(WORKBOOKS % 'detail', views.DetailView.as_view(), name='detail'),
 )

@@ -109,3 +109,18 @@ class CreateForm(forms.SelfHandlingForm):
             msg = _('Failed to create workbook.')
             redirect = reverse('horizon:mistral:workbooks:index')
             exceptions.handle(request, msg, redirect=redirect)
+
+
+class UpdateForm(CreateForm):
+
+    def handle(self, request, data):
+        try:
+            api.workbook_update(request, data['definition'])
+            msg = _('Successfully updated workbook.')
+            messages.success(request, msg)
+
+            return True
+        except Exception:
+            msg = _('Failed to update workbook.')
+            redirect = reverse('horizon:mistral:workbooks:index')
+            exceptions.handle(request, msg, redirect=redirect)
