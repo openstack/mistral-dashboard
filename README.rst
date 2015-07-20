@@ -14,6 +14,12 @@ The installation folder of Mistral Dashboard will be referred to as <mistral-das
 
 The following should get you started::
 
+Clone the repository into your local OpenStack directory:
+
+    $ git clone https://github.com/openstack/mistral-dashboard.git
+
+Install mistral-dashboard
+
     $ sudo pip install -e <mistral-dashboard>
 
 Or if you're planning to run Horizon server in a virtual environment (see below):
