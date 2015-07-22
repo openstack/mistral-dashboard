@@ -15,12 +15,35 @@
 # limitations under the License.
 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ungettext_lazy
 
 from horizon import tables
 
+from mistraldashboard import api
 from mistraldashboard.default.utils import humantime
 from mistraldashboard.default.utils import label
 from mistraldashboard.default.utils import prettyprint
+
+
+class DeleteExecution(tables.DeleteAction):
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            u"Delete Execution",
+            u"Delete Executions",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            u"Deleted Execution",
+            u"Deleted Executions",
+            count
+        )
+
+    def delete(self, request, execution_name):
+        api.execution_delete(request, execution_name)
 
 
 class ExecutionsTable(tables.DataTable):
@@ -37,6 +60,7 @@ class ExecutionsTable(tables.DataTable):
         verbose_name=_("Input"),
         filters=[prettyprint]
     )
+
     output = tables.Column(
         "output",
         verbose_name=_("Output"),
@@ -54,11 +78,16 @@ class ExecutionsTable(tables.DataTable):
         filters=[humantime]
     )
 
-    state = tables.Column("state", verbose_name=_("State"), filters=[label])
+    state = tables.Column(
+        "state",
+        verbose_name=_("State"),
+        filters=[label])
 
     class Meta(object):
         name = "executions"
         verbose_name = _("Executions")
+        table_actions = (DeleteExecution,)
+        row_actions = (DeleteExecution,)
 
 
 class TaskTable(tables.DataTable):

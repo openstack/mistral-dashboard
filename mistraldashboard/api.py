@@ -57,6 +57,15 @@ def execution_list(request):
     return mistralclient(request).executions.list()
 
 
+def execution_delete(request, execution_name):
+    """Delete execution.
+
+    :param execution_name: Execution name
+    """
+
+    return mistralclient(request).executions.delete(execution_name)
+
+
 @handle_errors(_("Unable to retrieve tasks."), [])
 def task_list(request, execution_id=None):
     """Returns all tasks.
