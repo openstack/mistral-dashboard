@@ -38,3 +38,5 @@ nosetests.xml
 .pydevproject
 .idea
 .DS_Store
+*.lock
+mistraldashboard/test/.secret_key_store
