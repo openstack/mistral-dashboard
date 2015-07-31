@@ -187,3 +187,10 @@ def workbook_update(request, workbook_definition):
     """
 
     return mistralclient(request).workbooks.update(workbook_definition)
+
+
+@handle_errors(_("Unable to retrieve actions."), [])
+def action_list(request):
+    """Returns all actions."""
+
+    return mistralclient(request).actions.list()

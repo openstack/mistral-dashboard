@@ -1,4 +1,4 @@
-# Copyright 2014 - StackStorm, Inc.
+# Copyright 2015 Huawei Technologies Co., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,23 +16,12 @@ from django.utils.translation import ugettext_lazy as _
 
 import horizon
 
-from mistraldashboard.default.panel import Default
+from mistraldashboard import dashboard
 
 
-class MistralDashboard(horizon.Dashboard):
-    name = _("Mistral")
-    slug = "mistral"
-    panels = (
-        'default',
-        'workbooks',
-        'workflows',
-        'executions',
-        'tasks',
-        'actions'
-    )
-    default_panel = 'default'
-    roles = ('admin',)
+class Actions(horizon.Panel):
+    name = _("Actions")
+    slug = 'actions'
 
 
-horizon.register(MistralDashboard)
-MistralDashboard.register(Default)
+dashboard.MistralDashboard.register(Actions)

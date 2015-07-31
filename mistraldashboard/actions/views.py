@@ -1,4 +1,4 @@
-# Copyright 2014 - StackStorm, Inc.
+# Copyright 2015 Huawei Technologies Co., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,27 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.utils.translation import ugettext_lazy as _
+from horizon import tables
 
-import horizon
-
-from mistraldashboard.default.panel import Default
-
-
-class MistralDashboard(horizon.Dashboard):
-    name = _("Mistral")
-    slug = "mistral"
-    panels = (
-        'default',
-        'workbooks',
-        'workflows',
-        'executions',
-        'tasks',
-        'actions'
-    )
-    default_panel = 'default'
-    roles = ('admin',)
+from mistraldashboard.actions.tables import ActionsTable
+from mistraldashboard import api
 
 
-horizon.register(MistralDashboard)
-MistralDashboard.register(Default)
+class IndexView(tables.DataTableView):
+    table_class = ActionsTable
+    template_name = 'mistral/actions/index.html'
+
+    def get_data(self):
+        return api.action_list(self.request)
