@@ -17,8 +17,10 @@ from django.conf.urls import url  # noqa
 
 from mistraldashboard.actions import views
 
+ACTIONS = r'^(?P<action_name>[^/]+)/%s$'
 
 urlpatterns = patterns(
     '',
     url(r'^$', views.IndexView.as_view(), name='index'),
+    url(ACTIONS % 'detail', views.DetailView.as_view(), name='detail'),
 )

@@ -194,3 +194,12 @@ def action_list(request):
     """Returns all actions."""
 
     return mistralclient(request).actions.list()
+
+
+def action_get(request, action_name):
+    """Get specific action.
+
+    :param action_name: Action name
+    """
+
+    return mistralclient(request).actions.get(action_name)
