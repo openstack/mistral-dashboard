@@ -31,6 +31,14 @@ class CreateWorkbook(tables.LinkAction):
     icon = "plus"
 
 
+class UpdateWorkbook(tables.LinkAction):
+    name = "update"
+    verbose_name = _("Update Workbook")
+    url = "horizon:mistral:workbooks:change_definition"
+    classes = ("ajax-modal",)
+    icon = "pencil"
+
+
 class DeleteWorkbook(tables.DeleteAction):
     @staticmethod
     def action_present(count):
@@ -86,5 +94,5 @@ class WorkbooksTable(tables.DataTable):
     class Meta(object):
         name = "workbooks"
         verbose_name = _("Workbooks")
-        table_actions = (CreateWorkbook, DeleteWorkbook)
+        table_actions = (CreateWorkbook, UpdateWorkbook, DeleteWorkbook)
         row_actions = (DeleteWorkbook,)
