@@ -57,6 +57,15 @@ def execution_list(request):
     return mistralclient(request).executions.list()
 
 
+def execution_get(request, execution_id):
+    """Get specific execution.
+
+    :param execution_id: Execution ID
+    """
+
+    return mistralclient(request).executions.get(execution_id)
+
+
 def execution_delete(request, execution_name):
     """Delete execution.
 
