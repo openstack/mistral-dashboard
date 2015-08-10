@@ -12,9 +12,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import os
-
-from django.utils import unittest
 from openstack_dashboard.test import helpers
 
 from mistraldashboard.test.test_data import utils
@@ -29,12 +26,7 @@ class MistralTestsMixin(object):
         super(MistralTestsMixin, self)._setup_test_data()
         utils.load_test_data(self)
 
-    def add_panel_mocks(self):
-        pass
 
-
-@unittest.skipIf(os.environ.get('SKIP_UNITTESTS', False),
-                 "The SKIP_UNITTESTS env variable is set.")
 class TestCase(MistralTestsMixin, helpers.TestCase):
     pass
 
