@@ -21,6 +21,7 @@ from mistraldashboard.test import helpers as test
 
 INDEX_URL = reverse('horizon:mistral:workflows:index')
 CREATE_URL = reverse('horizon:mistral:workflows:create')
+UPDATE_URL = reverse('horizon:mistral:workflows:update')
 
 
 class WorkflowsTest(test.TestCase):
@@ -76,3 +77,69 @@ class WorkflowsTest(test.TestCase):
             mock.ANY,
             workflow.definition
         )
+
+    def test_update_get(self):
+        res = self.client.get(UPDATE_URL)
+        self.assertTemplateUsed(res, 'mistral/workflows/update.html')
+
+    def test_update_post(self):
+        workflow = self.mistralclient_workflows.first()
+
+        url = reverse('horizon:mistral:workflows:change_definition')
+        res = self.client.get(url)
+        self.assertTemplateUsed(
+            res,
+            'mistral/workflows/select_definition.html'
+        )
+        form_data = {
+            'definition_source': 'raw',
+            'definition_data': workflow.definition
+        }
+        with contextlib.nested(
+            mock.patch('mistraldashboard.api.workflow_validate',
+                       return_value={'valid': True}),) as (mocked_validate,):
+            res = self.client.post(url, form_data)
+
+        self.assertTemplateUsed(res, 'mistral/workflows/update.html')
+        mocked_validate.assert_called_once_with(
+            mock.ANY,
+            workflow.definition
+        )
+
+        form_data = {
+            'definition': workflow.definition
+        }
+        with contextlib.nested(
+            mock.patch('mistraldashboard.api.workflow_update',
+                       return_value=workflow),) as (mocked_update,):
+            res = self.client.post(UPDATE_URL, form_data)
+        self.assertNoFormErrors(res)
+        self.assertEqual(res.status_code, 302)
+        self.assertRedirectsNoFollow(res, INDEX_URL)
+
+        mocked_update.assert_called_once_with(
+            mock.ANY,
+            workflow.definition
+        )
+
+    def test_delete_ok(self):
+        workflows = self.mistralclient_workflows.list()
+
+        data = {'action': 'workflows__delete',
+                'object_ids': [workflows[0].name]}
+
+        with contextlib.nested(
+            mock.patch('mistraldashboard.api.workflow_list',
+                       return_value=workflows),
+            mock.patch('mistraldashboard.api.workflow_delete',
+                       return_value=None),) as (
+                mocked_list, mocked_delete):
+
+            res = self.client.post(INDEX_URL, data)
+
+        mocked_delete.assert_called_once_with(
+            mock.ANY,
+            workflows[0].name
+        )
+        self.assertNoFormErrors(res)
+        self.assertRedirectsNoFollow(res, INDEX_URL)
