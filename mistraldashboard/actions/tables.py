@@ -26,6 +26,14 @@ class CreateAction(tables.LinkAction):
     icon = "plus"
 
 
+class UpdateAction(tables.LinkAction):
+    name = "update"
+    verbose_name = _("Update Action")
+    url = "horizon:mistral:actions:update"
+    classes = ("ajax-modal",)
+    icon = "pencil"
+
+
 def tags_to_string(action):
     return ', '.join(action.tags) if action.tags else None
 
@@ -72,4 +80,4 @@ class ActionsTable(tables.DataTable):
     class Meta(object):
         name = "actions"
         verbose_name = _("Actions")
-        table_actions = (CreateAction,)
+        table_actions = (CreateAction, UpdateAction)

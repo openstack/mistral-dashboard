@@ -212,3 +212,12 @@ def action_create(request, action_definition):
     """
 
     return mistralclient(request).actions.create(action_definition)
+
+
+def action_update(request, action_definition):
+    """Update action.
+
+    :param action_definition: Action definition
+    """
+
+    return mistralclient(request).actions.update(action_definition)

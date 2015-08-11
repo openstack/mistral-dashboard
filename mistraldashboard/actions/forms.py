@@ -78,3 +78,61 @@ class CreateForm(forms.SelfHandlingForm):
             msg = _('Failed to create action.')
             redirect = reverse('horizon:mistral:actions:index')
             exceptions.handle(request, msg, redirect=redirect)
+
+
+class UpdateForm(forms.SelfHandlingForm):
+    definition_source = forms.ChoiceField(
+        label=_('Definition Source'),
+        choices=[('file', _('File')),
+                 ('raw', _('Direct Input'))],
+        widget=forms.Select(
+            attrs={'class': 'switchable',
+                   'data-slug': 'definitionsource'})
+    )
+    definition_upload = forms.FileField(
+        label=_('Definition File'),
+        help_text=_('A local definition to upload.'),
+        widget=forms.FileInput(
+            attrs={'class': 'switched',
+                   'data-switch-on': 'definitionsource',
+                   'data-definitionsource-file': _('Definition File')}
+        ),
+        required=False
+    )
+    definition_data = forms.CharField(
+        label=_('Definition Data'),
+        help_text=_('The raw contents of the definition.'),
+        widget=forms.widgets.Textarea(
+            attrs={'class': 'switched',
+                   'data-switch-on': 'definitionsource',
+                   'data-definitionsource-raw': _('Definition Data'),
+                   'rows': 4}
+        ),
+        required=False
+    )
+
+    def clean(self):
+        cleaned_data = super(UpdateForm, self).clean()
+
+        if cleaned_data.get('definition_upload'):
+            files = self.request.FILES
+            cleaned_data['definition'] = files['definition_upload'].read()
+        elif cleaned_data.get('definition_data'):
+            cleaned_data['definition'] = cleaned_data['definition_data']
+        else:
+            raise forms.ValidationError(
+                _('You must specify the definition source.'))
+
+        return cleaned_data
+
+    def handle(self, request, data):
+        try:
+            api.action_update(request, data['definition'])
+            msg = _('Successfully updated action.')
+            messages.success(request, msg)
+
+            return True
+        except Exception:
+            msg = _('Failed to update action.')
+            redirect = reverse('horizon:mistral:actions:index')
+            exceptions.handle(request, msg, redirect=redirect)
