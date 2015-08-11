@@ -18,6 +18,14 @@ from horizon import tables
 from horizon.utils import filters
 
 
+class CreateAction(tables.LinkAction):
+    name = "create"
+    verbose_name = _("Create Action")
+    url = "horizon:mistral:actions:create"
+    classes = ("ajax-modal",)
+    icon = "plus"
+
+
 def tags_to_string(action):
     return ', '.join(action.tags) if action.tags else None
 
@@ -64,3 +72,4 @@ class ActionsTable(tables.DataTable):
     class Meta(object):
         name = "actions"
         verbose_name = _("Actions")
+        table_actions = (CreateAction,)

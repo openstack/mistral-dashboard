@@ -13,14 +13,28 @@
 # limitations under the License.
 
 from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic
 
 from horizon import exceptions
+from horizon import forms
 from horizon import tables
 
+from mistraldashboard.actions import forms as mistral_forms
 from mistraldashboard.actions.tables import ActionsTable
 from mistraldashboard import api
+
+
+class CreateView(forms.ModalFormView):
+    template_name = 'mistral/actions/create.html'
+    modal_header = _("Create Action")
+    form_id = "create_action"
+    form_class = mistral_forms.CreateForm
+    submit_label = _("Create")
+    submit_url = reverse_lazy("horizon:mistral:actions:create")
+    success_url = reverse_lazy('horizon:mistral:actions:index')
+    page_title = _("Create Action")
 
 
 class IndexView(tables.DataTableView):
