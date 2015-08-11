@@ -221,3 +221,12 @@ def action_update(request, action_definition):
     """
 
     return mistralclient(request).actions.update(action_definition)
+
+
+def action_delete(request, action_name):
+    """Delete action.
+
+    :param action_name: Action name
+    """
+
+    return mistralclient(request).actions.delete(action_name)

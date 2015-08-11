@@ -13,9 +13,12 @@
 # limitations under the License.
 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ungettext_lazy
 
 from horizon import tables
 from horizon.utils import filters
+
+from mistraldashboard import api
 
 
 class CreateAction(tables.LinkAction):
@@ -32,6 +35,33 @@ class UpdateAction(tables.LinkAction):
     url = "horizon:mistral:actions:update"
     classes = ("ajax-modal",)
     icon = "pencil"
+
+
+class DeleteAction(tables.DeleteAction):
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            u"Delete Action",
+            u"Delete Actions",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            u"Deleted Action",
+            u"Deleted Actions",
+            count
+        )
+
+    def delete(self, request, action_name):
+        api.action_delete(request, action_name)
+
+    def allowed(self, request, action=None):
+        if action:
+            return not action.is_system
+        else:
+            return True
 
 
 def tags_to_string(action):
@@ -80,4 +110,5 @@ class ActionsTable(tables.DataTable):
     class Meta(object):
         name = "actions"
         verbose_name = _("Actions")
-        table_actions = (CreateAction, UpdateAction)
+        table_actions = (CreateAction, UpdateAction, DeleteAction)
+        row_actions = (DeleteAction,)
