@@ -30,10 +30,9 @@ class TaskTable(tables.DataTable):
         link="horizon:mistral:tasks:result")
     name = tables.Column("name", verbose_name=_("Name"))
 
-    parameters = tables.Column(
-        "parameters",
-        verbose_name=_("Parameters"),
-        filters=[prettyprint]
+    workflow_execution_id = tables.Column(
+        "workflow_execution_id",
+        verbose_name=_("Workflow Execution ID"),
     )
     output = tables.Column(
         "output",
