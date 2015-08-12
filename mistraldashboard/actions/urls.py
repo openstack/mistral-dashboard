@@ -24,4 +24,5 @@ urlpatterns = patterns(
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(ACTIONS % 'detail', views.DetailView.as_view(), name='detail'),
     url(r'^create$', views.CreateView.as_view(), name='create'),
+    url(r'^update$', views.UpdateView.as_view(), name='update'),
 )

@@ -37,6 +37,17 @@ class CreateView(forms.ModalFormView):
     page_title = _("Create Action")
 
 
+class UpdateView(forms.ModalFormView):
+    template_name = 'mistral/actions/update.html'
+    modal_header = _("Update Action")
+    form_id = "update_action"
+    form_class = mistral_forms.UpdateForm
+    submit_label = _("Update")
+    submit_url = reverse_lazy("horizon:mistral:actions:update")
+    success_url = reverse_lazy('horizon:mistral:actions:index')
+    page_title = _("Update Action")
+
+
 class IndexView(tables.DataTableView):
     table_class = ActionsTable
     template_name = 'mistral/actions/index.html'
