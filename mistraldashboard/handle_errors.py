@@ -38,7 +38,8 @@ def handle_errors(error_message, error_default=None, request_arg=None):
     """
     def decorator(func):
         if request_arg is None:
-            if 'request' not in inspect.getargspec(func).args:
+            _request_arg = 'request'
+            if _request_arg not in inspect.getargspec(func).args:
                 raise RuntimeError(
                     "The handle_errors decorator requires 'request' as "
                     "an argument of the function or method being decorated")
@@ -58,7 +59,8 @@ def handle_errors(error_message, error_default=None, request_arg=None):
             try:
                 return func(*args, **kwargs)
             except Exception:
-                request = args[_request_arg]
+                callargs = inspect.getcallargs(func, *args, **kwargs)
+                request = callargs[_request_arg]
                 horizon.exceptions.handle(request, _error_message,
                                           ignore=_error_ignore,
                                           redirect=_error_redirect)
