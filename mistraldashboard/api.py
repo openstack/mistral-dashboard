@@ -203,3 +203,12 @@ def action_get(request, action_name):
     """
 
     return mistralclient(request).actions.get(action_name)
+
+
+def action_create(request, action_definition):
+    """Create action.
+
+    :param action_definition: Action definition
+    """
+
+    return mistralclient(request).actions.create(action_definition)
