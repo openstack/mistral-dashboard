@@ -180,13 +180,13 @@ def workbook_validate(request, workbook_definition):
     return mistralclient(request).workbooks.validate(workbook_definition)
 
 
-def workbook_delete(request, workbook_definition):
+def workbook_delete(request, workbook_name):
     """Delete workbook.
 
-    :param workbook_definition: Workbook definition
+    :param workbook_name: Workbook name
     """
 
-    return mistralclient(request).workbooks.delete(workbook_definition)
+    return mistralclient(request).workbooks.delete(workbook_name)
 
 
 def workbook_update(request, workbook_definition):
