@@ -33,6 +33,30 @@ class ResultView(generic.TemplateView):
         context = super(ResultView, self).get_context_data(**kwargs)
         task = self.get_data(self.request, **kwargs)
         context['result'] = task.result
+
+        return context
+
+    def get_data(self, request, **kwargs):
+        try:
+            task_id = kwargs['task_id']
+            task = api.task_get(request, task_id)
+        except Exception:
+            msg = _('Unable to get task "%s".') % task_id
+            redirect = reverse('horizon:mistral:tasks:index')
+            exceptions.handle(self.request, msg, redirect=redirect)
+
+        return task
+
+
+class OverviewView(generic.TemplateView):
+    template_name = 'mistral/tasks/detail.html'
+    page_title = _("Task Details")
+
+    def get_context_data(self, **kwargs):
+        context = super(OverviewView, self).get_context_data(**kwargs)
+        task = self.get_data(self.request, **kwargs)
+        context['task'] = task
+
         return context
 
     def get_data(self, request, **kwargs):
@@ -52,4 +76,5 @@ class IndexView(tables.DataTableView):
     template_name = 'mistral/tasks/index.html'
 
     def get_data(self):
+
         return api.task_list(self.request)
