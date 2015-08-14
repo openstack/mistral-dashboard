@@ -50,10 +50,17 @@ class ExecutionsTable(tables.DataTable):
     id = tables.Column(
         "id",
         verbose_name=_("ID"),
-        link="horizon:mistral:executions:tasks"
+        link="horizon:mistral:executions:detail"
     )
 
     workflow_name = tables.Column("workflow_name", verbose_name=_("Workflow"))
+
+    task = tables.Column(
+        "task",
+        verbose_name=_("Task"),
+        empty_value=_("View"),
+        link="horizon:mistral:executions:tasks"
+    )
 
     input = tables.Column(
         "input",
