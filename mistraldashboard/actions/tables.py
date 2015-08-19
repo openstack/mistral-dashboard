@@ -111,4 +111,4 @@ class ActionsTable(tables.DataTable):
         name = "actions"
         verbose_name = _("Actions")
         table_actions = (CreateAction, UpdateAction, DeleteAction)
-        row_actions = (DeleteAction,)
+        row_actions = (DeleteAction, tables.FilterAction)

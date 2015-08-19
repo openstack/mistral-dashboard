@@ -55,3 +55,4 @@ class TaskTable(tables.DataTable):
     class Meta(object):
         name = "tasks"
         verbose_name = _("Tasks")
+        table_actions = (tables.FilterAction,)
