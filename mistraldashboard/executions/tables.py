@@ -22,7 +22,6 @@ from horizon import tables
 from mistraldashboard import api
 from mistraldashboard.default.utils import humantime
 from mistraldashboard.default.utils import label
-from mistraldashboard.default.utils import prettyprint
 
 
 class DeleteExecution(tables.DeleteAction):
@@ -63,15 +62,19 @@ class ExecutionsTable(tables.DataTable):
     )
 
     input = tables.Column(
-        "input",
+        "",
         verbose_name=_("Input"),
-        filters=[prettyprint]
+        empty_value=_("View"),
+        link="horizon:mistral:executions:input",
+        link_classes=("ajax-modal",)
     )
 
     output = tables.Column(
-        "output",
+        "",
         verbose_name=_("Output"),
-        filters=[prettyprint]
+        empty_value=_("View"),
+        link="horizon:mistral:executions:output",
+        link_classes=("ajax-modal",)
     )
 
     created_at = tables.Column(
