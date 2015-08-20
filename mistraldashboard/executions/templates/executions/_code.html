@@ -1,20 +1,22 @@
 {% extends "horizon/common/_modal.html" %}
-{% block content %}
-    <div class="modal-body clearfix">
-        {% block modal-body %}
-            <div class="row">
-                <div class="col-sm-12">
-                    {{ io }}
-                </div>
-            </div>
-        {% endblock %}
-    </div>
-    <div class="modal-footer">
-        {% block modal-footer %}
-            <a href="{% block cancel_url %}{{ cancel_url }}{% endblock %}"
-               class="btn btn-default cancel">
-                {{ cancel_label }}
-            </a>
-        {% endblock %}
+
+{% block modal-header %}
+    {{ io.name }}
+{% endblock %}
+
+{% block modal-body %}
+    <div class="row">
+        <div class="col-sm-12">
+            {{ io.value }}
+        </div>
     </div>
 {% endblock %}
+
+{% block modal-footer %}
+    <a href="{% block cancel_url %}{{ cancel_url }}{% endblock %}"
+       class="btn btn-default cancel">
+        {{ cancel_label }}
+    </a>
+{% endblock %}
+
+

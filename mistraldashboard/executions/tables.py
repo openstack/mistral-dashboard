@@ -56,7 +56,7 @@ class ExecutionsTable(tables.DataTable):
 
     task = tables.Column(
         "task",
-        verbose_name=_("Task"),
+        verbose_name=_("Tasks"),
         empty_value=_("View"),
         link="horizon:mistral:executions:tasks"
     )

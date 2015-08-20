@@ -86,10 +86,15 @@ class CodeView(forms.ModalFormView):
         column = self.kwargs['column']
         execution = get_execution_data(self.request,
                                        self.kwargs['execution_id'])
+        io = {}
+
         if column == 'input':
-            io = execution.input = prettyprint(execution.input)
+            io['name'] = _('Input')
+            io['value'] = execution.input = prettyprint(execution.input)
         elif column == 'output':
-            io = execution.output = prettyprint(execution.output)
+            io['name'] = _('Output')
+            io['value'] = execution.output = prettyprint(execution.output)
 
         context['io'] = io
+
         return context
