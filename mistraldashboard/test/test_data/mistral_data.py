@@ -12,6 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from mistralclient.api.v2 import actions
 from mistralclient.api.v2 import executions
 from mistralclient.api.v2 import tasks
 from mistralclient.api.v2 import workbooks
@@ -56,6 +57,20 @@ flow:
 
 
 def data(TEST):
+    # MistralActions
+    TEST.mistralclient_actions = test_data_utils.TestDataContainer()
+    action_1 = actions.Action(
+        actions.ActionManager(None),
+        {'name': 'a',
+         'is_system': True,
+         'input': 'param1',
+         'description': 'my cool action',
+         'tags': ['test'],
+         'created_at': '1',
+         'updated_at': '1'
+         })
+    TEST.mistralclient_actions.add(action_1)
+
     # MistralExecutions
     TEST.mistralclient_executions = test_data_utils.TestDataContainer()
     execution_1 = executions.Execution(
