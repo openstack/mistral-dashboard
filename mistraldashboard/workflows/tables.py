@@ -111,5 +111,10 @@ class WorkflowsTable(tables.DataTable):
     class Meta(object):
         name = "workflows"
         verbose_name = _("Workflows")
-        table_actions = (CreateWorkflow, UpdateWorkflow, DeleteWorkflow)
+        table_actions = (
+            CreateWorkflow,
+            UpdateWorkflow,
+            DeleteWorkflow,
+            tables.FilterAction
+        )
         row_actions = (ExecuteWorkflow, DeleteWorkflow)

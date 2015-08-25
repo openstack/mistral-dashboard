@@ -94,5 +94,10 @@ class WorkbooksTable(tables.DataTable):
     class Meta(object):
         name = "workbooks"
         verbose_name = _("Workbooks")
-        table_actions = (CreateWorkbook, UpdateWorkbook, DeleteWorkbook)
+        table_actions = (
+            CreateWorkbook,
+            UpdateWorkbook,
+            DeleteWorkbook,
+            tables.FilterAction
+        )
         row_actions = (DeleteWorkbook,)

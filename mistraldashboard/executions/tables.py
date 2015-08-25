@@ -96,7 +96,7 @@ class ExecutionsTable(tables.DataTable):
     class Meta(object):
         name = "executions"
         verbose_name = _("Executions")
-        table_actions = (DeleteExecution,)
+        table_actions = (DeleteExecution, tables.FilterAction)
         row_actions = (DeleteExecution,)
 
 
