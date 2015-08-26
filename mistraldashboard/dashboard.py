@@ -20,7 +20,7 @@ from mistraldashboard.default.panel import Default
 
 
 class MistralDashboard(horizon.Dashboard):
-    name = _("Mistral")
+    name = _("Workflow")
     slug = "mistral"
     panels = (
         'default',
