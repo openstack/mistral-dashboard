@@ -12,7 +12,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from mistraldashboard.handle_errors import handle_errors
 from mistraldashboard.test import helpers as test
 
 
@@ -20,20 +19,3 @@ class ErrorHandleTests(test.TestCase):
 
     class CommonException(Exception):
         pass
-
-    def test_args_request_view_error_handle(self):
-
-        @handle_errors('Error message')
-        def common_view(request):
-            raise self.CommonException()
-
-        self.assertRaises(self.CommonException, common_view, {})
-
-    def test_kwargs_request_view_error_handle(self):
-
-        @handle_errors('Error message')
-        def common_view(slf, request, context=None):
-            raise self.CommonException()
-
-        with self.assertRaises(self.CommonException):
-            common_view(slf=None, request={})
