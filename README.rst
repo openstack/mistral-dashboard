@@ -53,17 +53,8 @@ or run the development server (in case you have decided to use local horizon)::
     $ cd ../horizon/
     $ tox -evenv -- python manage.py runserver
 
-Debug Instructions
-==================
-**Pycharm**
+Mistral-Dashboard Debug Instructions
+------------------------------------
 
-Set PyCharm debug settings:
-
-  1. Enter debug configurations menu
-  2. Create a new Django Server configuration
-  3. Enter some port so it won't run on the default (for example - port: 4000)
-  4. On the same window click on Environment variables
-     a. Make sure you have PYTHONUNBUFFERED set as 1
-     b. Create a new pair - DJANGO_SETTINGS_MODULE : openstack_dashboard.settings
-
-You should now be able to debug and run the project using PyCharm.
+For debug instructions refer to `OpenStack Mistral Troubleshooting
+<http://docs.openstack.org/developer/mistral/developer/troubleshooting.html>`_
