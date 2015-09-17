@@ -18,21 +18,29 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic
 
+
 from horizon import exceptions
 from horizon import tables
 
 from mistraldashboard import api
+from mistraldashboard.default.utils import prettyprint
 from mistraldashboard.tasks.tables import TaskTable
 
 
-class ResultView(generic.TemplateView):
-    template_name = 'mistral/tasks/result.html'
-    page_title = _("Task Result")
+class ExecutionView(generic.TemplateView):
+    template_name = 'mistral/tasks/execution.html'
+    page_title = _("Execution Overview")
 
     def get_context_data(self, **kwargs):
-        context = super(ResultView, self).get_context_data(**kwargs)
+        context = super(ExecutionView, self).get_context_data(**kwargs)
         task = self.get_data(self.request, **kwargs)
-        context['result'] = task.result
+        execution = api.execution_get(self.request, task.workflow_execution_id)
+        execution.input = prettyprint(execution.input)
+        execution.output = prettyprint(execution.output)
+        execution.params = prettyprint(execution.params)
+
+        context['task'] = task
+        context['execution'] = execution
 
         return context
 
@@ -55,8 +63,8 @@ class OverviewView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super(OverviewView, self).get_context_data(**kwargs)
         task = self.get_data(self.request, **kwargs)
+        task.result = prettyprint(task.result)
         context['task'] = task
-
         return context
 
     def get_data(self, request, **kwargs):

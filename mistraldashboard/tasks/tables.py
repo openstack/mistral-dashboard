@@ -20,24 +20,19 @@ from horizon import tables
 
 from mistraldashboard.default.utils import humantime
 from mistraldashboard.default.utils import label
-from mistraldashboard.default.utils import prettyprint
 
 
 class TaskTable(tables.DataTable):
     id = tables.Column(
         "id",
         verbose_name=_("ID"),
-        link="horizon:mistral:tasks:result")
+        link="horizon:mistral:tasks:detail")
     name = tables.Column("name", verbose_name=_("Name"))
 
     workflow_execution_id = tables.Column(
         "workflow_execution_id",
         verbose_name=_("Workflow Execution ID"),
-    )
-    output = tables.Column(
-        "output",
-        verbose_name=_("Output"),
-        filters=[prettyprint]
+        link="horizon:mistral:tasks:execution"
     )
     created_at = tables.Column(
         "created_at",
