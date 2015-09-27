@@ -79,7 +79,7 @@ class ExecuteView(forms.ModalFormView):
 
 class SelectDefinitionView(forms.ModalFormView):
     template_name = 'mistral/workflows/select_definition.html'
-    modal_header = _("Select Definition")
+    modal_header = _("Create Workflow")
     form_id = "select_definition"
     form_class = mistral_forms.DefinitionForm
     submit_label = _("Next")
@@ -95,7 +95,7 @@ class SelectDefinitionView(forms.ModalFormView):
 
 
 class ChangeDefinitionView(SelectDefinitionView):
-    modal_header = _("Update Definition")
+    modal_header = _("Update Workflow")
     submit_url = reverse_lazy("horizon:mistral:workflows:change_definition")
     success_url = reverse_lazy('horizon:mistral:workflows:update')
     page_title = _("Update Definition")
