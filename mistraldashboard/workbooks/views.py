@@ -61,7 +61,7 @@ class DetailView(generic.TemplateView):
 
 class SelectDefinitionView(forms.ModalFormView):
     template_name = 'mistral/workbooks/select_definition.html'
-    modal_header = _("Select Definition")
+    modal_header = _("Create Workbook")
     form_id = "select_definition"
     form_class = mistral_forms.DefinitionForm
     submit_label = _("Next")
@@ -77,7 +77,7 @@ class SelectDefinitionView(forms.ModalFormView):
 
 
 class ChangeDefinitionView(SelectDefinitionView):
-    modal_header = _("Update Definition")
+    modal_header = _("Update Workbook")
     submit_url = reverse_lazy("horizon:mistral:workbooks:change_definition")
     success_url = reverse_lazy('horizon:mistral:workbooks:update')
     page_title = _("Update Definition")
