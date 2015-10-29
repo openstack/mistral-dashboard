@@ -24,7 +24,12 @@
                 <dd>{{ execution.description }}</dd>
             {% endif %}
             <dt>{% trans "Worflow Name" %}</dt>
-            <dd>{{ execution.workflow_name }}</dd>
+            <dd>
+                <a href="{{ execution.workflow_url }}"
+                   title="{{execution.workflow_name}} {% trans "overview" %}">
+                    {{ execution.workflow_name }}
+                </a>
+            </dd>
             <dt>{% trans "Updated At" %}</dt>
             <dd>{{ execution.updated_at }}</dd>
             <dt>{% trans "Params" %}</dt>

@@ -61,10 +61,13 @@ class TaskView(tables.DataTableView):
 class DetailView(generic.TemplateView):
     template_name = 'mistral/executions/detail.html'
     page_title = _("Execution Overview")
+    workflow_url = 'horizon:mistral:workflows:detail'
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         execution = get_execution_data(self.request, kwargs['execution_id'])
+        execution.workflow_url = reverse(self.workflow_url,
+                                         args=[execution.workflow_name])
         execution.input = prettyprint(execution.input)
         execution.output = prettyprint(execution.output)
         execution.params = prettyprint(execution.params)
