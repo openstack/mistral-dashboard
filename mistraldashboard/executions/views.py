@@ -26,9 +26,9 @@ from horizon import tables
 
 from mistraldashboard import api
 from mistraldashboard.default.utils import prettyprint
-from mistraldashboard.executions import forms as mistral_forms
 from mistraldashboard.executions.tables import ExecutionsTable
 from mistraldashboard.executions.tables import TaskTable
+from mistraldashboard import forms as mistral_forms
 
 
 def get_execution_data(request, execution_id):
@@ -76,7 +76,7 @@ class DetailView(generic.TemplateView):
 
 
 class CodeView(forms.ModalFormView):
-    template_name = 'mistral/executions/code.html'
+    template_name = 'mistral/default/code.html'
     modal_header = _("Code view")
     form_id = "code_view"
     form_class = mistral_forms.EmptyForm

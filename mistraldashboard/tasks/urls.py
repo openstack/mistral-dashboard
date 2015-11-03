@@ -26,4 +26,8 @@ urlpatterns = patterns(
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(TASKS % 'detail', views.OverviewView.as_view(), name='detail'),
     url(TASKS % 'execution', views.ExecutionView.as_view(), name='execution'),
+    url(TASKS % 'result', views.CodeView.as_view(),
+        {'column': 'result'}, name='result'),
+    url(TASKS % 'published', views.CodeView.as_view(),
+        {'column': 'published'}, name='published'),
 )
