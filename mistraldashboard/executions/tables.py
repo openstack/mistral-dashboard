@@ -52,7 +52,10 @@ class ExecutionsTable(tables.DataTable):
         link="horizon:mistral:executions:detail"
     )
 
-    workflow_name = tables.Column("workflow_name", verbose_name=_("Workflow"))
+    workflow_name = tables.Column(
+        "workflow_name",
+        verbose_name=_("Workflow")
+    )
 
     task = tables.Column(
         "task",

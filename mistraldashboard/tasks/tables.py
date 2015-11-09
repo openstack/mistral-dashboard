@@ -26,13 +26,30 @@ class TaskTable(tables.DataTable):
     id = tables.Column(
         "id",
         verbose_name=_("ID"),
-        link="horizon:mistral:tasks:detail")
-    name = tables.Column("name", verbose_name=_("Name"))
-
+        link="horizon:mistral:tasks:detail"
+    )
+    name = tables.Column(
+        "name",
+        verbose_name=_("Name")
+    )
     workflow_execution_id = tables.Column(
         "workflow_execution_id",
         verbose_name=_("Workflow Execution ID"),
         link="horizon:mistral:tasks:execution"
+    )
+    result = tables.Column(
+        "",
+        verbose_name=_("Result"),
+        empty_value=_("View"),
+        link="horizon:mistral:tasks:result",
+        link_classes=("ajax-modal",)
+    )
+    published = tables.Column(
+        "",
+        verbose_name=_("Published"),
+        empty_value=_("View"),
+        link="horizon:mistral:tasks:published",
+        link_classes=("ajax-modal",)
     )
     created_at = tables.Column(
         "created_at",

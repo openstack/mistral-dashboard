@@ -1,41 +1,65 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load i18n sizeformat %}
 
 {% block title %}{% trans "Task Details" %}{% endblock %}
 
 {% block page_header %}
     <h1>
-        {% trans "Task Details: " %}
-        {{ task.name}}
+        {% trans "Task Details" %}
     </h1>
 {% endblock page_header %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-sm-12">
-            <h4>{% trans "Task Overview" %}</h4>
-            <hr class="header_rule">
-            <dl class="dl-horizontal">
-                <dt><span class="pull-left">{% trans "ID" %}</span></dt>
-                <dd>{{ task.id }}</dd>
-                <dt><span class="pull-left">{% trans "Name" %}</span></dt>
-                <dd>{{ task.name }}</dd>
-                <dt><span class="pull-left">{% trans "WorkFlow Name" %}</span></dt>
-                <dd>{{ task.workflow_name }}</dd>
-                <dt><span class="pull-left">{% trans "WorkFlow Execution Id" %}</span></dt>
-                <dd>{{ task.workflow_execution_id }}</dd>
-                <dt><span class="pull-left">{% trans "Result" %}</span></dt>
-                <dd>{{ task.result }}</dd>
-                <dt><span class="pull-left">{% trans "Created At" %}</span></dt>
-                <dd>{{ task.created_at }}</dd>
-                <dt><span class="pull-left">{% trans "Updated At" %}</span></dt>
-                <dd>{{ task.updated_at }}</dd>
-                <dt><span class="pull-left">{% trans "Published" %}</span></dt>
-                <dd>{{ task.published }}</dd>
-                <dt><span class="pull-left">{% trans "State" %}</span></dt>
-                <dd>{{ task.state }}</dd>
-            </dl>
-        </div>
+    <div class="detail">
+        <h4>{% trans "Overview" %}</h4>
+        <hr class="header_rule">
+        <dl class="dl-horizontal">
+            <dt>{% trans "Name" %}</dt>
+            <dd>{{ task.name }}</dd>
+            <dt>{% trans "ID" %}</dt>
+            <dd>{{ task.id }}</dd>
+            {% if task.state_info %}
+                <dt>{% trans "State Info" %}</dt>
+                <dd>{{ task.state_info }}</dd>
+            {% endif %}
+            <dt>{% trans "State" %}</dt>
+            <dd>{{ task.state }}</dd>
+            <br/>
+            <dt>{% trans "Creation Date" %}</dt>
+            <dd>{{ task.created_at|parse_isotime }}</dd>
+            <dt>{% trans "Time Since Created" %}</dt>
+            <dd>{{ task.created_at|parse_isotime|timesince }}</dd>
+            <br/>
+            <dt>{% trans "Update Date" %}</dt>
+            <dd>{{ task.updated_at|parse_isotime }}</dd>
+            <dt>{% trans "Time Since Updated" %}</dt>
+            <dd>{{ task.updated_at|parse_isotime|timesince }}</dd>
+            <br/>
+            <dt>{% trans "Result" %}</dt>
+            <dd>{{ task.result }}</dd>
+            <dt>{% trans "Published" %}</dt>
+            <dd>{{ task.published }}</dd>
+        </dl>
+    </div>
+
+    <div class="detail">
+        <h4>{% trans "Workflow" %}</h4>
+        <hr class="header_rule">
+        <dl class="dl-horizontal">
+            <dt>{% trans "Workflow Name" %}</dt>
+            <dd>
+                <a href="{{ task.workflow_url }}"
+                   title="{{task.workflow_name}} {% trans "overview" %}">
+                    {{ task.workflow_name }}
+                </a>
+            </dd>
+            <dt>{% trans "Workflow Execution ID" %}</dt>
+            <dd>
+                <a href="{{ task.execution_url }}"
+                   title="{{ task.workflow_execution_id }} {% trans "overview" %}">
+                    {{ task.workflow_execution_id }}
+                </a>
+            </dd>
+        </dl>
     </div>
 {% endblock %}

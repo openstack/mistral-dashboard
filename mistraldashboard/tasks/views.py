@@ -15,16 +15,31 @@
 # limitations under the License.
 
 from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
+
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic
 
-
 from horizon import exceptions
+from horizon import forms
 from horizon import tables
 
 from mistraldashboard import api
 from mistraldashboard.default.utils import prettyprint
+from mistraldashboard import forms as mistral_forms
 from mistraldashboard.tasks.tables import TaskTable
+
+
+def get_single_task_data(request, **kwargs):
+    try:
+        task_id = kwargs['task_id']
+        task = api.task_get(request, task_id)
+    except Exception:
+        msg = _('Unable to get task "%s".') % task_id
+        redirect = reverse('horizon:mistral:tasks:index')
+        exceptions.handle(request, msg, redirect=redirect)
+
+    return task
 
 
 class ExecutionView(generic.TemplateView):
@@ -33,7 +48,7 @@ class ExecutionView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ExecutionView, self).get_context_data(**kwargs)
-        task = self.get_data(self.request, **kwargs)
+        task = get_single_task_data(self.request, **kwargs)
         execution = api.execution_get(self.request, task.workflow_execution_id)
         execution.input = prettyprint(execution.input)
         execution.output = prettyprint(execution.output)
@@ -44,39 +59,52 @@ class ExecutionView(generic.TemplateView):
 
         return context
 
-    def get_data(self, request, **kwargs):
-        try:
-            task_id = kwargs['task_id']
-            task = api.task_get(request, task_id)
-        except Exception:
-            msg = _('Unable to get task "%s".') % task_id
-            redirect = reverse('horizon:mistral:tasks:index')
-            exceptions.handle(self.request, msg, redirect=redirect)
-
-        return task
-
 
 class OverviewView(generic.TemplateView):
     template_name = 'mistral/tasks/detail.html'
     page_title = _("Task Details")
+    workflow_url = 'horizon:mistral:workflows:detail'
+    execution_url = 'horizon:mistral:executions:detail'
 
     def get_context_data(self, **kwargs):
         context = super(OverviewView, self).get_context_data(**kwargs)
-        task = self.get_data(self.request, **kwargs)
+        task = get_single_task_data(self.request, **kwargs)
+        task.workflow_url = reverse(self.workflow_url,
+                                    args=[task.workflow_name])
+        task.execution_url = reverse(self.execution_url,
+                                     args=[task.workflow_execution_id])
         task.result = prettyprint(task.result)
+        task.published = prettyprint(task.published)
         context['task'] = task
+
         return context
 
-    def get_data(self, request, **kwargs):
-        try:
-            task_id = kwargs['task_id']
-            task = api.task_get(request, task_id)
-        except Exception:
-            msg = _('Unable to get task "%s".') % task_id
-            redirect = reverse('horizon:mistral:tasks:index')
-            exceptions.handle(self.request, msg, redirect=redirect)
 
-        return task
+class CodeView(forms.ModalFormView):
+    template_name = 'mistral/default/code.html'
+    modal_header = _("Code view")
+    form_id = "code_view"
+    form_class = mistral_forms.EmptyForm
+    cancel_label = "OK"
+    cancel_url = reverse_lazy("horizon:mistral:tasks:index")
+    page_title = _("Code view")
+
+    def get_context_data(self, **kwargs):
+        context = super(CodeView, self).get_context_data(**kwargs)
+        column = self.kwargs['column']
+        task = get_single_task_data(self.request, **self.kwargs)
+        io = {}
+
+        if column == 'result':
+            io['name'] = _('Result')
+            io['value'] = task.result = prettyprint(task.result)
+        elif column == 'published':
+            io['name'] = _('Published')
+            io['value'] = task.published = prettyprint(task.published)
+
+        context['io'] = io
+
+        return context
 
 
 class IndexView(tables.DataTableView):
