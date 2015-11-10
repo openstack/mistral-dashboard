@@ -34,6 +34,13 @@
                     {{ execution.workflow_name }}
                 </a>
             </dd>
+            <dt>{% trans "Tasks" %}</dt>
+            <dd>
+                <a href="{{ task.url }}"
+                   title="{% trans "View tasks" %}">
+                    {% trans "view corresponding tasks" %}
+                </a>
+            </dd>
             <br/>
             <dt>{% trans "Creation Date" %}</dt>
             <dd>{{ execution.created_at|parse_isotime}}</dd>

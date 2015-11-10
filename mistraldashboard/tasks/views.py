@@ -42,22 +42,20 @@ def get_single_task_data(request, **kwargs):
     return task
 
 
-class ExecutionView(generic.TemplateView):
-    template_name = 'mistral/tasks/execution.html'
-    page_title = _("Execution Overview")
+class ExecutionView(tables.DataTableView):
+    table_class = TaskTable
+    template_name = 'mistral/tasks/filtered.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(ExecutionView, self).get_context_data(**kwargs)
-        task = get_single_task_data(self.request, **kwargs)
-        execution = api.execution_get(self.request, task.workflow_execution_id)
-        execution.input = prettyprint(execution.input)
-        execution.output = prettyprint(execution.output)
-        execution.params = prettyprint(execution.params)
+    def get_data(self, **kwargs):
+        try:
+            execution_id = self.kwargs['task_id']
+            tasks = api.task_list(self.request, execution_id)
+        except Exception:
+            msg = _('Unable to get task by execution id "%s".') % execution_id
+            redirect = reverse('horizon:mistral:executions:index')
+            exceptions.handle(self.request, msg, redirect=redirect)
 
-        context['task'] = task
-        context['execution'] = execution
-
-        return context
+        return tasks
 
 
 class OverviewView(generic.TemplateView):

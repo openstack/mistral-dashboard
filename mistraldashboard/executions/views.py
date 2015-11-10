@@ -27,19 +27,46 @@ from horizon import tables
 from mistraldashboard import api
 from mistraldashboard.default.utils import prettyprint
 from mistraldashboard.executions.tables import ExecutionsTable
-from mistraldashboard.executions.tables import TaskTable
 from mistraldashboard import forms as mistral_forms
 
 
-def get_execution_data(request, execution_id):
-    try:
-        execution = api.execution_get(request, execution_id)
-    except Exception:
-        msg = _('Unable to get execution "%s".') % execution_id
-        redirect = reverse('horizon:mistral:executions:index')
-        exceptions.handle(request, msg, redirect=redirect)
+def get_single_data(request, id, type="execution"):
+    """Get Execution or Task data by ID.
 
-    return execution
+    :param request: Request data
+    :param id: Entity ID
+    :param type: Request dispatch flag, Default: Execution
+    """
+
+    if type == "execution":
+        try:
+            execution = api.execution_get(request, id)
+        except Exception:
+            msg = _('Unable to get execution by its ID"%s".') % id
+            redirect = reverse('horizon:mistral:executions:index')
+            exceptions.handle(request, msg, redirect=redirect)
+
+        return execution
+
+    elif type == "task":
+        try:
+            task = api.task_get(request, id)
+        except Exception:
+            msg = _('Unable to get task by its ID "%s".') % id
+            redirect = reverse('horizon:mistral:tasks:index')
+            exceptions.handle(request, msg, redirect=redirect)
+
+        return task
+
+    elif type == "task_by_execution":
+        try:
+            task = api.task_list(request, id)[0]
+        except Exception:
+            msg = _('Unable to get task by Execution ID "%s".') % id
+            redirect = reverse('horizon:mistral:executions:index')
+            exceptions.handle(request, msg, redirect=redirect)
+
+        return task
 
 
 class IndexView(tables.DataTableView):
@@ -50,28 +77,50 @@ class IndexView(tables.DataTableView):
         return api.execution_list(self.request)
 
 
-class TaskView(tables.DataTableView):
-    table_class = TaskTable
-    template_name = 'mistral/executions/index.html'
-
-    def get_data(self):
-        return api.task_list(self.request, self.kwargs['execution_id'])
-
-
 class DetailView(generic.TemplateView):
     template_name = 'mistral/executions/detail.html'
     page_title = _("Execution Overview")
     workflow_url = 'horizon:mistral:workflows:detail'
+    task_url = 'horizon:mistral:tasks:execution'
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
-        execution = get_execution_data(self.request, kwargs['execution_id'])
+        task = {}
+        execution = {}
+
+        if 'caller' in kwargs:
+            if kwargs['caller'] == 'task':
+                kwargs['task_id'] = kwargs['execution_id']
+                del kwargs['execution_id']
+                task = get_single_data(
+                    self.request,
+                    kwargs['task_id'],
+                    "task"
+                )
+                execution = get_single_data(
+                    self.request,
+                    task.workflow_execution_id,
+                )
+        else:
+            execution = get_single_data(
+                self.request,
+                kwargs['execution_id'],
+            )
+            task = get_single_data(
+                self.request,
+                self.kwargs['execution_id'],
+                "task_by_execution"
+            )
+
         execution.workflow_url = reverse(self.workflow_url,
                                          args=[execution.workflow_name])
         execution.input = prettyprint(execution.input)
         execution.output = prettyprint(execution.output)
         execution.params = prettyprint(execution.params)
+        task.url = reverse(self.task_url, args=[execution.id])
         context['execution'] = execution
+        context['task'] = task
+
         return context
 
 
@@ -87,8 +136,10 @@ class CodeView(forms.ModalFormView):
     def get_context_data(self, **kwargs):
         context = super(CodeView, self).get_context_data(**kwargs)
         column = self.kwargs['column']
-        execution = get_execution_data(self.request,
-                                       self.kwargs['execution_id'])
+        execution = get_single_data(
+            self.request,
+            self.kwargs['execution_id'],
+        )
         io = {}
 
         if column == 'input':

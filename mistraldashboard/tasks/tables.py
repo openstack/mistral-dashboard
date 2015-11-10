@@ -35,7 +35,7 @@ class TaskTable(tables.DataTable):
     workflow_execution_id = tables.Column(
         "workflow_execution_id",
         verbose_name=_("Workflow Execution ID"),
-        link="horizon:mistral:tasks:execution"
+        link="horizon:mistral:executions:detail_task_id"
     )
     result = tables.Column(
         "",

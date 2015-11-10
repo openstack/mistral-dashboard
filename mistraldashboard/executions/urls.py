@@ -24,8 +24,9 @@ EXECUTIONS = r'^(?P<execution_id>[^/]+)/%s$'
 urlpatterns = patterns(
     '',
     url(r'^$', views.IndexView.as_view(), name='index'),
-    url(EXECUTIONS % 'tasks', views.TaskView.as_view(), name='tasks'),
     url(EXECUTIONS % 'detail', views.DetailView.as_view(), name='detail'),
+    url(EXECUTIONS % 'detail_task_id', views.DetailView.as_view(),
+        {'caller': 'task'}, name='detail_task_id'),
     url(EXECUTIONS % 'output', views.CodeView.as_view(),
         {'column': 'output'}, name='output'),
     url(EXECUTIONS % 'input', views.CodeView.as_view(),
