@@ -22,7 +22,8 @@ TYPES = {
     'SUCCESS': 'label-success',
     'ERROR': 'label-danger',
     'DELAYED': 'label-default',
-    'RUNNING': 'label-info'
+    'RUNNING': 'label-info',
+    'PAUSED': 'label-warning'
 }
 
 

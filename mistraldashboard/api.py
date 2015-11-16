@@ -66,6 +66,23 @@ def execution_get(request, execution_id):
     return mistralclient(request).executions.get(execution_id)
 
 
+def execution_update(request, execution_id, field, value):
+
+    """update specific execution field, either state or description
+
+    :param request: Request data
+    :param execution_id: Execution ID
+    :param field: flag - either Execution state or description
+    :param value: new update value
+    """
+    if field == "state":
+        return mistralclient(request).\
+            executions.update(execution_id, value)
+    elif field == "description":
+        return mistralclient(request).\
+            executions.update(execution_id, None, value)
+
+
 def execution_delete(request, execution_name):
     """Delete execution.
 

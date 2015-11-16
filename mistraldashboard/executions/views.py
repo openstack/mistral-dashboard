@@ -87,7 +87,6 @@ class DetailView(generic.TemplateView):
         context = super(DetailView, self).get_context_data(**kwargs)
         task = {}
         execution = {}
-
         if 'caller' in kwargs:
             if kwargs['caller'] == 'task':
                 kwargs['task_id'] = kwargs['execution_id']
@@ -135,20 +134,18 @@ class CodeView(forms.ModalFormView):
 
     def get_context_data(self, **kwargs):
         context = super(CodeView, self).get_context_data(**kwargs)
-        column = self.kwargs['column']
         execution = get_single_data(
             self.request,
             self.kwargs['execution_id'],
         )
+        column = self.kwargs['column']
         io = {}
-
         if column == 'input':
             io['name'] = _('Input')
             io['value'] = execution.input = prettyprint(execution.input)
         elif column == 'output':
             io['name'] = _('Output')
             io['value'] = execution.output = prettyprint(execution.output)
-
         context['io'] = io
 
         return context
