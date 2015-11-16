@@ -83,7 +83,6 @@ class ActionsTable(tables.DataTable):
         verbose_name=_("Name"),
         link="horizon:mistral:actions:detail"
     )
-    description = tables.Column("description", verbose_name=_("Description"))
     is_system = tables.Column("is_system", verbose_name=_("Is System"))
     tags = tables.Column(tags_to_string, verbose_name=_("Tags"))
     inputs = tables.Column(cut, verbose_name=_("Input"))

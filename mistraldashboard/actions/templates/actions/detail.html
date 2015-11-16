@@ -8,6 +8,28 @@
 
 {% block main %}
   <div class="detail">
-    <pre>{{ definition }}</pre>
+        <h4>{% trans "Overview" %}</h4>
+        <hr class="header_rule">
+        <dl class="dl-horizontal">
+            <dt>{% trans "Name" %}</dt>
+            <dd>{{ action.name }}</dd>
+            <dt>{% trans "ID" %}</dt>
+            <dd>{{ action.id }}</dd>
+            <dt>{% trans "Description" %}</dt>
+            <dd>{{ action.description }}</dd>
+            <dt>{% trans "Tags" %}</dt>
+            <dd>{{ action.tags }}</dd>
+            <dt>{% trans "Created at" %}</dt>
+            <dd>{{ action.created_at }}</dd>
+            <dt>{% trans "Is system" %}</dt>
+            <dd>{{ action.is_system }}</dd>
+            <dt>{% trans "Updated at" %}</dt>
+            <dd>{{ action.updated_at }}</dd>
+            <dt>{% trans "Scope" %}</dt>
+            <dd>{{ action.scope }}</dd>
+            <dt>{% trans "Input" %}</dt>
+            <dd>{{ action.input }}</dd>
+        </dl>
   </div>
 {% endblock %}
+
