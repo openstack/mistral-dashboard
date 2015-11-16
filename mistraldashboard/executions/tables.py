@@ -45,6 +45,91 @@ class DeleteExecution(tables.DeleteAction):
         api.execution_delete(request, execution_name)
 
 
+class CancelExecution(tables.BatchAction):
+    name = "cancel execution"
+    classes = ("btn-danger",)
+
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            u"Cancel Execution",
+            u"Cancel Executions",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            u"Canceled Execution",
+            u"Canceled Executions",
+            count
+        )
+
+    def allowed(self, request, instance):
+        if instance.state == "RUNNING":
+            return True
+        return False
+
+    def action(self, request, obj_id):
+        api.execution_update(request, obj_id, "state", "ERROR")
+
+
+class PauseExecution(tables.BatchAction):
+    name = "pause execution"
+
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            u"Pause Execution",
+            u"Pause Executions",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            u"Paused Execution",
+            u"Paused Executions",
+            count
+        )
+
+    def allowed(self, request, instance):
+        if instance.state == "RUNNING":
+            return True
+        return False
+
+    def action(self, request, obj_id):
+        api.execution_update(request, obj_id, "state", "PAUSED")
+
+
+class ResumeExecution(tables.BatchAction):
+    name = "resume execution"
+
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            u"Resume Execution",
+            u"Resume Executions",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            u"Resumed Execution",
+            u"Resumed Executions",
+            count
+        )
+
+    def allowed(self, request, instance):
+        if instance.state == "PAUSED":
+            return True
+        return False
+
+    def action(self, request, obj_id):
+        api.execution_update(request, obj_id, "state", "RUNNING")
+
+
 class ExecutionsTable(tables.DataTable):
     id = tables.Column(
         "id",
@@ -100,4 +185,5 @@ class ExecutionsTable(tables.DataTable):
         name = "executions"
         verbose_name = _("Executions")
         table_actions = (DeleteExecution, tables.FilterAction)
-        row_actions = (DeleteExecution,)
+        row_actions = (DeleteExecution, PauseExecution,
+                       CancelExecution, ResumeExecution, DeleteExecution)
