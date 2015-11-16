@@ -63,7 +63,7 @@ class DetailView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         action = self.get_data(self.request, **kwargs)
-        context['definition'] = action.definition
+        context['action'] = action
 
         return context
 
