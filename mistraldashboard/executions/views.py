@@ -26,6 +26,7 @@ from horizon import tables
 
 from mistraldashboard import api
 from mistraldashboard.default.utils import prettyprint
+from mistraldashboard.executions.forms import UpdateDescriptionForm
 from mistraldashboard.executions.tables import ExecutionsTable
 from mistraldashboard import forms as mistral_forms
 
@@ -147,5 +148,29 @@ class CodeView(forms.ModalFormView):
             io['name'] = _('Output')
             io['value'] = execution.output = prettyprint(execution.output)
         context['io'] = io
+
+        return context
+
+
+class UpdateDescriptionView(forms.ModalFormView):
+    template_name = 'mistral/executions/update_description.html'
+    modal_header = _("Update Execution Description")
+    form_id = "update_execution_description"
+    form_class = UpdateDescriptionForm
+    submit_label = _("Update")
+    success_url = reverse_lazy("horizon:mistral:executions:index")
+    submit_url = "horizon:mistral:executions:update_description"
+    cancel_url = "horizon:mistral:executions:index"
+    page_title = _("Update Execution Description")
+
+    def get_initial(self):
+        return {"execution_id": self.kwargs["execution_id"]}
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateDescriptionView, self).get_context_data(**kwargs)
+        context['submit_url'] = reverse(
+            self.submit_url,
+            args=[self.kwargs["execution_id"]]
+        )
 
         return context
