@@ -130,6 +130,13 @@ class ResumeExecution(tables.BatchAction):
         api.execution_update(request, obj_id, "state", "RUNNING")
 
 
+class UpdateDescription(tables.LinkAction):
+    name = "updateDescription"
+    verbose_name = _("Update Description")
+    url = "horizon:mistral:executions:update_description"
+    classes = ("ajax-modal",)
+
+
 class ExecutionsTable(tables.DataTable):
     id = tables.Column(
         "id",
@@ -185,5 +192,6 @@ class ExecutionsTable(tables.DataTable):
         name = "executions"
         verbose_name = _("Executions")
         table_actions = (DeleteExecution, tables.FilterAction)
-        row_actions = (DeleteExecution, PauseExecution,
-                       CancelExecution, ResumeExecution, DeleteExecution)
+        row_actions = (DeleteExecution, UpdateDescription,
+                       PauseExecution, CancelExecution,
+                       ResumeExecution, DeleteExecution)

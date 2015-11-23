@@ -31,4 +31,7 @@ urlpatterns = patterns(
         {'column': 'output'}, name='output'),
     url(EXECUTIONS % 'input', views.CodeView.as_view(),
         {'column': 'input'}, name='input'),
+    url(EXECUTIONS % 'update_description',
+        views.UpdateDescriptionView.as_view(),
+        name='update_description'),
 )
