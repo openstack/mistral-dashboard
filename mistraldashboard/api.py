@@ -14,8 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
+
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+
+from horizon.utils import functions as utils
 from horizon.utils import memoized
 
 from mistralclient.api import client as mistral_client
@@ -51,10 +55,50 @@ def execution_create(request, **data):
 
 
 @handle_errors(_("Unable to retrieve executions."), [])
-def execution_list(request):
-    """Returns all executions."""
+def execution_list(request, marker='', sort_keys='',
+                   sort_dirs='', paginate=False):
+    """Retrieve a listing of executions.
 
-    return mistralclient(request).executions.list()
+    :param request: Request data
+    :param marker: Pagination marker for large data sets: execution id
+    :param sort_keys: Columns to sort results by. Default: created_at
+    :param sort_dirs: Sorting Directions (asc/desc). Default:asc
+    :param paginate: If true will perform pagination based on settings
+    """
+
+    limit = getattr(settings, 'API_RESULT_LIMIT', 1000)
+    page_size = utils.get_page_size(request)
+
+    if paginate:
+        request_size = page_size + 1
+    else:
+        request_size = limit
+
+    executions_iter = mistralclient(request).executions.list(
+        marker, limit, sort_keys, sort_dirs
+    )
+
+    has_prev_data = has_more_data = False
+
+    if paginate:
+        executions = list(itertools.islice(executions_iter, request_size))
+        # first and middle page condition
+        if len(executions) > page_size:
+            executions.pop(-1)
+            has_more_data = True
+            # middle page condition
+            if marker is not None:
+                has_prev_data = True
+        # first page condition when reached via prev back
+        elif sort_dirs == 'asc' and marker is not None:
+            has_more_data = True
+        # last page condition
+        elif marker is not None:
+            has_prev_data = True
+    else:
+        executions = list(executions_iter)
+
+    return executions, has_more_data, has_prev_data
 
 
 def execution_get(request, execution_id):
@@ -67,14 +111,14 @@ def execution_get(request, execution_id):
 
 
 def execution_update(request, execution_id, field, value):
-
-    """update specific execution field, either state or description
+    """update specific execution field, either state or description.
 
     :param request: Request data
     :param execution_id: Execution ID
     :param field: flag - either Execution state or description
     :param value: new update value
     """
+
     if field == "state":
         return mistralclient(request).\
             executions.update(execution_id, value)
