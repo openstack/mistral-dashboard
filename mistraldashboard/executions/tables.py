@@ -17,6 +17,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 
+from horizon import exceptions
 from horizon import tables
 
 from mistraldashboard import api
@@ -137,7 +138,31 @@ class UpdateDescription(tables.LinkAction):
     classes = ("ajax-modal",)
 
 
+class UpdateRow(tables.Row):
+    ajax = True
+
+    def get_data(self, request, id):
+        try:
+            instance = api.execution_get(request, id)
+        except Exception as e:
+            msg = _("Unable to get execution by ID %(id)s: %(e)s.") % {
+                'id': id, 'e': str(e)
+            }
+            exceptions.handle(request, msg)
+
+        return instance
+
+
 class ExecutionsTable(tables.DataTable):
+
+    STATE_STATUS_CHOICES = (
+        ("success", True),
+        ("error", False),
+        ("paused", False),
+        ("delayed", None),
+        ("running", None),
+    )
+
     id = tables.Column(
         "id",
         verbose_name=_("ID"),
@@ -186,11 +211,16 @@ class ExecutionsTable(tables.DataTable):
     state = tables.Column(
         "state",
         verbose_name=_("State"),
-        filters=[label])
+        filters=[label],
+        status=True,
+        status_choices=STATE_STATUS_CHOICES,
+    )
 
     class Meta(object):
         name = "executions"
         verbose_name = _("Executions")
+        status_columns = ["state"]
+        row_class = UpdateRow
         table_actions = (DeleteExecution, tables.FilterAction)
         row_actions = (DeleteExecution, UpdateDescription,
                        PauseExecution, CancelExecution,
