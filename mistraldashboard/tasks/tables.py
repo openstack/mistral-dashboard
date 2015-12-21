@@ -16,13 +16,38 @@
 
 from django.utils.translation import ugettext_lazy as _
 
+from horizon import exceptions
 from horizon import tables
 
+from mistraldashboard import api
 from mistraldashboard.default.utils import humantime
 from mistraldashboard.default.utils import label
 
 
+class UpdateRow(tables.Row):
+    ajax = True
+
+    def get_data(self, request, id):
+        try:
+            instance = api.task_get(request, id)
+        except Exception as e:
+            msg = _("Unable to get task by ID %(id)s: %(e)s.") % {
+                'id': id, 'e': str(e)
+            }
+            exceptions.handle(request, msg)
+
+        return instance
+
+
 class TaskTable(tables.DataTable):
+
+    STATE_STATUS_CHOICES = (
+        ("success", True),
+        ("error", False),
+        ("idle", None),
+        ("running", None),
+    )
+
     id = tables.Column(
         "id",
         verbose_name=_("ID"),
@@ -62,9 +87,17 @@ class TaskTable(tables.DataTable):
         filters=[humantime]
     )
 
-    state = tables.Column("state", verbose_name=_("State"), filters=[label])
+    state = tables.Column(
+        "state",
+        status=True,
+        status_choices=STATE_STATUS_CHOICES,
+        verbose_name=_("State"),
+        filters=[label]
+    )
 
     class Meta(object):
         name = "tasks"
         verbose_name = _("Tasks")
         table_actions = (tables.FilterAction,)
+        status_columns = ["state"]
+        row_class = UpdateRow
