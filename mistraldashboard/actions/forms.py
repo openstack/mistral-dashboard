@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
@@ -20,6 +22,58 @@ from horizon import forms
 from horizon import messages
 
 from mistraldashboard import api
+
+
+class RunForm(forms.SelfHandlingForm):
+    action_name = forms.CharField(
+        label=_("Action"),
+        required=True,
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
+    )
+    input = forms.CharField(
+        label=_("Input"),
+        required=False,
+        initial="{}",
+        widget=forms.widgets.Textarea()
+    )
+    save_result = forms.CharField(
+        label=_("Save result to DB"),
+        required=False,
+        widget=forms.CheckboxInput()
+    )
+
+    def handle(self, request, data):
+        try:
+            input = json.loads(data['input'])
+        except Exception as e:
+            msg = _('Action input is invalid JSON: %s') % str(e)
+            messages.error(request, msg)
+
+            return False
+
+        try:
+            params = {"save_result": data['save_result'] == 'True'}
+            action = api.action_run(
+                request,
+                data['action_name'],
+                input,
+                params
+            )
+            msg = _('Run action has been created with name '
+                    '"%s".') % action.name
+            messages.success(request, msg)
+
+            return True
+
+        except Exception as e:
+            # In case of a failure, keep the dialog open and show the error
+            msg = _('Failed to run action "%(action_name)s"'
+                    ' %(e)s:') % {'action_name': data['action_name'],
+                                  'e': str(e)
+                                  }
+            messages.error(request, msg)
+
+            return False
 
 
 class CreateForm(forms.SelfHandlingForm):
