@@ -20,8 +20,11 @@ from horizon import exceptions
 from horizon import tables
 
 from mistraldashboard import api
+import mistraldashboard.default.SmartCell as SmartCell
 from mistraldashboard.default.utils import humantime
 from mistraldashboard.default.utils import label
+
+SmartCell.init()
 
 
 class UpdateRow(tables.Row):
@@ -40,6 +43,11 @@ class UpdateRow(tables.Row):
 
 
 class TaskTable(tables.DataTable):
+
+    def getHoverHelp(data):
+        if hasattr(data, 'state_info') and data.state_info:
+
+                return {'title': data.state_info}
 
     STATE_STATUS_CHOICES = (
         ("success", True),
@@ -92,7 +100,8 @@ class TaskTable(tables.DataTable):
         status=True,
         status_choices=STATE_STATUS_CHOICES,
         verbose_name=_("State"),
-        filters=[label]
+        filters=[label],
+        cell_attributes_getter=getHoverHelp
     )
 
     class Meta(object):
