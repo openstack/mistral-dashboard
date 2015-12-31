@@ -1,4 +1,6 @@
-# Copyright 2014 - StackStorm, Inc.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2016 - Alcatel-Lucent.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,28 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.utils.translation import ugettext_lazy as _
+from django.conf.urls import patterns  # noqa
+from django.conf.urls import url  # noqa
 
-import horizon
+from mistraldashboard.cron_triggers import views
 
-from mistraldashboard.default.panel import Default
+CRON_TRIGGERS = r'^(?P<cron_trigger_name>[^/]+)/%s$'
 
-
-class MistralDashboard(horizon.Dashboard):
-    name = _("Workflow")
-    slug = "mistral"
-    panels = (
-        'default',
-        'workbooks',
-        'workflows',
-        'executions',
-        'tasks',
-        'actions',
-        'cron_triggers'
-    )
-    default_panel = 'default'
-    roles = ('admin',)
-
-
-horizon.register(MistralDashboard)
-MistralDashboard.register(Default)
+urlpatterns = patterns(
+    '',
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(CRON_TRIGGERS % 'detail', views.OverviewView.as_view(), name='detail'),
+)

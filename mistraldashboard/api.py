@@ -300,3 +300,35 @@ def action_delete(request, action_name):
     """
 
     return mistralclient(request).actions.delete(action_name)
+
+
+@handle_errors(_("Unable to retrieve cron trigger list"), [])
+def cron_trigger_list(request):
+    """Returns all cron triggers.
+
+    :param request: Request data
+    """
+
+    return mistralclient(request).cron_triggers.list()
+
+
+@handle_errors(_("Unable to retrieve cron trigger"), [])
+def cron_trigger_get(request, cron_trigger_name):
+    """Get specific cron trigger.
+
+    :param request: Request data
+    :param cron_trigger_name: Cron trigger name
+    """
+
+    return mistralclient(request).cron_triggers.get(cron_trigger_name)
+
+
+@handle_errors(_("Unable to delete cron trigger/s"), [])
+def cron_trigger_delete(request, cron_trigger_name):
+    """Delete Cron Trigger.
+
+    :param request: Request data
+    :param cron_trigger_name: Cron Trigger name
+    """
+
+    return mistralclient(request).cron_triggers.delete(cron_trigger_name)

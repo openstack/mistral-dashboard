@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Cron Trigger Details" %}{% endblock %}
+
+{% block page_header %}
+    <h1>
+        {% trans "Cron Trigger Details" %}
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href={{ cron_trigger.list_url }} title="Cron Triggers">
+            Cron Triggers
+        </a>
+        </li>
+        <li class="active" title={{ cron_trigger.name }}>
+            {{ cron_trigger.name }}
+        </li>
+    </ol>
+{% endblock page_header %}
+
+{% block main %}
+    {% load i18n sizeformat %}
+    <div class="detail">
+        <h4>{% trans "Overview" %}</h4>
+        <hr class="header_rule">
+        <dl class="dl-horizontal">
+            <dt>{% trans "Name" %}</dt>
+            <dd>{{ cron_trigger.name }}</dd>
+            <dt>{% trans "ID" %}</dt>
+            <dd>{{ cron_trigger.id }}</dd>
+            <dt>{% trans "Pattern" %}</dt>
+            <dd>{{ cron_trigger.pattern }}</dd>
+            <br/>
+
+            <dt>{% trans "Creation Date" %}</dt>
+            <dd>{{ cron_trigger.created_at|parse_isotime }}</dd>
+            <dt>{% trans "Time Since Created" %}</dt>
+            <dd>{{ cron_trigger.created_at|parse_isotime|timesince }}</dd>
+            <br/>
+
+            <dt>{% trans "First Execution" %}</dt>
+            <dd>
+                {% with time=cron_trigger.first_execution_time %}
+                 {{ time|parse_isotime|default:"Empty" }}
+                {% endwith %}
+            </dd>
+            <dt>{% trans "Time Since first Execution" %}</dt>
+            <dd>
+                {% with time=cron_trigger.first_execution_time %}
+                 {{ time|parse_isotime|timesince|default:"Empty" }}
+                {% endwith %}
+            </dd>
+            <br/>
+
+            <dt>{% trans "Update Date" %}</dt>
+            <dd>
+                {{ cron_trigger.updated_at|parse_isotime|default:"Empty" }}
+            </dd>
+            <dt>{% trans "Time Since Updated" %}</dt>
+            <dd>
+                {% with time=cron_trigger.updated_at %}
+                 {{ time|parse_isotime|timesince|default:"Empty" }}
+                {% endwith %}
+            </dd>
+            <br/>
+
+            <dt>{% trans "Next Execution Time" %}</dt>
+            <dd>
+                {% with time=cron_trigger.next_execution_time %}
+                    {{ time|parse_isotime|default:"Empty" }}
+                {% endwith %}
+            </dd>
+            <dt>{% trans "Time Until Next Execution" %}</dt>
+            <dd>
+                {% with time=cron_trigger.next_execution_time %}
+                    {{ time|parse_isotime|timeuntil|default:"Empty" }}
+                {% endwith %}
+            </dd>
+            <dt>{% trans "Remaining Executions" %}</dt>
+            <dd>{{ cron_trigger.remaining_executions|default:"0"}}</dd>
+            <br/>
+        </dl>
+    </div>
+
+    <div class="detail">
+        <h4>{% trans "Workflow" %}</h4>
+        <hr class="header_rule">
+        <dl class="dl-horizontal">
+            <dt>{% trans "Workflow Name" %}</dt>
+            <dd>
+                <a href="{{ cron_trigger.workflow_url }}"
+                   title=
+                     "{{cron_trigger.workflow_name}} {% trans "overview" %}">
+                    {{ cron_trigger.workflow_name }}
+                </a>
+            </dd>
+        </dl>
+    </div>
+{% endblock %}

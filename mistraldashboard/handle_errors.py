@@ -58,9 +58,10 @@ def handle_errors(error_message, error_default=None, request_arg=None):
                 return func(*args, **kwargs)
             try:
                 return func(*args, **kwargs)
-            except Exception:
+            except Exception as e:
                 callargs = inspect.getcallargs(func, *args, **kwargs)
                 request = callargs[_request_arg]
+                _error_message += ': ' + str(e)
                 horizon.exceptions.handle(request, _error_message,
                                           ignore=_error_ignore,
                                           redirect=_error_redirect)
