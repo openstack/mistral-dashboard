@@ -14,15 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import patterns  # noqa
 from django.conf.urls import url  # noqa
 
 from mistraldashboard.executions import views
 
 EXECUTIONS = r'^(?P<execution_id>[^/]+)/%s$'
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(EXECUTIONS % 'detail', views.DetailView.as_view(), name='detail'),
     url(EXECUTIONS % 'detail_task_id', views.DetailView.as_view(),
@@ -34,4 +32,4 @@ urlpatterns = patterns(
     url(EXECUTIONS % 'update_description',
         views.UpdateDescriptionView.as_view(),
         name='update_description'),
-)
+]
