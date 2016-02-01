@@ -77,6 +77,13 @@ def cut(action, length=100):
         return inputs
 
 
+class RunAction(tables.LinkAction):
+    name = "run"
+    verbose_name = _("Run")
+    url = "horizon:mistral:actions:run"
+    classes = ("ajax-modal",)
+
+
 class ActionsTable(tables.DataTable):
     name = tables.Column(
         "name",
@@ -109,5 +116,10 @@ class ActionsTable(tables.DataTable):
     class Meta(object):
         name = "actions"
         verbose_name = _("Actions")
-        table_actions = (CreateAction, UpdateAction, DeleteAction)
-        row_actions = (DeleteAction, tables.FilterAction)
+        table_actions = (
+            CreateAction,
+            UpdateAction,
+            DeleteAction,
+            tables.FilterAction,
+        )
+        row_actions = (RunAction, DeleteAction)

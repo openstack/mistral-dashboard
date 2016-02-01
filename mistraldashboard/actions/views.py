@@ -77,3 +77,26 @@ class DetailView(generic.TemplateView):
             exceptions.handle(self.request, msg, redirect=redirect)
 
         return action
+
+
+class RunView(forms.ModalFormView):
+    form_class = mistral_forms.RunForm
+    template_name = 'mistral/actions/run.html'
+    form_id = "run_action"
+    success_url = reverse_lazy("horizon:mistral:actions:index")
+    submit_label = _("Run")
+    modal_header = _("Run Action")
+    page_title = _("Run Action")
+    submit_url = "horizon:mistral:actions:run"
+
+    def get_initial(self, **kwargs):
+        return {'action_name': self.kwargs['action_name']}
+
+    def get_context_data(self, **kwargs):
+        context = super(RunView, self).get_context_data(**kwargs)
+        context['submit_url'] = reverse(
+            self.submit_url,
+            args=[self.kwargs["action_name"]]
+        )
+
+        return context

@@ -15,8 +15,6 @@
             <dd>{{ action.name }}</dd>
             <dt>{% trans "ID" %}</dt>
             <dd>{{ action.id }}</dd>
-            <dt>{% trans "Description" %}</dt>
-            <dd>{{ action.description }}</dd>
             <dt>{% trans "Tags" %}</dt>
             <dd>{{ action.tags }}</dd>
             <dt>{% trans "Created at" %}</dt>
@@ -29,6 +27,11 @@
             <dd>{{ action.scope }}</dd>
             <dt>{% trans "Input" %}</dt>
             <dd>{{ action.input }}</dd>
+            <dt>{% trans "Description" %}</dt>
+            <dd>{{ action.description }}</dd>
+            <dt>{% trans "Definition" %}</dt>
+            <dd><pre>{{ action.definition }}</pre></dd>
+
         </dl>
   </div>
 {% endblock %}

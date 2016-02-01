@@ -332,3 +332,18 @@ def cron_trigger_delete(request, cron_trigger_name):
     """
 
     return mistralclient(request).cron_triggers.delete(cron_trigger_name)
+
+
+def action_run(request, action_name, input, params):
+    """Run specific action execution.
+
+    :param action_name: Action name
+    :param input: input
+    :param params: params
+    """
+
+    return mistralclient(request).action_executions.create(
+        action_name,
+        input,
+        **params
+    )
