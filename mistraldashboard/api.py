@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright 2014 - StackStorm, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -155,7 +153,7 @@ def task_get(request, task_id=None):
     return mistralclient(request).tasks.get(task_id)
 
 
-@handle_errors(_("Unable to retrieve workflows."), [])
+@handle_errors(_("Unable to retrieve workflows"), [])
 def workflow_list(request):
     """Returns all workflows."""
 
@@ -293,6 +291,21 @@ def action_update(request, action_definition):
     return mistralclient(request).actions.update(action_definition)
 
 
+def action_run(request, action_name, input, params):
+    """Run specific action execution.
+
+    :param action_name: Action name
+    :param input: input
+    :param params: params
+    """
+
+    return mistralclient(request).action_executions.create(
+        action_name,
+        input,
+        **params
+    )
+
+
 def action_delete(request, action_name):
     """Delete action.
 
@@ -334,16 +347,35 @@ def cron_trigger_delete(request, cron_trigger_name):
     return mistralclient(request).cron_triggers.delete(cron_trigger_name)
 
 
-def action_run(request, action_name, input, params):
-    """Run specific action execution.
+def cron_trigger_create(
+    request,
+    cron_trigger_name,
+    workflow_ID,
+    workflow_input,
+    workflow_params,
+    pattern,
+    first_time,
+    count
+):
+    """Create Cron Trigger.
 
-    :param action_name: Action name
-    :param input: input
-    :param params: params
+    :param request: Request data
+    :param cron_trigger_name: Cron Trigger name
+    :param workflow_ID: Workflow ID
+    :param workflow_input: Workflow input
+    :param workflow_params: Workflow params <* * * * *>
+    :param pattern: <* * * * *>
+    :param first_time:
+           Date and time of the first execution <YYYY-MM-DD HH:MM>
+    :param count: Number of wanted executions <integer>
     """
 
-    return mistralclient(request).action_executions.create(
-        action_name,
-        input,
-        **params
+    return mistralclient(request).cron_triggers.create(
+        cron_trigger_name,
+        workflow_ID,
+        workflow_input,
+        workflow_params,
+        pattern,
+        first_time,
+        count
     )

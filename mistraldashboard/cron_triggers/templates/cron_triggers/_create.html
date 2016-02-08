@@ -1,0 +1,45 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% block form_attrs %}enctype="multipart/form-data"{% endblock %}
+{% block modal-body-right %}
+    <h3>{% trans "Description" %}:</h3>
+    <p>
+        {% blocktrans %}
+            Cron Trigger is an object allowing to run workflow on a schedule.
+        {% endblocktrans %}
+    </p>
+    <p>
+        {% blocktrans %}
+            Using Cron Triggers it is possible to run workflows according to
+            specific rules: periodically setting a pattern
+            or on external events like Ceilometer alarm.
+        {% endblocktrans %}
+    </p>
+    <p>
+        {% trans "For more info" %}:
+        <ul class="list">
+            <li>
+                <a href="http://docs.openstack.org/developer/mistral/developer/webapi/v2.html#cron-triggers"
+                   title="{% trans "Mistral Cron Trigger" %}" target="_blank">
+                       {% trans "Mistral Cron Trigger" %}
+                </a>
+            </li>
+            <li>
+                <a href="http://en.wikipedia.org/wiki/Cron"
+                   title="Wikipedia" target="_blank">
+                       http://en.wikipedia.org/wiki/Cron
+                </a>
+            </li>
+        </ul>
+    </p>
+    <hr />
+    <p>
+        <strong class="block">
+            {% trans "Please note" %}:
+        </strong>
+        <br/>
+        {% blocktrans %}
+            Name, Workflow ID and Pattern are mandatory fields.
+        {% endblocktrans %}
+    </p>
+{% endblock %}

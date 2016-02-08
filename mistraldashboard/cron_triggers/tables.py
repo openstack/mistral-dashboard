@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright 2016 - Alcatel-Lucent.
+# Copyright 2016 - Nokia.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +21,14 @@ from horizon import tables
 
 from mistraldashboard import api
 from mistraldashboard.default.utils import humantime
+
+
+class CreateCronTrigger(tables.LinkAction):
+    name = "create"
+    verbose_name = _("Create Cron Trigger")
+    url = "horizon:mistral:cron_triggers:create"
+    classes = ("ajax-modal",)
+    icon = "plus"
 
 
 class DeleteCronTrigger(tables.DeleteAction):
@@ -101,5 +107,9 @@ class CronTriggersTable(tables.DataTable):
     class Meta(object):
         name = "cron trigger"
         verbose_name = _("Cron Trigger")
-        table_actions = (tables.FilterAction, DeleteCronTrigger)
+        table_actions = (
+            tables.FilterAction,
+            CreateCronTrigger,
+            DeleteCronTrigger
+        )
         row_actions = (DeleteCronTrigger,)
