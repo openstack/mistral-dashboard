@@ -49,3 +49,15 @@ def prettyprint(x):
 
     return render_to_string("mistral/default/_prettyprint.html",
                             {"full": full, "short": short})
+
+
+def convert_empty_string_to_none(str):
+    """Returns None if given string is empty.
+
+    Empty string is default for Django form empty HTML input.
+    python-mistral-client does not handle empty strings, only "None" type.
+
+    :param str: string variable
+    """
+
+    return str if len(str) != 0 else None
