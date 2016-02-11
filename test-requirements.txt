@@ -17,7 +17,7 @@ nose-exclude # LGPL
 nosexcover # BSD
 openstack.nose-plugin>=0.7 # Apache-2.0
 nosehtmloutput>=0.0.3 # Apache-2.0
-selenium!=2.49,!=2.50 # Apache-2.0
+selenium>=2.50.1 # Apache-2.0
 xvfbwrapper>=0.1.3 #license: MIT
 # Docs Requirements
 sphinx!=1.2.0,!=1.3b1,<1.3,>=1.1.2 # BSD
