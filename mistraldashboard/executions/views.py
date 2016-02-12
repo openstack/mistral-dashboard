@@ -98,7 +98,8 @@ class IndexView(tables.DataTableView):
             )
 
         try:
-            executions, self._more, self._prev = api.execution_list(
+            executions, self._more, self._prev = api.pagination_list(
+                entity="executions",
                 request=self.request,
                 marker=marker,
                 sort_dirs=sort_dir,

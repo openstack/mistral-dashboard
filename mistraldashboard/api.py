@@ -46,19 +46,14 @@ def mistralclient(request):
     )
 
 
-def execution_create(request, **data):
-    """Creates new execution."""
+@handle_errors(_("Unable to retrieve list"), [])
+def pagination_list(entity, request, marker='', sort_keys='',
+                    sort_dirs='', paginate=False):
+    """Retrieve a listing of specific entity and handles pagination.
 
-    return mistralclient(request).executions.create(**data)
-
-
-@handle_errors(_("Unable to retrieve executions."), [])
-def execution_list(request, marker='', sort_keys='',
-                   sort_dirs='', paginate=False):
-    """Retrieve a listing of executions.
-
+    :param entity: Requested entity (String)
     :param request: Request data
-    :param marker: Pagination marker for large data sets: execution id
+    :param marker: Pagination marker for large data sets: entity id
     :param sort_keys: Columns to sort results by. Default: created_at
     :param sort_dirs: Sorting Directions (asc/desc). Default:asc
     :param paginate: If true will perform pagination based on settings
@@ -72,17 +67,18 @@ def execution_list(request, marker='', sort_keys='',
     else:
         request_size = limit
 
-    executions_iter = mistralclient(request).executions.list(
+    request = mistralclient(request)
+    entities_iter = (eval('request.%s' % entity)).list(
         marker, limit, sort_keys, sort_dirs
     )
 
     has_prev_data = has_more_data = False
 
     if paginate:
-        executions = list(itertools.islice(executions_iter, request_size))
+        entities = list(itertools.islice(entities_iter, request_size))
         # first and middle page condition
-        if len(executions) > page_size:
-            executions.pop(-1)
+        if len(entities) > page_size:
+            entities.pop(-1)
             has_more_data = True
             # middle page condition
             if marker is not None:
@@ -94,9 +90,15 @@ def execution_list(request, marker='', sort_keys='',
         elif marker is not None:
             has_prev_data = True
     else:
-        executions = list(executions_iter)
+        entities = list(entities_iter)
 
-    return executions, has_more_data, has_prev_data
+    return entities, has_more_data, has_prev_data
+
+
+def execution_create(request, **data):
+    """Creates new execution."""
+
+    return mistralclient(request).executions.create(**data)
 
 
 def execution_get(request, execution_id):

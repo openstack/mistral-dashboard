@@ -26,7 +26,7 @@ class ExecutionsTest(test.TestCase):
 
     def test_index(self):
         with contextlib.nested(
-            mock.patch('mistraldashboard.api.execution_list',
+            mock.patch('mistraldashboard.api.pagination_list',
                        return_value=self.mistralclient_executions.list()),):
             res = self.client.get(INDEX_URL)
 
