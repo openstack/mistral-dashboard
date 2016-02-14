@@ -48,15 +48,16 @@ def mistralclient(request):
 
 @handle_errors(_("Unable to retrieve list"), [])
 def pagination_list(entity, request, marker='', sort_keys='',
-                    sort_dirs='', paginate=False):
+                    sort_dirs='asc', paginate=False):
     """Retrieve a listing of specific entity and handles pagination.
 
     :param entity: Requested entity (String)
     :param request: Request data
     :param marker: Pagination marker for large data sets: entity id
-    :param sort_keys: Columns to sort results by. Default: created_at
+    :param sort_keys: Columns to sort results by
     :param sort_dirs: Sorting Directions (asc/desc). Default:asc
-    :param paginate: If true will perform pagination based on settings
+    :param paginate: If true will perform pagination based on settings.
+                     Default:False
     """
 
     limit = getattr(settings, 'API_RESULT_LIMIT', 1000)
@@ -67,8 +68,8 @@ def pagination_list(entity, request, marker='', sort_keys='',
     else:
         request_size = limit
 
-    request = mistralclient(request)
-    entities_iter = (eval('request.%s' % entity)).list(
+    api = mistralclient(request)
+    entities_iter = getattr(api, entity).list(
         marker, limit, sort_keys, sort_dirs
     )
 

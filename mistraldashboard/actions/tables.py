@@ -90,9 +90,18 @@ class ActionsTable(tables.DataTable):
         verbose_name=_("Name"),
         link="horizon:mistral:actions:detail"
     )
-    is_system = tables.Column("is_system", verbose_name=_("Is System"))
-    tags = tables.Column(tags_to_string, verbose_name=_("Tags"))
-    inputs = tables.Column(cut, verbose_name=_("Input"))
+    is_system = tables.Column(
+        "is_system",
+        verbose_name=_("Is System")
+    )
+    tags = tables.Column(
+        tags_to_string,
+        verbose_name=_("Tags")
+    )
+    inputs = tables.Column(
+        cut,
+        verbose_name=_("Input")
+    )
     created = tables.Column(
         "created_at",
         verbose_name=_("Created"),
@@ -109,9 +118,6 @@ class ActionsTable(tables.DataTable):
             filters.timesince_or_never
         )
     )
-
-    def get_object_id(self, datum):
-        return datum.name
 
     class Meta(object):
         name = "actions"

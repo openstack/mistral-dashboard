@@ -1,3 +1,11 @@
 .list{
     list-style: inherit;
 }
+
+.mistral-wrapper #actions{
+    width:100%;
+}
+
+.mistral-wrapper #actions a.btn{
+    width:inherit;
+}

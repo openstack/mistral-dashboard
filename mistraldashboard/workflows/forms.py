@@ -50,8 +50,8 @@ class ExecuteForm(forms.SelfHandlingForm):
             messages.success(request, msg)
 
             return True
-        except Exception:
-            msg = _('Failed to execute workflow "%s".') % data['workflow_name']
+        except Exception as e:
+            msg = _('Failed to execute workflow "%s".') % e
             redirect = reverse('horizon:mistral:workflows:index')
             exceptions.handle(request, msg, redirect=redirect)
 
