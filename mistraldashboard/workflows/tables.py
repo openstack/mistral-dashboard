@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright 2014 - StackStorm, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -86,8 +84,14 @@ class WorkflowsTable(tables.DataTable):
         verbose_name=_("Name"),
         link="horizon:mistral:workflows:detail"
     )
-    tags = tables.Column(tags_to_string, verbose_name=_("Tags"))
-    inputs = tables.Column(cut, verbose_name=_("Input"))
+    tags = tables.Column(
+        tags_to_string,
+        verbose_name=_("Tags")
+    )
+    inputs = tables.Column(
+        cut,
+        verbose_name=_("Input")
+    )
     created = tables.Column(
         "created_at",
         verbose_name=_("Created"),

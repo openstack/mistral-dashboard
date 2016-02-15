@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright 2014 - StackStorm, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,6 +42,7 @@ class ExecuteForm(forms.SelfHandlingForm):
 
     def handle(self, request, data):
         try:
+            data['workflow_identifier'] = data.pop('workflow_name')
             ex = api.execution_create(request, **data)
 
             msg = _('Execution has been created with id "%s".') % ex.id
