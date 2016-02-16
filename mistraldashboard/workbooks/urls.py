@@ -14,15 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import patterns  # noqa
 from django.conf.urls import url  # noqa
 
 from mistraldashboard.workbooks import views
 
 WORKBOOKS = r'^(?P<workbook_name>[^/]+)/%s$'
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^select_definition$',
         views.SelectDefinitionView.as_view(),
@@ -33,4 +31,4 @@ urlpatterns = patterns(
     url(r'^create$', views.CreateView.as_view(), name='create'),
     url(r'^update$', views.UpdateView.as_view(), name='update'),
     url(WORKBOOKS % 'detail', views.DetailView.as_view(), name='detail'),
-)
+]
