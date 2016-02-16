@@ -12,8 +12,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import contextlib
-
 from django.core.urlresolvers import reverse
 import mock
 
@@ -25,9 +23,8 @@ INDEX_URL = reverse('horizon:mistral:executions:index')
 class ExecutionsTest(test.TestCase):
 
     def test_index(self):
-        with contextlib.nested(
-            mock.patch('mistraldashboard.api.pagination_list',
-                       return_value=self.mistralclient_executions.list()),):
+        with mock.patch('mistraldashboard.api.pagination_list',
+                        return_value=self.mistralclient_executions.list()):
             res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/executions/index.html')

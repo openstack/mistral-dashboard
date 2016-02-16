@@ -12,8 +12,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import contextlib
-
 from django.core.urlresolvers import reverse
 import mock
 
@@ -27,9 +25,8 @@ UPDATE_URL = reverse('horizon:mistral:workbooks:update')
 class WorkflowsTest(test.TestCase):
 
     def test_index(self):
-        with contextlib.nested(
-            mock.patch('mistraldashboard.api.workbook_list',
-                       return_value=self.mistralclient_workbooks.list()),):
+        with mock.patch('mistraldashboard.api.workbook_list',
+                        return_value=self.mistralclient_workbooks.list()):
             res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/workbooks/index.html')
@@ -51,9 +48,8 @@ class WorkflowsTest(test.TestCase):
             'definition_source': 'raw',
             'definition_data': workbook.definition
         }
-        with contextlib.nested(
-            mock.patch('mistraldashboard.api.workbook_validate',
-                       return_value={'valid': True}),) as (mocked_validate,):
+        with mock.patch('mistraldashboard.api.workbook_validate',
+                        return_value={'valid': True}) as mocked_validate:
             res = self.client.post(url, form_data)
 
         self.assertTemplateUsed(res, 'mistral/workbooks/create.html')
@@ -65,9 +61,8 @@ class WorkflowsTest(test.TestCase):
         form_data = {
             'definition': workbook.definition
         }
-        with contextlib.nested(
-            mock.patch('mistraldashboard.api.workbook_create',
-                       return_value=workbook),) as (mocked_create,):
+        with mock.patch('mistraldashboard.api.workbook_create',
+                        return_value=workbook) as mocked_create:
             res = self.client.post(CREATE_URL, form_data)
         self.assertNoFormErrors(res)
         self.assertEqual(res.status_code, 302)
@@ -95,9 +90,8 @@ class WorkflowsTest(test.TestCase):
             'definition_source': 'raw',
             'definition_data': workbook.definition
         }
-        with contextlib.nested(
-            mock.patch('mistraldashboard.api.workbook_validate',
-                       return_value={'valid': True}),) as (mocked_validate,):
+        with mock.patch('mistraldashboard.api.workbook_validate',
+                        return_value={'valid': True}) as mocked_validate:
             res = self.client.post(url, form_data)
 
         self.assertTemplateUsed(res, 'mistral/workbooks/update.html')
@@ -109,9 +103,8 @@ class WorkflowsTest(test.TestCase):
         form_data = {
             'definition': workbook.definition
         }
-        with contextlib.nested(
-            mock.patch('mistraldashboard.api.workbook_update',
-                       return_value=workbook),) as (mocked_update,):
+        with mock.patch('mistraldashboard.api.workbook_update',
+                        return_value=workbook) as mocked_update:
             res = self.client.post(UPDATE_URL, form_data)
         self.assertNoFormErrors(res)
         self.assertEqual(res.status_code, 302)
@@ -128,12 +121,13 @@ class WorkflowsTest(test.TestCase):
         data = {'action': 'workbooks__delete',
                 'object_ids': [workbooks[0].name]}
 
-        with contextlib.nested(
-            mock.patch('mistraldashboard.api.workbook_list',
-                       return_value=workbooks),
-            mock.patch('mistraldashboard.api.workbook_delete',
-                       return_value=None),) as (
-                mocked_list, mocked_delete):
+        with mock.patch(
+                'mistraldashboard.api.workbook_list',
+                return_value=workbooks
+        ), mock.patch(
+                'mistraldashboard.api.workbook_delete',
+                return_value=None
+        ) as mocked_delete:
 
             res = self.client.post(INDEX_URL, data)
 
