@@ -49,11 +49,59 @@ class UpdateView(forms.ModalFormView):
 
 
 class IndexView(tables.DataTableView):
+    table_id = "workflow_action"
     table_class = ActionsTable
     template_name = 'mistral/actions/index.html'
 
+    def has_prev_data(self, table):
+        return self._prev
+
+    def has_more_data(self, table):
+        return self._more
+
     def get_data(self):
-        return api.action_list(self.request)
+        actions = []
+        prev_marker = self.request.GET.get(
+            ActionsTable._meta.prev_pagination_param,
+            None
+        )
+
+        if prev_marker is not None:
+            sort_dir = 'asc'
+            marker = prev_marker
+        else:
+            sort_dir = 'desc'
+            marker = self.request.GET.get(
+                ActionsTable._meta.pagination_param,
+                None
+            )
+
+        try:
+            actions, self._more, self._prev = api.pagination_list(
+                entity="actions",
+                request=self.request,
+                marker=marker,
+                sort_keys='name',
+                sort_dirs=sort_dir,
+                paginate=True
+            )
+
+            if prev_marker is not None:
+                actions = sorted(
+                    actions,
+                    key=lambda action: getattr(
+                        action, 'name'
+                    ),
+                    reverse=True
+                )
+
+        except Exception as e:
+            self._prev = False
+            self._more = False
+            msg = _('Unable to retrieve actions list: %s') % str(e)
+            exceptions.handle(self.request, msg)
+
+        return actions
 
 
 class DetailView(generic.TemplateView):
