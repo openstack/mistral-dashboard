@@ -47,8 +47,8 @@ def mistralclient(request):
 
 
 @handle_errors(_("Unable to retrieve list"), [])
-def pagination_list(entity, request, marker='', sort_keys='',
-                    sort_dirs='asc', paginate=False):
+def pagination_list(entity, request, marker='', sort_keys='', sort_dirs='asc',
+                    paginate=False, reversed_order=False):
     """Retrieve a listing of specific entity and handles pagination.
 
     :param entity: Requested entity (String)
@@ -58,6 +58,7 @@ def pagination_list(entity, request, marker='', sort_keys='',
     :param sort_dirs: Sorting Directions (asc/desc). Default:asc
     :param paginate: If true will perform pagination based on settings.
                      Default:False
+    :param reversed_order: flag to reverse list. Default:False
     """
 
     limit = getattr(settings, 'API_RESULT_LIMIT', 1000)
@@ -67,6 +68,9 @@ def pagination_list(entity, request, marker='', sort_keys='',
         request_size = page_size + 1
     else:
         request_size = limit
+
+    if reversed_order:
+        sort_dirs = 'desc' if sort_dirs == 'asc' else 'asc'
 
     api = mistralclient(request)
     entities_iter = getattr(api, entity).list(
@@ -85,11 +89,19 @@ def pagination_list(entity, request, marker='', sort_keys='',
             if marker is not None:
                 has_prev_data = True
         # first page condition when reached via prev back
-        elif sort_dirs == 'asc' and marker is not None:
+        elif reversed_order and marker is not None:
             has_more_data = True
         # last page condition
         elif marker is not None:
             has_prev_data = True
+
+        # restore the original ordering here
+        if reversed_order:
+            entities = sorted(entities,
+                              key=lambda ent:
+                                  (getattr(ent, sort_keys) or '').lower(),
+                              reverse=(sort_dirs == 'desc')
+                              )
     else:
         entities = list(entities_iter)
 

@@ -83,7 +83,8 @@ class IndexView(tables.DataTableView):
                 marker=marker,
                 sort_keys='name',
                 sort_dirs=sort_dir,
-                paginate=True
+                paginate=True,
+                reversed_order=True
             )
 
             if prev_marker is not None:
@@ -92,7 +93,7 @@ class IndexView(tables.DataTableView):
                     key=lambda action: getattr(
                         action, 'name'
                     ),
-                    reverse=True
+                    reverse=False
                 )
 
         except Exception as e:
