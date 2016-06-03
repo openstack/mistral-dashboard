@@ -33,7 +33,7 @@ class IndexView(tables.DataTableView):
 
 class TaskView(tables.DataTableView):
     table_class = TaskTable
-    template_name = 'mistral/execution/index.html'
+    template_name = 'mistral/executions/index.html'
 
     def _get_tasks_definition(self, cli):
         execution = cli.executions.get(self.kwargs['execution_id'])
