@@ -65,8 +65,11 @@ class TaskTable(tables.DataTable):
     id = tables.Column("id", verbose_name=_("ID"))
     name = tables.Column("name", verbose_name=_("Name"))
 
-    parameters = tables.Column("parameters", verbose_name=_("Parameters"))
-    output = tables.Column("output", verbose_name=_("Output"))
+    parameters = tables.Column("parameters",
+                               verbose_name=_("Parameters"),
+                               filters=[prettyprint])
+    output = tables.Column("published", verbose_name=_("Published"),
+                           filters=[prettyprint])
 
     created_at = tables.Column("created_at", verbose_name=_("Created at"))
     updated_at = tables.Column("updated_at", verbose_name=_("Updated at"))
