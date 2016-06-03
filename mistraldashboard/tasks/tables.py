@@ -33,7 +33,7 @@ class TaskTable(tables.DataTable):
         filters=[prettyprint]
     )
     output = tables.Column(
-        "output",
+        "published",
         verbose_name=_("Output"),
         filters=[prettyprint]
     )
