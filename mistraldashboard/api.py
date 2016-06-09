@@ -29,6 +29,7 @@ SERVICE_TYPE = 'workflowv2'
 @memoized.memoized
 def mistralclient(request):
     return mistral_client.client(
+        mistral_url = settings.MISTRAL_URL,
         username=request.user.username,
         auth_token=request.user.token.id,
         project_id=request.user.tenant_id,
