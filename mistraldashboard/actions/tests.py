@@ -23,7 +23,7 @@ INDEX_URL = reverse('horizon:mistral:actions:index')
 class ActionsTest(test.TestCase):
 
     def test_index(self):
-        with mock.patch('mistraldashboard.api.action_list',
+        with mock.patch('mistraldashboard.api.pagination_list',
                         return_value=self.mistralclient_actions.list()):
             res = self.client.get(INDEX_URL)
 
