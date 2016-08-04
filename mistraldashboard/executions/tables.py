@@ -230,7 +230,7 @@ class ExecutionsTable(tables.DataTable):
         verbose_name = _("Executions")
         status_columns = ["state"]
         row_class = UpdateRow
-        table_actions = (DeleteExecution, tables.FilterAction)
-        row_actions = (DeleteExecution, UpdateDescription,
-                       PauseExecution, CancelExecution,
-                       ResumeExecution, DeleteExecution)
+        table_actions = (tables.FilterAction,)
+        #row_actions = (DeleteExecution, UpdateDescription,
+        #               PauseExecution, CancelExecution,
+        #               ResumeExecution, DeleteExecution)

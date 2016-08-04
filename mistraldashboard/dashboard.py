@@ -24,12 +24,9 @@ class MistralDashboard(horizon.Dashboard):
     slug = "mistral"
     panels = (
         'default',
-        'workbooks',
         'workflows',
         'executions',
-        'tasks',
-        'actions',
-        'cron_triggers'
+        'tasks'
     )
     default_panel = 'default'
     roles = ('admin',)
