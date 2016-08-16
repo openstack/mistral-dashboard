@@ -64,7 +64,7 @@ def get_data(self, datum, column, row):
                                  form_field_attributes)
         table._data_cache[column][table.get_object_id(datum)] = data
     elif column.auto == "actions":
-        data = table.render_row_actions(datum, pull_right=False)
+        data = table.render_row_actions(datum)
         table._data_cache[column][table.get_object_id(datum)] = data
     else:
         data = column.get_data(datum)
