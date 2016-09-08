@@ -26,8 +26,8 @@ from horizon import tables
 
 from mistraldashboard import api
 from mistraldashboard.default.utils import prettyprint
-from mistraldashboard.executions.forms import UpdateDescriptionForm
-from mistraldashboard.executions.tables import ExecutionsTable
+from mistraldashboard.executions import forms as m_forms
+from mistraldashboard.executions import tables as mistral_tables
 from mistraldashboard import forms as mistral_forms
 
 
@@ -71,7 +71,7 @@ def get_single_data(request, id, type="execution"):
 
 
 class IndexView(tables.DataTableView):
-    table_class = ExecutionsTable
+    table_class = mistral_tables.ExecutionsTable
     template_name = 'mistral/executions/index.html'
 
     def has_prev_data(self, table):
@@ -83,7 +83,7 @@ class IndexView(tables.DataTableView):
     def get_data(self):
         executions = []
         prev_marker = self.request.GET.get(
-            ExecutionsTable._meta.prev_pagination_param,
+            mistral_tables.ExecutionsTable._meta.prev_pagination_param,
             None
         )
 
@@ -93,7 +93,7 @@ class IndexView(tables.DataTableView):
         else:
             sort_dir = 'desc'
             marker = self.request.GET.get(
-                ExecutionsTable._meta.pagination_param,
+                mistral_tables.ExecutionsTable._meta.pagination_param,
                 None
             )
 
@@ -202,7 +202,7 @@ class UpdateDescriptionView(forms.ModalFormView):
     template_name = 'mistral/executions/update_description.html'
     modal_header = _("Update Execution Description")
     form_id = "update_execution_description"
-    form_class = UpdateDescriptionForm
+    form_class = m_forms.UpdateDescriptionForm
     submit_label = _("Update")
     success_url = reverse_lazy("horizon:mistral:executions:index")
     submit_url = "horizon:mistral:executions:update_description"

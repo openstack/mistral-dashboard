@@ -23,7 +23,7 @@ from horizon import tables
 
 from mistraldashboard import api
 from mistraldashboard.cron_triggers import forms as mistral_forms
-from mistraldashboard.cron_triggers.tables import CronTriggersTable
+from mistraldashboard.cron_triggers import tables as mistral_tables
 
 
 class OverviewView(generic.TemplateView):
@@ -66,7 +66,7 @@ class CreateView(forms.ModalFormView):
 
 
 class IndexView(tables.DataTableView):
-    table_class = CronTriggersTable
+    table_class = mistral_tables.CronTriggersTable
     template_name = 'mistral/cron_triggers/index.html'
 
     def get_data(self):

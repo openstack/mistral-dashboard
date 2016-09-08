@@ -20,7 +20,7 @@
 from django import forms
 from django import template
 
-from horizon.tables.base import Cell
+from horizon.tables import base
 
 import six
 
@@ -78,4 +78,4 @@ def get_data(self, datum, column, row):
 
 
 def init():
-    Cell.get_data = get_data
+    base.Cell.get_data = get_data

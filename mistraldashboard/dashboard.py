@@ -16,7 +16,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import horizon
 
-from mistraldashboard.default.panel import Default
+from mistraldashboard.default import panel
 
 
 class MistralDashboard(horizon.Dashboard):
@@ -36,4 +36,4 @@ class MistralDashboard(horizon.Dashboard):
 
 
 horizon.register(MistralDashboard)
-MistralDashboard.register(Default)
+MistralDashboard.register(panel.Default)

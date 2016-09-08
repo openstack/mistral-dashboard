@@ -22,7 +22,7 @@ from horizon import forms
 from horizon import tables
 
 from mistraldashboard.actions import forms as mistral_forms
-from mistraldashboard.actions.tables import ActionsTable
+from mistraldashboard.actions import tables as mistral_tables
 from mistraldashboard import api
 
 
@@ -50,7 +50,7 @@ class UpdateView(forms.ModalFormView):
 
 class IndexView(tables.DataTableView):
     table_id = "workflow_action"
-    table_class = ActionsTable
+    table_class = mistral_tables.ActionsTable
     template_name = 'mistral/actions/index.html'
 
     def has_prev_data(self, table):
@@ -62,7 +62,7 @@ class IndexView(tables.DataTableView):
     def get_data(self):
         actions = []
         prev_marker = self.request.GET.get(
-            ActionsTable._meta.prev_pagination_param,
+            mistral_tables.ActionsTable._meta.prev_pagination_param,
             None
         )
 
@@ -72,7 +72,7 @@ class IndexView(tables.DataTableView):
         else:
             sort_dir = 'desc'
             marker = self.request.GET.get(
-                ActionsTable._meta.pagination_param,
+                mistral_tables.ActionsTable._meta.pagination_param,
                 None
             )
 

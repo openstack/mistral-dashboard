@@ -27,7 +27,7 @@ from horizon import tables
 from mistraldashboard import api
 from mistraldashboard.default.utils import prettyprint
 from mistraldashboard import forms as mistral_forms
-from mistraldashboard.tasks.tables import TaskTable
+from mistraldashboard.tasks import tables as mistral_tables
 
 
 def get_single_task_data(request, **kwargs):
@@ -43,7 +43,7 @@ def get_single_task_data(request, **kwargs):
 
 
 class ExecutionView(tables.DataTableView):
-    table_class = TaskTable
+    table_class = mistral_tables.TaskTable
     template_name = 'mistral/tasks/filtered.html'
 
     def get_data(self, **kwargs):
@@ -106,7 +106,7 @@ class CodeView(forms.ModalFormView):
 
 
 class IndexView(tables.DataTableView):
-    table_class = TaskTable
+    table_class = mistral_tables.TaskTable
     template_name = 'mistral/tasks/index.html'
 
     def get_data(self):

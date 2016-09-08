@@ -25,11 +25,11 @@ from horizon import tables
 
 from mistraldashboard import api
 from mistraldashboard.workbooks import forms as mistral_forms
-from mistraldashboard.workbooks.tables import WorkbooksTable
+from mistraldashboard.workbooks import tables as mistral_tables
 
 
 class IndexView(tables.DataTableView):
-    table_class = WorkbooksTable
+    table_class = mistral_tables.WorkbooksTable
     template_name = 'mistral/workbooks/index.html'
 
     def get_data(self):
