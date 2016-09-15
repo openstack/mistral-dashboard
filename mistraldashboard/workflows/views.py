@@ -25,11 +25,11 @@ from horizon import tables
 
 from mistraldashboard import api
 from mistraldashboard.workflows import forms as mistral_forms
-from mistraldashboard.workflows.tables import WorkflowsTable
+from mistraldashboard.workflows import tables as workflows_tables
 
 
 class IndexView(tables.DataTableView):
-    table_class = WorkflowsTable
+    table_class = workflows_tables.WorkflowsTable
     template_name = 'mistral/workflows/index.html'
 
     def get_data(self):

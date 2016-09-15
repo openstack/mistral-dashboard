@@ -12,9 +12,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from mistralclient.api.base import APIException
+from mistralclient.api import base
 from openstack_dashboard import exceptions
 
 NOT_FOUND = exceptions.NOT_FOUND
-RECOVERABLE = exceptions.RECOVERABLE + (APIException,)
+RECOVERABLE = exceptions.RECOVERABLE + (base.APIException,)
 UNAUTHORIZED = exceptions.UNAUTHORIZED
