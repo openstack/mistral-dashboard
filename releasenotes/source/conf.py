@@ -59,3 +59,6 @@ pygments_style = 'sphinx'
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = '%sdoc' % project
+
+# -- Options for Internationalization output ------------------------------
+locale_dirs = ['locale/']
