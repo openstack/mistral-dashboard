@@ -40,3 +40,9 @@ nosetests.xml
 .DS_Store
 *.lock
 mistraldashboard/test/.secret_key_store
+
+# Files created by releasenotes build
+releasenotes/build
+
+# Files created by doc build
+doc/source/api
