@@ -21,7 +21,7 @@ from mistraldashboard import dashboard
 
 
 class Executions(horizon.Panel):
-    name = _("Executions")
+    name = _("Workflow Executions")
     slug = 'executions'
 
 

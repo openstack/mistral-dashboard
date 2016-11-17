@@ -21,7 +21,7 @@ from mistraldashboard import dashboard
 
 
 class Tasks(horizon.Panel):
-    name = _("Tasks")
+    name = _("Task Executions")
     slug = 'tasks'
 
 
