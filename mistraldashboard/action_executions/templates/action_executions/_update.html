@@ -1,0 +1,17 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+
+{% block modal-body-right %}
+    <h3>{% trans "Description:" %}</h3>
+    <p>
+        {% trans "Enter new output and or state to update the corresponding Action Execution." %}
+    </p>
+    <p>
+        {% trans "For more info refer to:" %}
+        <br/>
+        <a href="http://docs.openstack.org/developer/mistral/developer/webapi/v2.html#action-executions" target="_blank">
+            {% trans "Mistral documentation - Action Executions" %}
+        </a>
+
+    </p>
+{% endblock %}

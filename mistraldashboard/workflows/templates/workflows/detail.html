@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+<span class="mistral-wrapper detail-screen">
+{% extends 'mistral/default/base.html' %}
 {% load i18n %}
 {% block title %}{% trans "Workflow Definition" %}{% endblock %}
 
@@ -11,3 +12,4 @@
     <pre>{{ definition }}</pre>
   </div>
 {% endblock %}
+</span>

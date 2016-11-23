@@ -25,7 +25,8 @@ from horizon import forms
 from horizon import tables
 
 from mistraldashboard import api
-from mistraldashboard.default.utils import prettyprint
+from mistraldashboard.default import utils
+
 from mistraldashboard import forms as mistral_forms
 from mistraldashboard.tasks import tables as mistral_tables
 
@@ -63,6 +64,7 @@ class OverviewView(generic.TemplateView):
     page_title = _("Task Details")
     workflow_url = 'horizon:mistral:workflows:detail'
     execution_url = 'horizon:mistral:executions:detail'
+    action_execution_url = 'horizon:mistral:action_executions:task'
 
     def get_context_data(self, **kwargs):
         context = super(OverviewView, self).get_context_data(**kwargs)
@@ -71,8 +73,18 @@ class OverviewView(generic.TemplateView):
                                     args=[task.workflow_name])
         task.execution_url = reverse(self.execution_url,
                                      args=[task.workflow_execution_id])
-        task.result = prettyprint(task.result)
-        task.published = prettyprint(task.published)
+        task.result = utils.prettyprint(task.result)
+        task.published = utils.prettyprint(task.published)
+        task.state = utils.label(task.state)
+        if task.type and task.type == "ACTION":
+            task.type_url = reverse(self.action_execution_url, args=[task.id])
+
+        breadcrumb = [(task.id, reverse(
+            'horizon:mistral:tasks:detail',
+            args=[task.id]
+        ))]
+
+        context["custom_breadcrumb"] = breadcrumb
         context['task'] = task
 
         return context
@@ -95,10 +107,10 @@ class CodeView(forms.ModalFormView):
 
         if column == 'result':
             io['name'] = _('Result')
-            io['value'] = task.result = prettyprint(task.result)
+            io['value'] = task.result = utils.prettyprint(task.result)
         elif column == 'published':
             io['name'] = _('Published')
-            io['value'] = task.published = prettyprint(task.published)
+            io['value'] = task.published = utils.prettyprint(task.published)
 
         context['io'] = io
 

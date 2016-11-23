@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+<span class="mistral-wrapper detail-screen">
+{% extends 'mistral/default/base.html' %}
 {% load i18n %}
 
 {% block title %}{% trans "Cron Trigger Details" %}{% endblock %}
@@ -8,7 +9,7 @@
         {% trans "Cron Trigger Details" %}
     </h1>
     <ol class="breadcrumb">
-        <li><a href={{ cron_trigger.list_url }} title="Cron Triggers">
+        <li><a href="{{ cron_trigger.list_url }}" title="Cron Triggers">
             Cron Triggers
         </a>
         </li>
@@ -97,3 +98,4 @@
         </dl>
     </div>
 {% endblock %}
+</span>

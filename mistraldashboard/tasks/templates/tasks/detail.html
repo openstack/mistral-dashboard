@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+<span class="mistral-wrapper detail-screen">
+{% extends 'mistral/default/base.html' %}
 {% load i18n %}
 
 {% block title %}{% trans "Task Details" %}{% endblock %}
@@ -18,12 +19,21 @@
             <dd>{{ task.name }}</dd>
             <dt>{% trans "ID" %}</dt>
             <dd>{{ task.id }}</dd>
+            <dt>{% trans "Type" %}</dt>
+            <dd>
+                <a href="{{ task.type_url }}"
+                   title="{{task.type |title}} {% trans "list of the corresponding task" %}">
+                   {{ task.type |title }}
+                </a>
+            </dd>
             {% if task.state_info %}
                 <dt>{% trans "State Info" %}</dt>
                 <dd>{{ task.state_info }}</dd>
             {% endif %}
-            <dt>{% trans "State" %}</dt>
-            <dd>{{ task.state }}</dd>
+            <div class="line-space">
+                <dt>{% trans "State" %}</dt>
+                <dd>{{ task.state }}</dd>
+            </div>
             <br/>
             <dt>{% trans "Creation Date" %}</dt>
             <dd>{{ task.created_at|parse_isotime }}</dd>
@@ -63,3 +73,4 @@
         </dl>
     </div>
 {% endblock %}
+</span>

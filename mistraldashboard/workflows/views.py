@@ -43,10 +43,17 @@ class DetailView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         workflow = self.get_data(self.request, **kwargs)
+        breadcrumb = [(workflow.name, reverse(
+            'horizon:mistral:workflows:detail',
+            args=[workflow.name]
+        ))]
+
+        context["custom_breadcrumb"] = breadcrumb
         context['definition'] = (
             workflow.definition or
             'This workflow was created as part of workbook %s'
             % workflow.name.split('.')[0])
+
         return context
 
     def get_data(self, request, **kwargs):
