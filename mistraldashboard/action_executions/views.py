@@ -75,10 +75,9 @@ class OverviewView(generic.TemplateView):
             )
         if action_execution.state:
             action_execution.state = utils.label(action_execution.state)
-        if action_execution.accepted:
-            action_execution.accepted = utils.booleanfield(
-                action_execution.accepted
-            )
+        action_execution.accepted = utils.booleanfield(
+            action_execution.accepted
+        )
 
         breadcrumb = [(action_execution.id, reverse(
             'horizon:mistral:action_executions:detail',
