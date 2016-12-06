@@ -44,6 +44,12 @@ class OverviewView(generic.TemplateView):
             args=[cron_trigger.workflow_name]
         )
         cron_trigger.list_url = reverse_lazy(self.list_url)
+        breadcrumb = [(cron_trigger.name, reverse(
+            'horizon:mistral:cron_triggers:detail',
+            args=[cron_trigger.name]
+        ))]
+
+        context["custom_breadcrumb"] = breadcrumb
         context['cron_trigger'] = cron_trigger
 
         return context

@@ -330,6 +330,49 @@ def action_delete(request, action_name):
     return mistralclient(request).actions.delete(action_name)
 
 
+@handle_errors(_("Unable to retrieve action executions list"), [])
+def action_executions_list(request, task_execution_id=None):
+    """Returns all actions executions.
+
+    :param request: Request data
+    :param task_execution_id: (Optional) Task Execution ID to filter by
+    """
+
+    return mistralclient(request).action_executions.list(task_execution_id)
+
+
+@handle_errors(_("Unable to retrieve action execution"), [])
+def action_execution_get(request, action_execution_id):
+    """Get specific action execution.
+
+    :param action_execution_id: Action Execution ID
+    """
+
+    return mistralclient(request).action_executions.get(action_execution_id)
+
+
+@handle_errors(_("Unable to delete action execution/s"), [])
+def action_execution_delete(request, action_execution_id):
+    """Delete action execution.
+
+    :param action_execution_id: Action execution ID
+    """
+
+    return mistralclient(request).action_executions.delete(action_execution_id)
+
+
+@handle_errors(_("Unable to update action execution"), [])
+def action_execution_update(request, id, state=None, output=None):
+    """Update action execution output and or state.
+
+    :param id: action execution id
+    :param output: action execution output
+    :param state: action execution state
+    """
+
+    return mistralclient(request).action_executions.update(id, state, output)
+
+
 @handle_errors(_("Unable to retrieve cron trigger list"), [])
 def cron_trigger_list(request):
     """Returns all cron triggers.

@@ -43,6 +43,12 @@ class DetailView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         workbook = self.get_data(self.request, **kwargs)
+        breadcrumb = [(workbook.name, reverse(
+            'horizon:mistral:workbooks:detail',
+            args=[workbook.name]
+        ))]
+
+        context["custom_breadcrumb"] = breadcrumb
         context['definition'] = workbook.definition
 
         return context

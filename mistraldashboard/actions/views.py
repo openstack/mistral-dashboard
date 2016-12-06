@@ -24,6 +24,7 @@ from horizon import tables
 from mistraldashboard.actions import forms as mistral_forms
 from mistraldashboard.actions import tables as mistral_tables
 from mistraldashboard import api
+from mistraldashboard.default import utils
 
 
 class CreateView(forms.ModalFormView):
@@ -112,6 +113,14 @@ class DetailView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         action = self.get_data(self.request, **kwargs)
+        if action.is_system:
+            action.is_system = utils.booleanfield(action.is_system)
+        breadcrumb = [(action.name, reverse(
+            'horizon:mistral:actions:detail',
+            args=[action.id]
+        ))]
+
+        context["custom_breadcrumb"] = breadcrumb
         context['action'] = action
 
         return context

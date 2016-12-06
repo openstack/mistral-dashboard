@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.core.urlresolvers import reverse
+from django.template.defaultfilters import title
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import exceptions
@@ -40,6 +42,21 @@ class UpdateRow(tables.Row):
             exceptions.handle(request, msg)
 
         return instance
+
+
+class TypeColumn(tables.Column):
+    def get_link_url(self, datum):
+        obj_id = datum.id
+        url = ""
+        action_execution_url = "horizon:mistral:action_executions:task"
+        if datum.type == "ACTION":
+            url = action_execution_url
+        # todo: add missing link to workflow execution
+        # once available in python mistral client API
+        # elif datum.type = "WORKFLOW":
+        #     url= "horizon:mistral:workflow:task"
+
+        return reverse(url, args=[obj_id])
 
 
 class TaskTable(tables.DataTable):
@@ -69,6 +86,12 @@ class TaskTable(tables.DataTable):
         "workflow_execution_id",
         verbose_name=_("Workflow Execution ID"),
         link="horizon:mistral:executions:detail_task_id"
+    )
+    type = TypeColumn(
+        "type",
+        verbose_name=_("Type"),
+        filters=[title],
+        link=True
     )
     result = tables.Column(
         "",

@@ -25,7 +25,7 @@ from horizon import forms
 from horizon import tables
 
 from mistraldashboard import api
-from mistraldashboard.default.utils import prettyprint
+from mistraldashboard.default import utils
 from mistraldashboard.executions import forms as m_forms
 from mistraldashboard.executions import tables as mistral_tables
 from mistraldashboard import forms as mistral_forms
@@ -160,10 +160,18 @@ class DetailView(generic.TemplateView):
 
         execution.workflow_url = reverse(self.workflow_url,
                                          args=[execution.workflow_name])
-        execution.input = prettyprint(execution.input)
-        execution.output = prettyprint(execution.output)
-        execution.params = prettyprint(execution.params)
+        execution.input = utils.prettyprint(execution.input)
+        execution.output = utils.prettyprint(execution.output)
+        execution.params = utils.prettyprint(execution.params)
+        execution.state = utils.label(execution.state)
         task.url = reverse(self.task_url, args=[execution.id])
+
+        breadcrumb = [(execution.id, reverse(
+            'horizon:mistral:executions:detail',
+            args=[execution.id]
+        ))]
+
+        context["custom_breadcrumb"] = breadcrumb
         context['execution'] = execution
         context['task'] = task
 
@@ -189,10 +197,13 @@ class CodeView(forms.ModalFormView):
         io = {}
         if column == 'input':
             io['name'] = _('Input')
-            io['value'] = execution.input = prettyprint(execution.input)
+            io['value'] = execution.input = utils.prettyprint(execution.input)
         elif column == 'output':
             io['name'] = _('Output')
-            io['value'] = execution.output = prettyprint(execution.output)
+            io['value'] = execution.output = utils.prettyprint(
+                execution.output
+            )
+
         context['io'] = io
 
         return context

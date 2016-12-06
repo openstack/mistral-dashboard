@@ -19,6 +19,7 @@ from horizon import tables
 from horizon.utils import filters
 
 from mistraldashboard import api
+from mistraldashboard.default import utils
 
 
 class CreateAction(tables.LinkAction):
@@ -92,7 +93,8 @@ class ActionsTable(tables.DataTable):
     )
     is_system = tables.Column(
         "is_system",
-        verbose_name=_("Is System")
+        verbose_name=_("Is System"),
+        filters=[utils.booleanfield]
     )
     tags = tables.Column(
         tags_to_string,

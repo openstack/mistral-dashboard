@@ -26,11 +26,31 @@ TYPES = {
     'RUNNING': 'label-info',
 }
 
+BOOLEAN_FIELD = {
+    'True': {
+        'color': 'green',
+        'icon': 'fa fa-check'
+    },
+    'False': {
+        'color': 'red',
+        'icon': 'fa fa-remove'
+    }
+}
+
 
 def label(x):
     return render_to_string("mistral/default/_label.html",
                             {"label": x,
                              "type": TYPES.get(x)})
+
+
+def booleanfield(x):
+    # todo: check undefined instead of the if blocks in view
+    # todo: check the red version
+
+    return render_to_string("mistral/default/_booleanfield.html",
+                            {"bool": str(x),
+                             "type": BOOLEAN_FIELD.get(str(x))})
 
 
 def humantime(x):

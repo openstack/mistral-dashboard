@@ -1,0 +1,13 @@
+{% extends 'mistral/default/table.html' %}
+{% load i18n %}
+{% block title %}
+    {% trans "Action Executions" %}
+    {{ task_id }}
+{% endblock %}
+
+{% block page_header %}
+    {% include "horizon/common/_page_header.html" with title=_("Action Executions of Task ID:") %}
+    <h3>
+        {{ action_execution_id }}
+    </h3>
+{% endblock page_header %}

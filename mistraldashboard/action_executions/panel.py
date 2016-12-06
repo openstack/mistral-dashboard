@@ -1,4 +1,6 @@
-# Copyright 2014 - StackStorm, Inc.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2016 - Nokia.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,26 +17,12 @@
 from django.utils.translation import ugettext_lazy as _
 
 import horizon
-
-from mistraldashboard.default import panel
-
-
-class MistralDashboard(horizon.Dashboard):
-    name = _("Workflow")
-    slug = "mistral"
-    panels = (
-        'default',
-        'workbooks',
-        'workflows',
-        'actions',
-        'executions',
-        'tasks',
-        'action_executions',
-        'cron_triggers',
-    )
-    default_panel = 'default'
-    roles = ('admin',)
+from mistraldashboard import dashboard
 
 
-horizon.register(MistralDashboard)
-MistralDashboard.register(panel.Default)
+class Tasks(horizon.Panel):
+    name = _("Action Executions")
+    slug = 'action_executions'
+
+
+dashboard.MistralDashboard.register(Tasks)
