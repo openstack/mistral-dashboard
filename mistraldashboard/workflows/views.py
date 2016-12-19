@@ -24,8 +24,21 @@ from horizon import forms
 from horizon import tables
 
 from mistraldashboard import api
-from mistraldashboard.workflows import forms as mistral_forms
+from mistraldashboard.default import utils
+from mistraldashboard import forms as mistral_forms
+from mistraldashboard.workflows import forms as workflow_forms
 from mistraldashboard.workflows import tables as workflows_tables
+
+
+def get_single_data(request, workflow_name):
+    try:
+        workflow = api.workflow_get(request, workflow_name)
+    except Exception:
+        msg = _('Unable to get workflow "%s".') % workflow_name
+        redirect = reverse('horizon:mistral:workflows:index')
+        exceptions.handle(request, msg, redirect=redirect)
+
+    return workflow
 
 
 class IndexView(tables.DataTableView):
@@ -42,7 +55,7 @@ class DetailView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
-        workflow = self.get_data(self.request, **kwargs)
+        workflow = get_single_data(self.request, kwargs['workflow_name'])
         breadcrumb = [(workflow.name, reverse(
             'horizon:mistral:workflows:detail',
             args=[workflow.name]
@@ -56,20 +69,35 @@ class DetailView(generic.TemplateView):
 
         return context
 
-    def get_data(self, request, **kwargs):
-        try:
-            workflow_name = kwargs['workflow_name']
-            workflow = api.workflow_get(request, workflow_name)
-        except Exception:
-            msg = _('Unable to get workflow "%s".') % workflow_name
-            redirect = reverse('horizon:mistral:workflows:index')
-            exceptions.handle(self.request, msg, redirect=redirect)
 
-        return workflow
+class CodeView(forms.ModalFormView):
+    template_name = 'mistral/default/code.html'
+    modal_header = _("Code view")
+    form_id = "code_view"
+    form_class = mistral_forms.EmptyForm
+    cancel_label = "OK"
+    cancel_url = reverse_lazy("horizon:mistral:workflows:index")
+    page_title = _("Code view")
+
+    def get_context_data(self, **kwargs):
+        context = super(CodeView, self).get_context_data(**kwargs)
+        workflow = get_single_data(self.request, self.kwargs['workflow_name'])
+        io = {}
+        column = self.kwargs['column']
+        if column == 'definition':
+            io['name'] = _('Workflow Definition')
+            io['value'] = utils.htmlpre(workflow.definition)
+        elif column == 'input':
+            io['name'] = _('Workflow Input')
+            io['value'] = workflow.input
+
+        context['io'] = io
+
+        return context
 
 
 class ExecuteView(forms.ModalFormView):
-    form_class = mistral_forms.ExecuteForm
+    form_class = workflow_forms.ExecuteForm
     template_name = 'mistral/workflows/execute.html'
     success_url = reverse_lazy("horizon:mistral:executions:index")
 
@@ -88,7 +116,7 @@ class SelectDefinitionView(forms.ModalFormView):
     template_name = 'mistral/workflows/select_definition.html'
     modal_header = _("Create Workflow")
     form_id = "select_definition"
-    form_class = mistral_forms.DefinitionForm
+    form_class = workflow_forms.DefinitionForm
     submit_label = _("Next")
     submit_url = reverse_lazy("horizon:mistral:workflows:select_definition")
     success_url = reverse_lazy('horizon:mistral:workflows:create')
@@ -118,7 +146,7 @@ class CreateView(forms.ModalFormView):
     template_name = 'mistral/workflows/create.html'
     modal_header = _("Create Workflow")
     form_id = "create_workflow"
-    form_class = mistral_forms.CreateForm
+    form_class = workflow_forms.CreateForm
     submit_label = _("Create")
     submit_url = reverse_lazy("horizon:mistral:workflows:create")
     success_url = reverse_lazy('horizon:mistral:workflows:index')
@@ -137,7 +165,7 @@ class UpdateView(CreateView):
     template_name = 'mistral/workflows/update.html'
     modal_header = _("Update Workflow")
     form_id = "update_workflow"
-    form_class = mistral_forms.UpdateForm
+    form_class = workflow_forms.UpdateForm
     submit_label = _("Update")
     submit_url = reverse_lazy("horizon:mistral:workflows:update")
     page_title = _("Update Workflow")

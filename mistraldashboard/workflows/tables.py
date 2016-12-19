@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.template.defaultfilters import title
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 
@@ -69,7 +70,7 @@ def tags_to_string(workflow):
     return ', '.join(workflow.tags) if workflow.tags else None
 
 
-def cut(workflow, length=100):
+def cut(workflow, length=50):
     inputs = workflow.input
 
     if inputs and len(inputs) > length:
@@ -84,13 +85,32 @@ class WorkflowsTable(tables.DataTable):
         verbose_name=_("Name"),
         link="horizon:mistral:workflows:detail"
     )
+    id = tables.Column(
+        "id",
+        verbose_name=_("ID"),
+    )
+    scope = tables.Column(
+        "scope",
+        verbose_name=_("Scope"),
+        filters=[title],
+    )
+    definition = tables.Column(
+        "",
+        verbose_name=_("Definition"),
+        empty_value=_("View"),
+        link="horizon:mistral:workflows:definition",
+        link_classes=("ajax-modal",)
+    )
+
     tags = tables.Column(
         tags_to_string,
         verbose_name=_("Tags")
     )
     inputs = tables.Column(
         cut,
-        verbose_name=_("Input")
+        verbose_name=_("Input"),
+        link="horizon:mistral:workflows:input",
+        link_classes=("ajax-modal",)
     )
     created = tables.Column(
         "created_at",

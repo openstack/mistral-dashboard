@@ -32,4 +32,8 @@ urlpatterns = [
     url(r'^update$', views.UpdateView.as_view(), name='update'),
     url(WORKFLOWS % 'execute', views.ExecuteView.as_view(), name='execute'),
     url(WORKFLOWS % 'detail', views.DetailView.as_view(), name='detail'),
+    url(WORKFLOWS % 'definition', views.CodeView.as_view(),
+        {'column': 'definition'}, name='definition'),
+    url(WORKFLOWS % 'input', views.CodeView.as_view(),
+        {'column': 'input'}, name='input'),
 ]

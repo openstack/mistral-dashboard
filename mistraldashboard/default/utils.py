@@ -71,6 +71,12 @@ def prettyprint(x):
                             {"full": full, "short": short})
 
 
+def htmlpre(pre):
+
+    return render_to_string("mistral/default/_preprint.html",
+                            {"pre": pre})
+
+
 def convert_empty_string_to_none(str):
     """Returns None if given string is empty.
 
