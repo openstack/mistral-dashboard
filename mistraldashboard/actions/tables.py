@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 
@@ -19,7 +20,10 @@ from horizon import tables
 from horizon.utils import filters
 
 from mistraldashboard import api
+from mistraldashboard.default import smart_cell
 from mistraldashboard.default import utils
+
+smart_cell.init()
 
 
 class CreateAction(tables.LinkAction):
@@ -81,8 +85,13 @@ def cut(action, length=100):
 class RunAction(tables.LinkAction):
     name = "run"
     verbose_name = _("Run")
-    url = "horizon:mistral:actions:run"
     classes = ("ajax-modal",)
+
+    def get_link_url(self, datum):
+        obj_id = datum.name
+        url = "horizon:mistral:actions:run"
+
+        return reverse(url, args=[obj_id])
 
 
 class ActionsTable(tables.DataTable):

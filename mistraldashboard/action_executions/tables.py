@@ -23,10 +23,10 @@ from horizon import exceptions
 from horizon import tables
 
 from mistraldashboard import api
-import mistraldashboard.default.SmartCell as SmartCell
+from mistraldashboard.default import smart_cell
 from mistraldashboard.default import utils
 
-SmartCell.init()
+smart_cell.init()
 
 
 class UpdateRow(tables.Row):
