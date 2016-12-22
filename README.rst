@@ -37,7 +37,7 @@ Or if you're planning to run Horizon server in a virtual environment (see below)
 
 and then
 
-    $ cp -b <mistral-dashboard>/_50_mistral.py.example <horizon>/openstack_dashboard/local/enabled/_50_mistral.py
+    $ cp -b <mistral-dashboard>/mistraldashboard/enabled/_50_mistral.py <horizon>/openstack_dashboard/local/enabled/_50_mistral.py
 
 Since Mistral only supports Identity v3, you must ensure that the dashboard
 points the proper OPENSTACK_KEYSTONE_URL in <horizon>/openstack_dashboard/local/local_settings.py file::
