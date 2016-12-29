@@ -49,7 +49,7 @@ class ExecutionView(tables.DataTableView):
 
     def get_data(self, **kwargs):
         try:
-            execution_id = self.kwargs['task_id']
+            execution_id = self.kwargs['execution_id']
             tasks = api.task_list(self.request, execution_id)
         except Exception:
             msg = _('Unable to get task by execution id "%s".') % execution_id
@@ -62,22 +62,31 @@ class ExecutionView(tables.DataTableView):
 class OverviewView(generic.TemplateView):
     template_name = 'mistral/tasks/detail.html'
     page_title = _("Task Details")
-    workflow_url = 'horizon:mistral:workflows:detail'
+    workflow_detail_url = 'horizon:mistral:workflows:detail'
+    workflow_execution_tasks_url = 'horizon:mistral:executions:tasks'
     execution_url = 'horizon:mistral:executions:detail'
     action_execution_url = 'horizon:mistral:action_executions:task'
 
     def get_context_data(self, **kwargs):
         context = super(OverviewView, self).get_context_data(**kwargs)
         task = get_single_task_data(self.request, **kwargs)
-        task.workflow_url = reverse(self.workflow_url,
-                                    args=[task.workflow_name])
+        task.workflow_detail_url = reverse(self.workflow_detail_url,
+                                           args=[task.workflow_name])
         task.execution_url = reverse(self.execution_url,
                                      args=[task.workflow_execution_id])
         task.result = utils.prettyprint(task.result)
         task.published = utils.prettyprint(task.published)
         task.state = utils.label(task.state)
-        if task.type and task.type == "ACTION":
-            task.type_url = reverse(self.action_execution_url, args=[task.id])
+        if task.type == "ACTION":
+            task.type_url = reverse(
+                self.action_execution_url,
+                args=[task.id]
+            )
+        elif task.type == "WORKFLOW":
+            task.type_url = reverse(
+                self.workflow_execution_tasks_url,
+                args=[task.id]
+            )
 
         breadcrumb = [(task.id, reverse(
             'horizon:mistral:tasks:detail',

@@ -49,12 +49,11 @@ class TypeColumn(tables.Column):
         obj_id = datum.id
         url = ""
         action_execution_url = "horizon:mistral:action_executions:task"
+        workflow_execution_url = "horizon:mistral:executions:tasks"
         if datum.type == "ACTION":
             url = action_execution_url
-        # todo: add missing link to workflow execution
-        # once available in python mistral client API
-        # elif datum.type = "WORKFLOW":
-        #     url= "horizon:mistral:workflow:task"
+        elif datum.type == "WORKFLOW":
+            url = workflow_execution_url
 
         return reverse(url, args=[obj_id])
 

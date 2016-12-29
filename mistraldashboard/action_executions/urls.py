@@ -19,6 +19,7 @@ from django.conf.urls import url  # noqa
 from mistraldashboard.action_executions import views
 
 ACTION_EXECUTIONS = r'^(?P<action_execution_id>[^/]+)/%s$'
+TASKS = r'^(?P<task_id>[^/]+)/%s$'
 
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
@@ -30,6 +31,6 @@ urlpatterns = [
         {'column': 'output'}, name='output'),
     url(ACTION_EXECUTIONS % 'update', views.UpdateView.as_view(),
         name='update'),
-    url(ACTION_EXECUTIONS % 'task', views.FilteredByTaskView.as_view(),
+    url(TASKS % 'task', views.FilteredByTaskView.as_view(),
         name='task')
 ]
