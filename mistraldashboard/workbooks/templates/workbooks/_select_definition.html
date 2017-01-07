@@ -4,4 +4,10 @@
 {% block modal-body-right %}
   <h3>{% trans "Description:" %}</h3>
   <p>{% trans "Use one of the available definition source options to specify the definition to be used in creating this workbook." %}</p>
+  <p>
+    {% trans "Refer"%}
+    <a href="http://docs.openstack.org/developer/mistral/dsl/dsl_v2.html#workbooks" title="Workflow Language Syntax" target="_blank">
+      Mistral Workflow Language</a>
+    {% trans " documentation for syntax details." %}
+  </p>
 {% endblock %}
