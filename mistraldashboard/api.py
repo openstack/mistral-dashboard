@@ -48,7 +48,7 @@ def mistralclient(request):
 
 @handle_errors(_("Unable to retrieve list"), [])
 def pagination_list(entity, request, marker='', sort_keys='', sort_dirs='asc',
-                    paginate=False, reversed_order=False):
+                    paginate=False, reversed_order=False, selector=None):
     """Retrieve a listing of specific entity and handles pagination.
 
     :param entity: Requested entity (String)
@@ -59,6 +59,7 @@ def pagination_list(entity, request, marker='', sort_keys='', sort_dirs='asc',
     :param paginate: If true will perform pagination based on settings.
                      Default:False
     :param reversed_order: flag to reverse list. Default:False
+    :param selector: additional selector to allow further server filtering
     """
 
     limit = getattr(settings, 'API_RESULT_LIMIT', 1000)
@@ -73,8 +74,21 @@ def pagination_list(entity, request, marker='', sort_keys='', sort_dirs='asc',
         sort_dirs = 'desc' if sort_dirs == 'asc' else 'asc'
 
     api = mistralclient(request)
-    entities_iter = getattr(api, entity).list(
-        marker, limit, sort_keys, sort_dirs
+    entities_iter = (
+        getattr(api, entity).list(
+            selector,
+            marker=marker,
+            limit=limit,
+            sort_keys=sort_keys,
+            sort_dirs=sort_dirs
+        ) if selector else (
+            getattr(api, entity).list(
+                marker=marker,
+                limit=limit,
+                sort_keys=sort_keys,
+                sort_dirs=sort_dirs
+            )
+        )
     )
 
     has_prev_data = has_more_data = False

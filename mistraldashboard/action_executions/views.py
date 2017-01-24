@@ -162,7 +162,7 @@ class FilteredByTaskView(tables.DataTableView):
 
     def get_data(self, **kwargs):
         try:
-            task_id = self.kwargs['action_execution_id']
+            task_id = self.kwargs['task_id']
             data = api.action_executions_list(self.request, task_id)
         except Exception:
             msg = (

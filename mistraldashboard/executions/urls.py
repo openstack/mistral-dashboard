@@ -17,10 +17,12 @@ from django.conf.urls import url  # noqa
 from mistraldashboard.executions import views
 
 EXECUTIONS = r'^(?P<execution_id>[^/]+)/%s$'
+TASKS = r'^(?P<task_execution_id>[^/]+)/%s$'
 
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(EXECUTIONS % 'detail', views.DetailView.as_view(), name='detail'),
+    url(TASKS % 'tasks', views.TasksView.as_view(), name='tasks'),
     url(EXECUTIONS % 'detail_task_id', views.DetailView.as_view(),
         {'caller': 'task'}, name='detail_task_id'),
     url(EXECUTIONS % 'output', views.CodeView.as_view(),
