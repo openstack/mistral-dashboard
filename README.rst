@@ -25,7 +25,7 @@ The following should get you started::
 
 Clone the repository into your local OpenStack directory:
 
-    $ git clone https://github.com/openstack/mistral-dashboard.git
+    $ git clone https://git.openstack.org/openstack/mistral-dashboard.git
 
 Install mistral-dashboard
 
