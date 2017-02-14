@@ -46,3 +46,7 @@ releasenotes/build
 
 # Files created by doc build
 doc/source/api
+
+# pbr generates these
+AUTHORS
+ChangeLog
