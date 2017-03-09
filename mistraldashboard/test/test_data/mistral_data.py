@@ -12,6 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from mistralclient.api.v2 import action_executions
 from mistralclient.api.v2 import actions
 from mistralclient.api.v2 import executions
 from mistralclient.api.v2 import tasks
@@ -68,7 +69,8 @@ def data(TEST):
          'tags': ['test'],
          'created_at': '1',
          'updated_at': '1'
-         })
+         }
+    )
     TEST.mistralclient_actions.add(action_1)
 
     # MistralExecutions
@@ -84,7 +86,8 @@ def data(TEST):
                  'first_name': 'John',
                  'last_name': 'Doe'
              }
-         }})
+         }}
+    )
     TEST.mistralclient_executions.add(execution_1)
 
     # Tasks
@@ -108,7 +111,8 @@ def data(TEST):
          'tags': ['a', 'b'],
          'created_at': '1',
          'updated_at': '1',
-         'definition': WB_DEF})
+         'definition': WB_DEF}
+    )
     TEST.mistralclient_workbooks.add(workbook_1)
 
     # Workflows
@@ -120,5 +124,25 @@ def data(TEST):
          'input': 'param',
          'created_at': '1',
          'updated_at': '1',
-         'definition': WF_DEF})
+         'definition': WF_DEF}
+    )
     TEST.mistralclient_workflows.add(workflow_1)
+
+    # MistralActionsExecutions
+    TEST.mistralclient_action_executions = test_data_utils.TestDataContainer()
+    action_executions_1 = action_executions.ActionExecution(
+        action_executions.ActionExecutionManager(None),
+        {'id': '1',
+         'name': 'a',
+         'tags': ['a', 'b'],
+         'workflow_name': 'my work flow',
+         'task_execution_id': '1',
+         'task_name': 'b',
+         'description': '',
+         'created_at': '1',
+         'updated_at': '1',
+         'accepted': True,
+         'state': 'RUNNING'
+         }
+    )
+    TEST.mistralclient_action_executions.add(action_executions_1)
