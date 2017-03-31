@@ -68,7 +68,7 @@ class SelectDefinitionView(forms.ModalFormView):
     modal_header = _("Create Workbook")
     form_id = "select_definition"
     form_class = mistral_forms.DefinitionForm
-    submit_label = _("Next")
+    submit_label = _("Validate")
     submit_url = reverse_lazy("horizon:mistral:workbooks:select_definition")
     success_url = reverse_lazy('horizon:mistral:workbooks:create')
     page_title = _("Select Definition")
