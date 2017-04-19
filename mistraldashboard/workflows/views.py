@@ -115,7 +115,7 @@ class SelectDefinitionView(forms.ModalFormView):
     modal_header = _("Create Workflow")
     form_id = "select_definition"
     form_class = workflow_forms.DefinitionForm
-    submit_label = _("Next")
+    submit_label = _("Validate")
     submit_url = reverse_lazy("horizon:mistral:workflows:select_definition")
     success_url = reverse_lazy('horizon:mistral:workflows:create')
     page_title = _("Select Definition")
