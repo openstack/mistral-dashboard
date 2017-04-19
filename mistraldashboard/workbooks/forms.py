@@ -94,8 +94,7 @@ class DefinitionForm(forms.SelfHandlingForm):
 class CreateForm(forms.SelfHandlingForm):
     definition = forms.CharField(
         widget=forms.widgets.Textarea(
-            attrs={'readonly': 'readonly',
-                   'rows': 12}
+            attrs={'rows': 12}
         ),
         required=False
     )
