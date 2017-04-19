@@ -14,6 +14,7 @@
 
 from mistralclient.api.v2 import action_executions
 from mistralclient.api.v2 import actions
+from mistralclient.api.v2 import cron_triggers
 from mistralclient.api.v2 import executions
 from mistralclient.api.v2 import tasks
 from mistralclient.api.v2 import workbooks
@@ -146,3 +147,19 @@ def data(TEST):
          }
     )
     TEST.mistralclient_action_executions.add(action_executions_1)
+
+    # MistralCronTriggers
+    TEST.mistralclient_cron_triggers = test_data_utils.TestDataContainer()
+    cron_triggers_1 = cron_triggers.CronTrigger(
+        cron_triggers.CronTriggerManager(None),
+        {'id': '1',
+         'name': 'a',
+         'workflow_name': 'my work flow',
+         'pattern': '',
+         'next_execution_time': '',
+         'remaining_executions': '',
+         'first_execution_time': '',
+         'created_at': '1',
+         'updated_at': '1'
+         })
+    TEST.mistralclient_cron_triggers.add(cron_triggers_1)
