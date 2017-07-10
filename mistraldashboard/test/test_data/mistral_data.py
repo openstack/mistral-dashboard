@@ -45,7 +45,7 @@ workflows:
 
       test_subsequent:
         action: std.http url="http://some_url" server_id=1
-"""
+""".strip()
 
 # Workflows
 WF_DEF = """
@@ -55,7 +55,7 @@ flow:
   tasks:
     task1:
       action: nova.servers_get server="1"
-"""
+""".strip()
 
 
 def data(TEST):
