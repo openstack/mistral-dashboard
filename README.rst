@@ -17,7 +17,7 @@ Setup Instructions
 ==================
 This instruction assumes that Horizon is already installed and it's installation
 folder is <horizon>. Detailed information on how to install Horizon can be
-found at http://docs.openstack.org/developer/horizon/quickstart.html#setup.
+found at https://docs.openstack.org/horizon/latest/contributor/quickstart.html#setup.
 
 The installation folder of Mistral Dashboard will be referred to as <mistral-dashboard>.
 
@@ -65,4 +65,4 @@ Mistral-Dashboard Debug Instructions
 ------------------------------------
 
 For debug instructions refer to `OpenStack Mistral Troubleshooting
-<http://docs.openstack.org/developer/mistral/developer/troubleshooting.html>`_
+<https://docs.openstack.org/mistral/latest/contributor/troubleshooting.html>`_
