@@ -107,7 +107,9 @@ class ExecuteView(forms.ModalFormView):
         return context
 
     def get_initial(self, **kwargs):
-        return {'workflow_name': self.kwargs['workflow_name']}
+        workflow = get_single_data(self.request, self.kwargs['workflow_name'])
+        return {'workflow_name': self.kwargs['workflow_name'],
+                'parameter_list': workflow.input}
 
 
 class SelectDefinitionView(forms.ModalFormView):

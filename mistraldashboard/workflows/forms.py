@@ -30,21 +30,40 @@ class ExecuteForm(forms.SelfHandlingForm):
         required=True,
         widget=forms.TextInput(attrs={'readonly': 'readonly'})
     )
-    workflow_input = forms.CharField(
-        label=_("Input"),
-        required=False,
-        initial="{}",
-        widget=forms.widgets.Textarea()
-    )
     task_name = forms.CharField(
         label=_("Task name"),
         required=False,
         widget=forms.TextInput()
     )
 
+    def __init__(self, *args, **kwargs):
+        super(ExecuteForm, self).__init__(*args, **kwargs)
+        self._generate_parameter_fields(kwargs["initial"]["parameter_list"])
+
+    def _generate_parameter_fields(self, list):
+        self.workflow_parameters = []
+        for entry in list.split(","):
+            label, _, default = entry.partition("=")
+            label = label.strip()
+            self.workflow_parameters.append(label)
+            if default == "None":
+                default = None
+                required = False
+            else:
+                required = True
+            self.fields[label] = forms.CharField(label=label,
+                                                 required=required,
+                                                 initial=default)
+
     def handle(self, request, data):
         try:
             data['workflow_identifier'] = data.pop('workflow_name')
+            data['workflow_input'] = {}
+            for param in self.workflow_parameters:
+                value = data.pop(param)
+                if value == "":
+                    value = None
+                data['workflow_input'][param] = value
             ex = api.execution_create(request, **data)
 
             msg = _('Execution has been created with id "%s".') % ex.id
