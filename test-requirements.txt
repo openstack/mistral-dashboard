@@ -27,4 +27,3 @@ docutils>=0.11 # OSI-Approved Open Source, Public Domain
 
 # Horizon requirements
 django-compressor>=2.0 # MIT
-django-openstack-auth>=3.5.0 # Apache-2.0
