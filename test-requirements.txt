@@ -20,7 +20,7 @@ selenium>=2.50.1 # Apache-2.0
 xvfbwrapper>=0.1.3 #license: MIT
 
 # Docs Requirements
-sphinx!=1.6.6,>=1.6.2 # BSD
+sphinx!=1.6.6,<1.7.0,>=1.6.2 # BSD
 oslosphinx>=4.7.0 # Apache-2.0
 reno>=2.5.0 # Apache-2.0
 docutils>=0.11 # OSI-Approved Open Source, Public Domain
