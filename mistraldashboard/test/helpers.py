@@ -28,8 +28,10 @@ class MistralTestsMixin(object):
 
 
 class TestCase(MistralTestsMixin, helpers.TestCase):
+    use_mox = False
     pass
 
 
 class APITestCase(MistralTestsMixin, helpers.APITestCase):
+    use_mox = False
     pass
