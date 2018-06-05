@@ -21,9 +21,8 @@ found at http://docs.openstack.org/developer/horizon/quickstart.html#setup.
 
 The installation folder of Mistral Dashboard will be referred to as <mistral-dashboard>.
 
-The following should get you started::
-
-Clone the repository into your local OpenStack directory:
+The following should get you started. Clone the repository into your local
+OpenStack directory::
 
     $ git clone https://git.openstack.org/openstack/mistral-dashboard.git
 
