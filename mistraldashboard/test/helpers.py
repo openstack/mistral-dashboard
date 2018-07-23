@@ -17,10 +17,6 @@ from openstack_dashboard.test import helpers
 from mistraldashboard.test.test_data import utils
 
 
-def create_stubs(stubs_to_create={}):
-    return helpers.create_stubs(stubs_to_create)
-
-
 class MistralTestsMixin(object):
     def _setup_test_data(self):
         super(MistralTestsMixin, self)._setup_test_data()
@@ -28,10 +24,8 @@ class MistralTestsMixin(object):
 
 
 class TestCase(MistralTestsMixin, helpers.TestCase):
-    use_mox = False
     pass
 
 
 class APITestCase(MistralTestsMixin, helpers.APITestCase):
-    use_mox = False
     pass
