@@ -45,15 +45,16 @@ class ExecuteForm(forms.SelfHandlingForm):
         for entry in list.split(","):
             label, _, default = entry.partition("=")
             label = label.strip()
-            self.workflow_parameters.append(label)
-            if default == "None":
-                default = None
-                required = False
-            else:
-                required = True
-            self.fields[label] = forms.CharField(label=label,
-                                                 required=required,
-                                                 initial=default)
+            if label != '':
+                self.workflow_parameters.append(label)
+                if default == "None":
+                    default = None
+                    required = False
+                else:
+                    required = True
+                self.fields[label] = forms.CharField(label=label,
+                                                     required=required,
+                                                     initial=default)
 
     def handle(self, request, data):
         try:
