@@ -100,6 +100,7 @@ def data(TEST):
          'name': 'my_task',
          'workflow_name': 'my_wf',
          'state': 'RUNNING',
+         'type': 'ACTION',
          'tags': ['deployment', 'demo'],
          'result': {'some': 'result'}})
     TEST.mistralclient_tasks.add(task_1)
