@@ -24,7 +24,7 @@ The installation folder of Mistral Dashboard will be referred to as <mistral-das
 The following should get you started. Clone the repository into your local
 OpenStack directory::
 
-    $ git clone https://git.openstack.org/openstack/mistral-dashboard.git
+    $ git clone https://opendev.org/openstack/mistral-dashboard.git
 
 Install mistral-dashboard
 
