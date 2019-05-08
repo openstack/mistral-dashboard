@@ -91,6 +91,7 @@ class CreateForm(forms.SelfHandlingForm):
         widget=forms.FileInput(
             attrs={'class': 'switched',
                    'data-switch-on': 'definitionsource',
+                   'data-required-when-shown': 'true',
                    'data-definitionsource-file': _('Definition File')}
         ),
         required=False
@@ -101,6 +102,7 @@ class CreateForm(forms.SelfHandlingForm):
         widget=forms.widgets.Textarea(
             attrs={'class': 'switched',
                    'data-switch-on': 'definitionsource',
+                   'data-required-when-shown': 'true',
                    'data-definitionsource-raw': _('Definition Data'),
                    'rows': 4}
         ),
