@@ -169,6 +169,14 @@ class ExecutionsTable(tables.DataTable):
         ("running", None),
     )
 
+    STATUS_DISPLAY_CHOICES = (
+        ("success", _("Success")),
+        ("error", _("Error")),
+        ("paused", _("Paused")),
+        ("delayed", _("Delayed")),
+        ("running", _("Running")),
+    )
+
     id = tables.Column(
         "id",
         verbose_name=_("ID"),
@@ -208,6 +216,7 @@ class ExecutionsTable(tables.DataTable):
         verbose_name=_("Created at"),
         filters=[humantime]
     )
+
     updated_at = tables.Column(
         "updated_at",
         verbose_name=_("Updated at"),
@@ -220,6 +229,7 @@ class ExecutionsTable(tables.DataTable):
         filters=[label],
         status=True,
         status_choices=STATE_STATUS_CHOICES,
+        display_choices=STATUS_DISPLAY_CHOICES,
         cell_attributes_getter=getHoverHelp
     )
 
