@@ -58,6 +58,7 @@ class CreateForm(forms.SelfHandlingForm):
         widget=forms.FileInput(
             attrs={'class': 'switched',
                    'data-switch-on': 'inputsource',
+                   'data-required-when-shown': 'true',
                    'data-inputsource-file': _('Input File')}
         ),
         required=False
@@ -68,6 +69,7 @@ class CreateForm(forms.SelfHandlingForm):
         widget=forms.widgets.Textarea(
             attrs={'class': 'switched',
                    'data-switch-on': 'inputsource',
+                   'data-required-when-shown': 'true',
                    'data-inputsource-raw': _('Input Data'),
                    'rows': 4}
         ),
@@ -91,6 +93,7 @@ class CreateForm(forms.SelfHandlingForm):
         widget=forms.FileInput(
             attrs={'class': 'switched',
                    'data-switch-on': 'paramssource',
+                   'data-required-when-shown': 'true',
                    'data-paramssource-file': _('Params File')}
         ),
         required=False
@@ -101,6 +104,7 @@ class CreateForm(forms.SelfHandlingForm):
         widget=forms.widgets.Textarea(
             attrs={'class': 'switched',
                    'data-switch-on': 'paramssource',
+                   'data-required-when-shown': 'true',
                    'data-paramssource-raw': _('Params Data'),
                    'rows': 4}
         ),
