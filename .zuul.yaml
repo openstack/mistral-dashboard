@@ -3,3 +3,4 @@
       - openstack-python-jobs
       - check-requirements
       - openstack-python36-jobs
+      - openstack-python37-jobs
