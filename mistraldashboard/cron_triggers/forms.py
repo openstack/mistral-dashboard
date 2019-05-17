@@ -191,21 +191,17 @@ class CreateForm(forms.SelfHandlingForm):
             data['schedule_count']
         )
 
-        try:
-            api.cron_trigger_create(
-                request,
-                data['name'],
-                data['workflow_id'],
-                data['input'],
-                data['params'],
-                data['schedule_pattern'],
-                data['first_time'],
-                data['schedule_count'],
-            )
-            msg = _('Successfully created Cron Trigger.')
-            messages.success(request, msg)
+        api.cron_trigger_create(
+            request,
+            data['name'],
+            data['workflow_id'],
+            data['input'],
+            data['params'],
+            data['schedule_pattern'],
+            data['first_time'],
+            data['schedule_count'],
+        )
+        msg = _('Successfully created Cron Trigger.')
+        messages.success(request, msg)
 
-            return True
-
-        finally:
-            pass
+        return True
