@@ -38,7 +38,7 @@ def get_single_action_execution_data(request, **kwargs):
         )
     except Exception:
         msg = _('Unable to get action execution "%s".') % action_execution_id
-        redirect = reverse('horizon:mistral:action_execution:index')
+        redirect = reverse('horizon:mistral:action_executions:index')
         exceptions.handle(request, msg, redirect=redirect)
 
     return action_execution
