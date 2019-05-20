@@ -94,9 +94,9 @@ class UpdateForm(forms.SelfHandlingForm):
 
     @handle_errors(_("Unable to update Action Execution"), [])
     def handle(self, request, data):
-            return api.action_execution_update(
-                request,
-                data['action_execution_id'],
-                data['state'],
-                data['output'],
-            )
+        return api.action_execution_update(
+            request,
+            data['action_execution_id'],
+            data['state'],
+            data['output'],
+        )
