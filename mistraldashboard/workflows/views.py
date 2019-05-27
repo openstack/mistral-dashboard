@@ -98,6 +98,8 @@ class ExecuteView(forms.ModalFormView):
     form_class = workflow_forms.ExecuteForm
     template_name = 'mistral/workflows/execute.html'
     success_url = reverse_lazy("horizon:mistral:executions:index")
+    submit_label = _("Execute")
+    cancel_url = reverse_lazy("horizon:mistral:workflows:index")
 
     def get_context_data(self, **kwargs):
         context = super(ExecuteView, self).get_context_data(**kwargs)
