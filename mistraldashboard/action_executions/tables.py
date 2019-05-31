@@ -130,20 +130,6 @@ class ActionExecutionsTable(tables.DataTable):
         "description",
         verbose_name=_("Description")
     )
-    input = tables.Column(
-        "",
-        verbose_name=_("Input"),
-        empty_value=_("View"),
-        link="horizon:mistral:action_executions:input",
-        link_classes=("ajax-modal",)
-    )
-    output = tables.Column(
-        "",
-        verbose_name=_("Output"),
-        empty_value=_("View"),
-        link="horizon:mistral:action_executions:output",
-        link_classes=("ajax-modal",)
-    )
     created_at = tables.Column(
         "created_at",
         verbose_name=_("Created at"),
