@@ -375,7 +375,6 @@ def action_execution_delete(request, action_execution_id):
     return mistralclient(request).action_executions.delete(action_execution_id)
 
 
-@handle_errors(_("Unable to update action execution"), [])
 def action_execution_update(request, id, state=None, output=None):
     """Update action execution output and or state.
 
