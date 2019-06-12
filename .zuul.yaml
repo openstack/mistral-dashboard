@@ -2,5 +2,4 @@
     templates:
       - openstack-python-jobs
       - check-requirements
-      - openstack-python36-jobs
-      - openstack-python37-jobs
+      - openstack-python3-train-jobs
