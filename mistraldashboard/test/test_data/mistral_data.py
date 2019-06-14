@@ -64,6 +64,7 @@ def data(TEST):
     action_1 = actions.Action(
         actions.ActionManager(None),
         {'name': 'a',
+         'id': '1',
          'is_system': True,
          'input': 'param1',
          'description': 'my cool action',
