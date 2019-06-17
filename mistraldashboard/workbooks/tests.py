@@ -13,8 +13,10 @@
 #    under the License.
 
 from django.urls import reverse
-import mock
 
+from openstack_dashboard.test import helpers
+
+from mistraldashboard import api
 from mistraldashboard.test import helpers as test
 
 INDEX_URL = reverse('horizon:mistral:workbooks:index')
@@ -24,18 +26,26 @@ UPDATE_URL = reverse('horizon:mistral:workbooks:update')
 
 class WorkflowsTest(test.TestCase):
 
+    @helpers.create_mocks({api: ('workbook_list',)})
     def test_index(self):
-        with mock.patch('mistraldashboard.api.workbook_list',
-                        return_value=self.mistralclient_workbooks.list()):
-            res = self.client.get(INDEX_URL)
+        self.mock_workbook_list.return_value =\
+            self.mistralclient_workbooks.list()
+        res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/workbooks/index.html')
+        self.assertItemsEqual(res.context['table'].data,
+                              self.mistralclient_workbooks.list())
+        self.mock_workbook_list.\
+            assert_called_once_with(helpers.IsHttpRequest())
 
     def test_create_get(self):
         res = self.client.get(CREATE_URL)
         self.assertTemplateUsed(res, 'mistral/workbooks/create.html')
 
+    @helpers.create_mocks({api: ('workbook_validate',
+                                 'workbook_create')})
     def test_create_post(self):
+        self.mock_workbook_validate.return_value = {'valid': True}
         workbook = self.mistralclient_workbooks.first()
 
         url = reverse('horizon:mistral:workbooks:select_definition')
@@ -48,38 +58,34 @@ class WorkflowsTest(test.TestCase):
             'definition_source': 'raw',
             'definition_data': workbook.definition
         }
-        with mock.patch('mistraldashboard.api.workbook_validate',
-                        return_value={'valid': True}) as mocked_validate:
-            res = self.client.post(url, form_data)
+        res = self.client.post(url, form_data)
 
         self.assertTemplateUsed(res, 'mistral/workbooks/create.html')
-        mocked_validate.assert_called_once_with(
-            mock.ANY,
-            workbook.definition
-        )
+        self.mock_workbook_validate.assert_called_once_with(
+            helpers.IsHttpRequest(), workbook.definition)
 
         form_data = {
             'definition': workbook.definition
         }
-        with mock.patch('mistraldashboard.api.workbook_create',
-                        return_value=workbook) as mocked_create:
-            res = self.client.post(CREATE_URL, form_data)
+        self.mock_workbook_create.return_value = workbook
+        res = self.client.post(CREATE_URL, form_data)
         self.assertNoFormErrors(res)
         self.assertEqual(res.status_code, 302)
         self.assertRedirectsNoFollow(res, INDEX_URL)
 
-        mocked_create.assert_called_once_with(
-            mock.ANY,
-            workbook.definition
-        )
+        self.mock_workbook_create.assert_called_once_with(
+            helpers.IsHttpRequest(),
+            workbook.definition)
 
     def test_update_get(self):
         res = self.client.get(UPDATE_URL)
         self.assertTemplateUsed(res, 'mistral/workbooks/update.html')
 
+    @helpers.create_mocks({api: ('workbook_validate',
+                                 'workbook_update')})
     def test_update_post(self):
         workbook = self.mistralclient_workbooks.first()
-
+        self.mock_workbook_validate.return_value = {'valid': True}
         url = reverse('horizon:mistral:workbooks:change_definition')
         res = self.client.get(url)
         self.assertTemplateUsed(
@@ -90,50 +96,41 @@ class WorkflowsTest(test.TestCase):
             'definition_source': 'raw',
             'definition_data': workbook.definition
         }
-        with mock.patch('mistraldashboard.api.workbook_validate',
-                        return_value={'valid': True}) as mocked_validate:
-            res = self.client.post(url, form_data)
+        res = self.client.post(url, form_data)
 
         self.assertTemplateUsed(res, 'mistral/workbooks/update.html')
-        mocked_validate.assert_called_once_with(
-            mock.ANY,
-            workbook.definition
-        )
+        self.mock_workbook_validate.assert_called_once_with(
+            helpers.IsHttpRequest(),
+            workbook.definition)
 
         form_data = {
             'definition': workbook.definition
         }
-        with mock.patch('mistraldashboard.api.workbook_update',
-                        return_value=workbook) as mocked_update:
-            res = self.client.post(UPDATE_URL, form_data)
+        self.mock_workbook_update.return_value = workbook
+        res = self.client.post(UPDATE_URL, form_data)
         self.assertNoFormErrors(res)
         self.assertEqual(res.status_code, 302)
         self.assertRedirectsNoFollow(res, INDEX_URL)
 
-        mocked_update.assert_called_once_with(
-            mock.ANY,
-            workbook.definition
-        )
+        self.mock_workbook_update.assert_called_once_with(
+            helpers.IsHttpRequest(),
+            workbook.definition)
 
+    @helpers.create_mocks({api: ('workbook_list',
+                                 'workbook_delete')})
     def test_delete_ok(self):
         workbooks = self.mistralclient_workbooks.list()
+        self.mock_workbook_list.return_value = workbooks
+        self.mock_workbook_delete.return_value = None
 
         data = {'action': 'workbooks__delete',
                 'object_ids': [workbooks[0].name]}
 
-        with mock.patch(
-                'mistraldashboard.api.workbook_list',
-                return_value=workbooks
-        ), mock.patch(
-                'mistraldashboard.api.workbook_delete',
-                return_value=None
-        ) as mocked_delete:
+        res = self.client.post(INDEX_URL, data)
 
-            res = self.client.post(INDEX_URL, data)
-
-        mocked_delete.assert_called_once_with(
-            mock.ANY,
-            workbooks[0].name
-        )
+        self.mock_workbook_delete.assert_called_once_with(
+            helpers.IsHttpRequest(), workbooks[0].name)
+        self.mock_workbook_list.assert_called_once_with(
+            helpers.IsHttpRequest())
         self.assertNoFormErrors(res)
         self.assertRedirectsNoFollow(res, INDEX_URL)
