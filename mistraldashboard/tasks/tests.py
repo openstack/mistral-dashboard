@@ -13,8 +13,10 @@
 #    under the License.
 
 from django.urls import reverse
-import mock
 
+from openstack_dashboard.test import helpers
+
+from mistraldashboard import api
 from mistraldashboard.test import helpers as test
 
 INDEX_URL = reverse('horizon:mistral:tasks:index')
@@ -22,9 +24,13 @@ INDEX_URL = reverse('horizon:mistral:tasks:index')
 
 class TasksTest(test.TestCase):
 
+    @helpers.create_mocks({api: ('task_list',)})
     def test_index(self):
-        with mock.patch('mistraldashboard.api.task_list',
-                        return_value=self.mistralclient_tasks.list()):
-            res = self.client.get(INDEX_URL)
+        self.mock_task_list.return_value =\
+            self.mistralclient_tasks.list()
+        res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/tasks/index.html')
+        self.assertItemsEqual(res.context['table'].data,
+                              self.mistralclient_tasks.list())
+        self.mock_task_list.assert_called_once_with(helpers.IsHttpRequest())
