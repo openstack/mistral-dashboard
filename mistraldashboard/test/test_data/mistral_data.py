@@ -141,6 +141,8 @@ def data(TEST):
          'workflow_name': 'my work flow',
          'task_execution_id': '1',
          'task_name': 'b',
+         'input': "1",
+         'output': "1",
          'description': '',
          'created_at': '1',
          'updated_at': '1',

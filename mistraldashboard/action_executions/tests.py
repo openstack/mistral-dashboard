@@ -33,3 +33,15 @@ class ActionExecutionsTest(test.TestCase):
         self.assertTemplateUsed(res, 'mistral/action_executions/index.html')
         self.mock_action_executions_list.assert_called_once_with(
             helpers.IsHttpRequest())
+
+    @helpers.create_mocks({api: ('action_execution_get',)})
+    def test_detail(self):
+        action_execution = self.mistralclient_action_executions.list()[0]
+        self.mock_action_execution_get.return_value = action_execution
+        url = reverse('horizon:mistral:action_executions:detail',
+                      args=[action_execution.id])
+        res = self.client.get(url)
+
+        self.assertTemplateUsed(res, 'mistral/action_executions/detail.html')
+        self.mock_action_execution_get.assert_called_once_with(
+            helpers.IsHttpRequest(), action_execution.id)
