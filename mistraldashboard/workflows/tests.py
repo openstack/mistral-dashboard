@@ -13,8 +13,10 @@
 #    under the License.
 
 from django.urls import reverse
-import mock
 
+from openstack_dashboard.test import helpers
+
+from mistraldashboard import api
 from mistraldashboard.test import helpers as test
 
 INDEX_URL = reverse('horizon:mistral:workflows:index')
@@ -24,19 +26,28 @@ UPDATE_URL = reverse('horizon:mistral:workflows:update')
 
 class WorkflowsTest(test.TestCase):
 
+    @helpers.create_mocks({api: ('workflow_list',)})
     def test_index(self):
-        with mock.patch('mistraldashboard.api.workflow_list',
-                        return_value=self.mistralclient_workflows.list()):
-            res = self.client.get(INDEX_URL)
+        self.mock_workflow_list.return_value =\
+            self.mistralclient_workflows.list()
+        res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/workflows/index.html')
+        self.assertItemsEqual(res.context['table'].data,
+                              self.mistralclient_workflows.list())
+        self.mock_workflow_list.assert_called_once_with(
+            helpers.IsHttpRequest())
 
     def test_create_get(self):
         res = self.client.get(CREATE_URL)
         self.assertTemplateUsed(res, 'mistral/workflows/create.html')
 
+    @helpers.create_mocks({api: ('workflow_validate',
+                                 'workflow_create')})
     def test_create_post(self):
         workflow = self.mistralclient_workflows.first()
+        self.mock_workflow_validate.return_value = {'valid': True}
+        self.mock_workflow_create.return_value = workflow
 
         url = reverse('horizon:mistral:workflows:select_definition')
         res = self.client.get(url)
@@ -48,28 +59,24 @@ class WorkflowsTest(test.TestCase):
             'definition_source': 'raw',
             'definition_data': workflow.definition
         }
-        with mock.patch('mistraldashboard.api.workflow_validate',
-                        return_value={'valid': True}) as mocked_validate:
-            res = self.client.post(url, form_data)
+        res = self.client.post(url, form_data)
 
         self.assertTemplateUsed(res, 'mistral/workflows/create.html')
-        mocked_validate.assert_called_once_with(
-            mock.ANY,
+        self.mock_workflow_validate.assert_called_once_with(
+            helpers.IsHttpRequest(),
             workflow.definition
         )
 
         form_data = {
             'definition': workflow.definition
         }
-        with mock.patch('mistraldashboard.api.workflow_create',
-                        return_value=workflow) as mocked_create:
-            res = self.client.post(CREATE_URL, form_data)
+        res = self.client.post(CREATE_URL, form_data)
         self.assertNoFormErrors(res)
         self.assertEqual(res.status_code, 302)
         self.assertRedirectsNoFollow(res, INDEX_URL)
 
-        mocked_create.assert_called_once_with(
-            mock.ANY,
+        self.mock_workflow_create.assert_called_once_with(
+            helpers.IsHttpRequest(),
             workflow.definition
         )
 
@@ -77,8 +84,12 @@ class WorkflowsTest(test.TestCase):
         res = self.client.get(UPDATE_URL)
         self.assertTemplateUsed(res, 'mistral/workflows/update.html')
 
+    @helpers.create_mocks({api: ('workflow_validate',
+                                 'workflow_update')})
     def test_update_post(self):
         workflow = self.mistralclient_workflows.first()
+        self.mock_workflow_validate.return_value = {'valid': True}
+        self.mock_workflow_update.return_value = workflow
 
         url = reverse('horizon:mistral:workflows:change_definition')
         res = self.client.get(url)
@@ -90,50 +101,44 @@ class WorkflowsTest(test.TestCase):
             'definition_source': 'raw',
             'definition_data': workflow.definition
         }
-        with mock.patch('mistraldashboard.api.workflow_validate',
-                        return_value={'valid': True}) as mocked_validate:
-            res = self.client.post(url, form_data)
+        res = self.client.post(url, form_data)
 
         self.assertTemplateUsed(res, 'mistral/workflows/update.html')
-        mocked_validate.assert_called_once_with(
-            mock.ANY,
+        self.mock_workflow_validate.assert_called_once_with(
+            helpers.IsHttpRequest(),
             workflow.definition
         )
 
         form_data = {
             'definition': workflow.definition
         }
-        with mock.patch('mistraldashboard.api.workflow_update',
-                        return_value=workflow) as mocked_update:
-            res = self.client.post(UPDATE_URL, form_data)
+        res = self.client.post(UPDATE_URL, form_data)
         self.assertNoFormErrors(res)
         self.assertEqual(res.status_code, 302)
         self.assertRedirectsNoFollow(res, INDEX_URL)
 
-        mocked_update.assert_called_once_with(
-            mock.ANY,
+        self.mock_workflow_update.assert_called_once_with(
+            helpers.IsHttpRequest(),
             workflow.definition
         )
 
+    @helpers.create_mocks({api: ('workflow_list',
+                                 'workflow_delete')})
     def test_delete_ok(self):
         workflows = self.mistralclient_workflows.list()
+        self.mock_workflow_list.return_value = workflows
+        self.mock_workflow_delete.return_value = None
 
         data = {'action': 'workflows__delete',
                 'object_ids': [workflows[0].name]}
 
-        with mock.patch(
-                'mistraldashboard.api.workflow_list',
-                return_value=workflows
-        ), mock.patch(
-                'mistraldashboard.api.workflow_delete',
-                return_value=None
-        ) as mocked_delete:
+        res = self.client.post(INDEX_URL, data)
 
-            res = self.client.post(INDEX_URL, data)
-
-        mocked_delete.assert_called_once_with(
-            mock.ANY,
+        self.mock_workflow_delete.assert_called_once_with(
+            helpers.IsHttpRequest(),
             workflows[0].name
         )
+        self.mock_workflow_list.assert_called_once_with(
+            helpers.IsHttpRequest())
         self.assertNoFormErrors(res)
         self.assertRedirectsNoFollow(res, INDEX_URL)
