@@ -34,3 +34,15 @@ class ActionsTest(test.TestCase):
             entity="actions", request=horizon_test.IsHttpRequest(),
             marker=None, sort_keys='name', sort_dirs='desc',
             paginate=True, reversed_order=True)
+
+    @horizon_test.create_mocks({api: ('action_get',)})
+    def test_detail(self):
+        action = self.mistralclient_actions.list()[0]
+        self.mock_action_get.return_value = action
+        url = reverse('horizon:mistral:actions:detail',
+                      args=[action.id])
+        res = self.client.get(url)
+
+        self.assertTemplateUsed(res, 'mistral/actions/detail.html')
+        self.mock_action_get.assert_called_once_with(
+            horizon_test.IsHttpRequest(), action.id)
