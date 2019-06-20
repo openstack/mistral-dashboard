@@ -33,3 +33,15 @@ class CronTriggersTest(test.TestCase):
         self.assertTemplateUsed(res, 'mistral/cron_triggers/index.html')
         self.mock_cron_trigger_list.assert_called_once_with(
             helpers.IsHttpRequest())
+
+    @helpers.create_mocks({api: ('cron_trigger_get',)})
+    def test_detail(self):
+        cron_trigger = self.mistralclient_cron_triggers.list()[0]
+        self.mock_cron_trigger_get.return_value = cron_trigger
+        url = reverse('horizon:mistral:cron_triggers:detail',
+                      args=[cron_trigger.id])
+        res = self.client.get(url)
+
+        self.assertTemplateUsed(res, 'mistral/cron_triggers/detail.html')
+        self.mock_cron_trigger_get.assert_called_once_with(
+            helpers.IsHttpRequest(), cron_trigger.id)
