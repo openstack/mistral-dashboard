@@ -142,3 +142,15 @@ class WorkflowsTest(test.TestCase):
             helpers.IsHttpRequest())
         self.assertNoFormErrors(res)
         self.assertRedirectsNoFollow(res, INDEX_URL)
+
+    @helpers.create_mocks({api: ('workflow_get',)})
+    def test_detail(self):
+        workflow = self.mistralclient_workflows.list()[0]
+        self.mock_workflow_get.return_value = workflow
+        url = reverse('horizon:mistral:workflows:detail',
+                      args=[workflow.name])
+        res = self.client.get(url)
+
+        self.assertTemplateUsed(res, 'mistral/workflows/detail.html')
+        self.mock_workflow_get.assert_called_once_with(
+            helpers.IsHttpRequest(), workflow.name)
