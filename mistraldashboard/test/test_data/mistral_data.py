@@ -83,12 +83,10 @@ def data(TEST):
          'workflow_name': 'my_wf',
          'description': '',
          'state': 'RUNNING',
-         'input': {
-             'person': {
-                 'first_name': 'John',
-                 'last_name': 'Doe'
-             }
-         }}
+         'input': '{"person": {"first_name": "John", "last_name": "Doe"}}',
+         'output': "1",
+         'params': "1",
+         }
     )
     TEST.mistralclient_executions.add(execution_1)
 
