@@ -38,3 +38,19 @@ class ExecutionsTest(test.TestCase):
             marker=None,
             sort_dirs='desc',
             paginate=True)
+
+    @helpers.create_mocks({api: ('execution_get', 'task_list')})
+    def test_detail(self):
+        execution = self.mistralclient_executions.list()[0]
+        tasks = self.mistralclient_tasks.list()
+        self.mock_execution_get.return_value = execution
+        self.mock_task_list.return_value = tasks
+        url = reverse('horizon:mistral:executions:detail',
+                      args=[execution.id])
+        res = self.client.get(url)
+
+        self.assertTemplateUsed(res, 'mistral/executions/detail.html')
+        self.mock_execution_get.assert_called_once_with(
+            helpers.IsHttpRequest(), execution.id)
+        self.mock_task_list.assert_called_once_with(
+            helpers.IsHttpRequest(), execution.id)
