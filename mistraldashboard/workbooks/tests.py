@@ -134,3 +134,15 @@ class WorkflowsTest(test.TestCase):
             helpers.IsHttpRequest())
         self.assertNoFormErrors(res)
         self.assertRedirectsNoFollow(res, INDEX_URL)
+
+    @helpers.create_mocks({api: ('workbook_get',)})
+    def test_detail(self):
+        workbook = self.mistralclient_workbooks.list()[0]
+        self.mock_workbook_get.return_value = workbook
+        url = reverse('horizon:mistral:workbooks:detail',
+                      args=[workbook.name])
+        res = self.client.get(url)
+
+        self.assertTemplateUsed(res, 'mistral/workbooks/detail.html')
+        self.mock_workbook_get.assert_called_once_with(
+            helpers.IsHttpRequest(), workbook.name)
