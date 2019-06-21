@@ -103,7 +103,8 @@ def data(TEST):
          'state': 'RUNNING',
          'type': 'ACTION',
          'tags': ['deployment', 'demo'],
-         'result': {'some': 'result'}})
+         'result': "1",
+         'published': '{"a":"1"}'})
     TEST.mistralclient_tasks.add(task_1)
 
     # Workbooks

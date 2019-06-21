@@ -34,3 +34,14 @@ class TasksTest(test.TestCase):
         self.assertItemsEqual(res.context['table'].data,
                               self.mistralclient_tasks.list())
         self.mock_task_list.assert_called_once_with(helpers.IsHttpRequest())
+
+    @helpers.create_mocks({api: ('task_get',)})
+    def test_detail(self):
+        task = self.mistralclient_tasks.list()[0]
+        self.mock_task_get.return_value = task
+        url = reverse('horizon:mistral:tasks:detail',
+                      args=[task.id])
+        res = self.client.get(url)
+        self.assertTemplateUsed(res, 'mistral/tasks/detail.html')
+        self.mock_task_get.assert_called_once_with(
+            helpers.IsHttpRequest(), task.id)
