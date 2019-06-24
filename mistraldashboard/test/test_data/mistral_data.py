@@ -146,7 +146,7 @@ def data(TEST):
          'created_at': '1',
          'updated_at': '1',
          'accepted': True,
-         'state': 'RUNNING'
+         'state': 'SUCCESS'
          }
     )
     TEST.mistralclient_action_executions.add(action_executions_1)
