@@ -35,6 +35,38 @@ class ActionsTest(test.TestCase):
             marker=None, sort_keys='name', sort_dirs='desc',
             paginate=True, reversed_order=True)
 
+    @horizon_test.create_mocks({api: ('action_create',)})
+    def test_create_post(self):
+        action = self.mistralclient_actions.first()
+        self.mock_action_create.return_value = action
+        url = reverse("horizon:mistral:actions:create")
+        form_data = {
+            'definition_source': 'raw',
+            'definition_data': action.definition
+        }
+        res = self.client.post(url, form_data)
+
+        self.assertNoFormErrors(res)
+        self.mock_action_create.assert_called_once_with(
+            horizon_test.IsHttpRequest(),
+            action.definition)
+
+    @horizon_test.create_mocks({api: ('action_update',)})
+    def test_update_post(self):
+        action = self.mistralclient_actions.first()
+        self.mock_action_update.return_value = action
+        url = reverse("horizon:mistral:actions:update")
+        form_data = {
+            'definition_source': 'raw',
+            'definition_data': action.definition
+        }
+        res = self.client.post(url, form_data)
+
+        self.assertNoFormErrors(res)
+        self.mock_action_update.assert_called_once_with(
+            horizon_test.IsHttpRequest(),
+            action.definition)
+
     @horizon_test.create_mocks({api: ('action_get',)})
     def test_detail(self):
         action = self.mistralclient_actions.list()[0]
