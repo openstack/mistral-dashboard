@@ -18,9 +18,9 @@ import horizon
 from mistraldashboard import dashboard
 
 
-class Tasks(horizon.Panel):
+class ActionExecutions(horizon.Panel):
     name = _("Action Executions")
     slug = 'action_executions'
 
 
-dashboard.MistralDashboard.register(Tasks)
+dashboard.MistralDashboard.register(ActionExecutions)
