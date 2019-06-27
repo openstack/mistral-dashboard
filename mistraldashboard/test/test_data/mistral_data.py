@@ -123,6 +123,7 @@ def data(TEST):
     workflow_1 = workflows.Workflow(
         workflows.WorkflowManager(None),
         {'name': 'a',
+         'id': '1',
          'tags': ['a', 'b'],
          'input': 'param',
          'created_at': '1',
