@@ -39,6 +39,22 @@ class ExecutionsTest(test.TestCase):
             sort_dirs='desc',
             paginate=True)
 
+    @helpers.create_mocks({api: ('execution_update',)})
+    def test_update_post(self):
+        execution = self.mistralclient_executions.first()
+        self.mock_execution_update.return_value = execution
+        form_data = {
+            "execution_id": execution.id,
+            "description": "description"}
+        res = self.client.post(
+            reverse('horizon:mistral:executions:update_description',
+                    args=(execution.id,)),
+            form_data)
+        self.assertNoFormErrors(res)
+        self.mock_execution_update.assert_called_once_with(
+            helpers.IsHttpRequest(), execution.id,
+            "description", "description")
+
     @helpers.create_mocks({api: ('execution_get', 'task_list')})
     def test_detail(self):
         execution = self.mistralclient_executions.list()[0]
