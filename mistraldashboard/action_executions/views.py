@@ -18,7 +18,6 @@ from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views import generic
 
-from horizon import exceptions
 from horizon import forms
 from horizon import tables
 
@@ -30,17 +29,11 @@ from mistraldashboard import forms as mistral_forms
 
 
 def get_single_action_execution_data(request, **kwargs):
-    try:
-        action_execution_id = kwargs['action_execution_id']
-        action_execution = api.action_execution_get(
-            request,
-            action_execution_id
-        )
-    except Exception:
-        msg = _('Unable to get action execution "%s".') % action_execution_id
-        redirect = reverse('horizon:mistral:action_executions:index')
-        exceptions.handle(request, msg, redirect=redirect)
-
+    action_execution_id = kwargs['action_execution_id']
+    action_execution = api.action_execution_get(
+        request,
+        action_execution_id
+    )
     return action_execution
 
 
@@ -161,14 +154,7 @@ class FilteredByTaskView(tables.DataTableView):
     data = {}
 
     def get_data(self, **kwargs):
-        try:
-            task_id = self.kwargs['task_id']
-            data = api.action_executions_list(self.request, task_id)
-        except Exception:
-            msg = (
-                _('Unable to get action execution by task id "%s".') % task_id
-            )
-            redirect = reverse('horizon:mistral:action_executions:index')
-            exceptions.handle(self.request, msg, redirect=redirect)
+        task_id = self.kwargs['task_id']
+        data = api.action_executions_list(self.request, task_id)
 
         return data
