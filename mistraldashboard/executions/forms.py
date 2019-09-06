@@ -39,7 +39,7 @@ class UpdateDescriptionForm(forms.SelfHandlingForm):
 
             return True
 
-        except Exception:
-            msg = _('Failed to update execution description.')
+        except Exception as e:
+            msg = _('Failed to update execution description: %s') % e
             redirect = reverse('horizon:mistral:executions:index')
             exceptions.handle(request, msg, redirect=redirect)

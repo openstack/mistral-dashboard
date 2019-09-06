@@ -130,8 +130,8 @@ class CreateForm(forms.SelfHandlingForm):
             messages.success(request, msg)
 
             return True
-        except Exception:
-            msg = _('Failed to create action.')
+        except Exception as e:
+            msg = _('Failed to create action: %s') % e
             redirect = reverse('horizon:mistral:actions:index')
             exceptions.handle(request, msg, redirect=redirect)
 
@@ -188,7 +188,7 @@ class UpdateForm(forms.SelfHandlingForm):
             messages.success(request, msg)
 
             return True
-        except Exception:
-            msg = _('Failed to update action.')
+        except Exception as e:
+            msg = _('Failed to update action: %s') % e
             redirect = reverse('horizon:mistral:actions:index')
             exceptions.handle(request, msg, redirect=redirect)
