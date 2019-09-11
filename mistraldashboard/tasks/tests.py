@@ -24,16 +24,22 @@ INDEX_URL = reverse('horizon:mistral:tasks:index')
 
 class TasksTest(test.TestCase):
 
-    @helpers.create_mocks({api: ('task_list',)})
+    @helpers.create_mocks({api: ('pagination_list',)})
     def test_index(self):
-        self.mock_task_list.return_value =\
-            self.mistralclient_tasks.list()
+        self.mock_pagination_list.return_value = (
+            self.mistralclient_tasks.list(),
+            False,
+            False,
+        )
+
         res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/tasks/index.html')
-        self.assertCountEqual(res.context['table'].data,
-                              self.mistralclient_tasks.list())
-        self.mock_task_list.assert_called_once_with(helpers.IsHttpRequest())
+        self.assertCountEqual(
+            res.context['table'].data,
+            self.mistralclient_tasks.list()
+        )
+        self.mock_pagination_list.assert_called_once()
 
     @helpers.create_mocks({api: ('task_get',)})
     def test_detail(self):

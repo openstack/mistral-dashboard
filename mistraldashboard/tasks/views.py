@@ -128,6 +128,51 @@ class IndexView(tables.DataTableView):
     table_class = mistral_tables.TaskTable
     template_name = 'mistral/tasks/index.html'
 
-    def get_data(self):
+    def has_prev_data(self, table):
+        return self._prev
 
-        return api.task_list(self.request)
+    def has_more_data(self, table):
+        return self._more
+
+    def get_data(self):
+        tasks = []
+        prev_marker = self.request.GET.get(
+            mistral_tables.TaskTable._meta.prev_pagination_param,
+            None
+        )
+
+        if prev_marker is not None:
+            sort_dir = 'asc'
+            marker = prev_marker
+        else:
+            sort_dir = 'desc'
+            marker = self.request.GET.get(
+                mistral_tables.TaskTable._meta.pagination_param,
+                None
+            )
+
+        try:
+            tasks, self._more, self._prev = api.pagination_list(
+                entity="tasks",
+                request=self.request,
+                marker=marker,
+                sort_dirs=sort_dir,
+                paginate=True
+            )
+
+            if prev_marker is not None:
+                tasks = sorted(
+                    tasks,
+                    key=lambda execution: getattr(
+                        execution, 'created_at'
+                    ),
+                    reverse=True
+                )
+
+        except Exception as e:
+            self._prev = False
+            self._more = False
+            msg = _('Unable to retrieve tasks list: %s') % e
+            exceptions.handle(self.request, msg)
+
+        return tasks
