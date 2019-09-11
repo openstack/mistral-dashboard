@@ -26,17 +26,20 @@ UPDATE_URL = reverse('horizon:mistral:workbooks:update')
 
 class WorkflowsTest(test.TestCase):
 
-    @helpers.create_mocks({api: ('workbook_list',)})
+    @helpers.create_mocks({api: ('pagination_list',)})
     def test_index(self):
-        self.mock_workbook_list.return_value =\
-            self.mistralclient_workbooks.list()
+        self.mock_pagination_list.return_value = (
+            self.mistralclient_workbooks.list(),
+            False,
+            False,
+        )
+
         res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/workbooks/index.html')
         self.assertCountEqual(res.context['table'].data,
                               self.mistralclient_workbooks.list())
-        self.mock_workbook_list.\
-            assert_called_once_with(helpers.IsHttpRequest())
+        self.mock_pagination_list.assert_called_once()
 
     def test_create_get(self):
         res = self.client.get(CREATE_URL)
@@ -116,11 +119,15 @@ class WorkflowsTest(test.TestCase):
             helpers.IsHttpRequest(),
             workbook.definition)
 
-    @helpers.create_mocks({api: ('workbook_list',
+    @helpers.create_mocks({api: ('pagination_list',
                                  'workbook_delete')})
     def test_delete_ok(self):
         workbooks = self.mistralclient_workbooks.list()
-        self.mock_workbook_list.return_value = workbooks
+        self.mock_pagination_list.return_value = (
+            workbooks,
+            False,
+            False,
+        )
         self.mock_workbook_delete.return_value = None
 
         data = {'action': 'workbooks__delete',
@@ -130,8 +137,7 @@ class WorkflowsTest(test.TestCase):
 
         self.mock_workbook_delete.assert_called_once_with(
             helpers.IsHttpRequest(), workbooks[0].name)
-        self.mock_workbook_list.assert_called_once_with(
-            helpers.IsHttpRequest())
+        self.mock_pagination_list.assert_called_once()
         self.assertNoFormErrors(res)
         self.assertRedirectsNoFollow(res, INDEX_URL)
 

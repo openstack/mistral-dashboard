@@ -24,15 +24,26 @@ INDEX_URL = reverse('horizon:mistral:action_executions:index')
 
 class ActionExecutionsTest(test.TestCase):
 
-    @helpers.create_mocks({api: ('action_executions_list',)})
+    @helpers.create_mocks({api: ('pagination_list',)})
     def test_index(self):
-        self.mock_action_executions_list.return_value =\
-            self.mistralclient_action_executions.list()
+        self.mock_pagination_list.return_value = (
+            self.mistralclient_action_executions.list(),
+            False,
+            False,
+        )
+
         res = self.client.get(INDEX_URL)
 
-        self.assertTemplateUsed(res, 'mistral/action_executions/index.html')
-        self.mock_action_executions_list.assert_called_once_with(
-            helpers.IsHttpRequest())
+        self.assertTemplateUsed(
+            res, 'mistral/action_executions/index.html')
+
+        self.mock_pagination_list.assert_called_once_with(
+            entity="action_executions",
+            request=helpers.IsHttpRequest(),
+            marker=None,
+            sort_dirs="desc",
+            paginate=True,
+        )
 
     @helpers.create_mocks({api: ('action_execution_update',)})
     def test_update_post(self):
