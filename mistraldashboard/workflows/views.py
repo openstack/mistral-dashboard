@@ -43,8 +43,56 @@ class IndexView(tables.DataTableView):
     table_class = workflows_tables.WorkflowsTable
     template_name = 'mistral/workflows/index.html'
 
+    def has_prev_data(self, table):
+        return self._prev
+
+    def has_more_data(self, table):
+        return self._more
+
     def get_data(self):
-        return api.workflow_list(self.request)
+        workflows = []
+        prev_marker = self.request.GET.get(
+            workflows_tables.WorkflowsTable._meta.prev_pagination_param,
+            None
+        )
+
+        if prev_marker is not None:
+            sort_dir = 'asc'
+            marker = prev_marker
+        else:
+            sort_dir = 'desc'
+            marker = self.request.GET.get(
+                workflows_tables.WorkflowsTable._meta.pagination_param,
+                None
+            )
+
+        try:
+            workflows, self._more, self._prev = api.pagination_list(
+                entity="workflows",
+                request=self.request,
+                marker=marker,
+                sort_keys='name',
+                sort_dirs=sort_dir,
+                paginate=True,
+                reversed_order=True
+            )
+
+            if prev_marker is not None:
+                workflows = sorted(
+                    workflows,
+                    key=lambda action: getattr(
+                        action, 'name'
+                    ),
+                    reverse=False
+                )
+
+        except Exception as e:
+            self._prev = False
+            self._more = False
+            msg = _('Unable to retrieve workflows list: %s') % str(e)
+            exceptions.handle(self.request, msg)
+
+        return workflows
 
 
 class DetailView(generic.TemplateView):
