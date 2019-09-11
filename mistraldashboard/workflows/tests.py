@@ -26,17 +26,28 @@ UPDATE_URL = reverse('horizon:mistral:workflows:update')
 
 class WorkflowsTest(test.TestCase):
 
-    @helpers.create_mocks({api: ('workflow_list',)})
+    @helpers.create_mocks({api: ('pagination_list',)})
     def test_index(self):
-        self.mock_workflow_list.return_value =\
-            self.mistralclient_workflows.list()
+        self.mock_pagination_list.return_value = (
+            self.mistralclient_workflows.list(),
+            False,
+            False,
+        )
+
         res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/workflows/index.html')
         self.assertCountEqual(res.context['table'].data,
                               self.mistralclient_workflows.list())
-        self.mock_workflow_list.assert_called_once_with(
-            helpers.IsHttpRequest())
+        self.mock_pagination_list.assert_called_once_with(
+            entity="workflows",
+            request=helpers.IsHttpRequest(),
+            marker=None,
+            sort_keys="name",
+            sort_dirs="desc",
+            paginate=True,
+            reversed_order=True,
+        )
 
     def test_create_get(self):
         res = self.client.get(CREATE_URL)
@@ -122,11 +133,15 @@ class WorkflowsTest(test.TestCase):
             workflow.definition
         )
 
-    @helpers.create_mocks({api: ('workflow_list',
+    @helpers.create_mocks({api: ('pagination_list',
                                  'workflow_delete')})
     def test_delete_ok(self):
         workflows = self.mistralclient_workflows.list()
-        self.mock_workflow_list.return_value = workflows
+        self.mock_pagination_list.return_value = (
+            workflows,
+            False,
+            False,
+        )
         self.mock_workflow_delete.return_value = None
 
         data = {'action': 'workflows__delete',
@@ -138,8 +153,7 @@ class WorkflowsTest(test.TestCase):
             helpers.IsHttpRequest(),
             workflows[0].name
         )
-        self.mock_workflow_list.assert_called_once_with(
-            helpers.IsHttpRequest())
+        self.mock_pagination_list.assert_called_once()
         self.assertNoFormErrors(res)
         self.assertRedirectsNoFollow(res, INDEX_URL)
 
