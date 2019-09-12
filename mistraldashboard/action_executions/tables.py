@@ -17,7 +17,6 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 
-from horizon import exceptions
 from horizon import tables
 
 from mistraldashboard import api
@@ -31,14 +30,7 @@ class UpdateRow(tables.Row):
     ajax = True
 
     def get_data(self, request, id):
-        try:
-            instance = api.action_execution_get(request, id)
-        except Exception as e:
-            msg = _("Unable to get action execution by ID %(id)s: %(e)s.") % {
-                'id': id, 'e': str(e)
-            }
-            exceptions.handle(request, msg)
-
+        instance = api.action_execution_get(request, id)
         return instance
 
 
