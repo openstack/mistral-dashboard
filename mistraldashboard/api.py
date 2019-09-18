@@ -22,6 +22,7 @@ from horizon.utils import memoized
 
 from mistralclient.api import client as mistral_client
 from mistraldashboard.handle_errors import handle_errors
+from openstack_dashboard.api import base
 
 SERVICE_TYPE = 'workflowv2'
 
@@ -32,10 +33,9 @@ def mistralclient(request):
         username=request.user.username,
         auth_token=request.user.token.id,
         project_id=request.user.tenant_id,
-        # Ideally, we should get it from identity endpoint, but since
-        # python-mistralclient is not supporting v2.0 API it might create
-        # additional troubles for those who still rely on v2.0 stack-wise.
-        auth_url=getattr(settings, 'OPENSTACK_KEYSTONE_URL'),
+        # We can't use auth_url param in here if we config
+        # and use keystone federation
+        mistral_url=base.url_for(request, 'workflowv2'),
         # Todo: add SECONDARY_ENDPOINT_TYPE support
         endpoint_type=getattr(
             settings,
