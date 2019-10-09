@@ -1,5 +1,6 @@
 - project:
     templates:
+      - horizon-non-primary-django-jobs
       - openstack-python-jobs
       - check-requirements
       - openstack-python3-train-jobs
