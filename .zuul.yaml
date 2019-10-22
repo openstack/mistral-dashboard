@@ -3,4 +3,4 @@
       - horizon-non-primary-django-jobs
       - openstack-python-jobs
       - check-requirements
-      - openstack-python3-train-jobs
+      - openstack-python3-ussuri-jobs
