@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import six
-
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
@@ -131,7 +129,7 @@ class DefinitionForm(forms.SelfHandlingForm):
                 cleaned_data['definition']
             )
         except Exception as e:
-            raise forms.ValidationError(six.text_type(e))
+            raise forms.ValidationError(str(e))
 
         if not validated.get('valid'):
             raise forms.ValidationError(

@@ -22,8 +22,6 @@ from django import template
 
 from horizon.tables import base
 
-import six
-
 
 def get_data(self, datum, column, row):
     """Fetches the data to be displayed in this cell."""
@@ -34,7 +32,7 @@ def get_data(self, datum, column, row):
             widget = forms.CheckboxInput(check_test=lambda value: False)
             # Convert value to string to avoid accidental type conversion
             data = widget.render('object_ids',
-                                 six.text_type(table.get_object_id(datum)),
+                                 str(table.get_object_id(datum)),
                                  {'class': 'table-row-multi-select'})
         table._data_cache[column][table.get_object_id(datum)] = data
     elif column.auto == "form_field":
@@ -44,7 +42,7 @@ def get_data(self, datum, column, row):
 
         widget_name = "%s__%s" % \
                       (column.name,
-                       six.text_type(table.get_object_id(datum)))
+                       str(table.get_object_id(datum)))
 
         # Create local copy of attributes, so it don't change column
         # class form_field_attributes
