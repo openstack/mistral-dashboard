@@ -33,7 +33,7 @@ class WorkflowsTest(test.TestCase):
         res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/workbooks/index.html')
-        self.assertItemsEqual(res.context['table'].data,
+        self.assertCountEqual(res.context['table'].data,
                               self.mistralclient_workbooks.list())
         self.mock_workbook_list.\
             assert_called_once_with(helpers.IsHttpRequest())

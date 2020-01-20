@@ -33,7 +33,7 @@ class WorkflowsTest(test.TestCase):
         res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/workflows/index.html')
-        self.assertItemsEqual(res.context['table'].data,
+        self.assertCountEqual(res.context['table'].data,
                               self.mistralclient_workflows.list())
         self.mock_workflow_list.assert_called_once_with(
             helpers.IsHttpRequest())

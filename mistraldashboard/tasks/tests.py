@@ -31,7 +31,7 @@ class TasksTest(test.TestCase):
         res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/tasks/index.html')
-        self.assertItemsEqual(res.context['table'].data,
+        self.assertCountEqual(res.context['table'].data,
                               self.mistralclient_tasks.list())
         self.mock_task_list.assert_called_once_with(helpers.IsHttpRequest())
 

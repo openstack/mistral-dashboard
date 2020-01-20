@@ -30,7 +30,7 @@ class ExecutionsTest(test.TestCase):
             [self.mistralclient_executions.list(), False, False]
         res = self.client.get(INDEX_URL)
         self.assertTemplateUsed(res, 'mistral/executions/index.html')
-        self.assertItemsEqual(res.context['table'].data,
+        self.assertCountEqual(res.context['table'].data,
                               self.mistralclient_executions.list())
         self.mock_pagination_list.assert_called_once_with(
             entity="executions",
