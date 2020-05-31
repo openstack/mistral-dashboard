@@ -39,6 +39,12 @@ master_doc = 'index'
 project = u'mistral-dashboard'
 copyright = u'2014, OpenStack Foundation'
 
+# -- Options for openstackdocstheme -------------------------------------------
+
+openstackdocs_repo_name = 'openstack/mistral-dashboard'
+openstackdocs_bug_project = 'mistral'
+openstackdocs_bug_tag = 'doc'
+
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = True
 
@@ -47,7 +53,7 @@ add_function_parentheses = True
 add_module_names = True
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'native'
 
 # -- Options for HTML output --------------------------------------------------
 
