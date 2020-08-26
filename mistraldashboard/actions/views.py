@@ -97,10 +97,10 @@ class IndexView(tables.DataTableView):
                     reverse=False
                 )
 
-        except Exception as e:
+        except Exception:
             self._prev = False
             self._more = False
-            msg = _('Unable to retrieve actions list: %s') % str(e)
+            msg = _('Unable to retrieve actions list.')
             exceptions.handle(self.request, msg)
 
         return actions

@@ -106,8 +106,8 @@ class CreateForm(forms.SelfHandlingForm):
             messages.success(request, msg)
 
             return True
-        except Exception as e:
-            msg = _('Failed to create workbook: %s') % e
+        except Exception:
+            msg = _('Failed to create workbook.')
             redirect = reverse('horizon:mistral:workbooks:index')
             exceptions.handle(request, msg, redirect=redirect)
 
@@ -121,7 +121,7 @@ class UpdateForm(CreateForm):
             messages.success(request, msg)
 
             return True
-        except Exception as e:
-            msg = _('Failed to update workbook: %s') % e
+        except Exception:
+            msg = _('Failed to update workbook.')
             redirect = reverse('horizon:mistral:workbooks:index')
             exceptions.handle(request, msg, redirect=redirect)

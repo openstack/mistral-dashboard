@@ -69,8 +69,8 @@ class ExecuteForm(forms.SelfHandlingForm):
             messages.success(request, msg)
 
             return True
-        except Exception as e:
-            msg = _('Failed to execute workflow "%s".') % e
+        except Exception:
+            msg = _('Failed to execute workflow.')
             redirect = reverse('horizon:mistral:workflows:index')
             exceptions.handle(request, msg, redirect=redirect)
 
@@ -159,8 +159,8 @@ class CreateForm(forms.SelfHandlingForm):
             messages.success(request, msg)
 
             return True
-        except Exception as e:
-            msg = _('Failed to create workflow: %s') % e
+        except Exception:
+            msg = _('Failed to create workflow.')
             redirect = reverse('horizon:mistral:workflows:index')
             exceptions.handle(request, msg, redirect=redirect)
 
@@ -174,7 +174,7 @@ class UpdateForm(CreateForm):
             messages.success(request, msg)
 
             return True
-        except Exception as e:
-            msg = _('Failed to update workflow: %s') % e
+        except Exception:
+            msg = _('Failed to update workflow.')
             redirect = reverse('horizon:mistral:workflows:index')
             exceptions.handle(request, msg, redirect=redirect)

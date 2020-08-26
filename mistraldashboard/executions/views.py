@@ -113,12 +113,11 @@ class IndexView(tables.DataTableView):
                     reverse=True
                 )
 
-        except Exception as e:
+        except Exception:
             self._prev = False
             self._more = False
-            msg = _('Unable to retrieve executions list: %s') % e
+            msg = _('Unable to retrieve executions list.')
             exceptions.handle(self.request, msg)
-
         return executions
 
 
@@ -168,15 +167,12 @@ class TasksView(tables.DataTableView):
                     reverse=True
                 )
 
-        except Exception as e:
+        except Exception:
             self._prev = False
             self._more = False
-            msg = (
-                _('Unable to retrieve executions list of '
-                  'the requested task: %s') % e
-            )
+            msg = _('Unable to retrieve executions list of '
+                    'the requested task.')
             exceptions.handle(self.request, msg)
-
         return executions
 
 

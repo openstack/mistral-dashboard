@@ -145,12 +145,9 @@ class UpdateRow(tables.Row):
     def get_data(self, request, id):
         try:
             instance = api.execution_get(request, id)
-        except Exception as e:
-            msg = _("Unable to get execution by ID %(id)s: %(e)s.") % {
-                'id': id, 'e': str(e)
-            }
+        except Exception:
+            msg = _('Unable to get execution by ID "%s".') % id
             exceptions.handle(request, msg)
-
         return instance
 
 

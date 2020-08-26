@@ -33,12 +33,9 @@ class UpdateRow(tables.Row):
     def get_data(self, request, id):
         try:
             instance = api.task_get(request, id)
-        except Exception as e:
-            msg = _("Unable to get task by ID %(id)s: %(e)s.") % {
-                'id': id, 'e': str(e)
-            }
+        except Exception:
+            msg = _('Unable to get task by ID "%s".') % id
             exceptions.handle(request, msg)
-
         return instance
 
 
