@@ -158,8 +158,7 @@ class ExecutionsTable(tables.DataTable):
 
     def getHoverHelp(data):
         if hasattr(data, 'state_info') and data.state_info:
-
-                return {'title': data.state_info}
+            return {'title': data.state_info}
 
     STATE_STATUS_CHOICES = (
         ("success", True),
