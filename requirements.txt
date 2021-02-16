@@ -6,3 +6,4 @@ pbr!=2.1.0,>=2.0.0 # Apache-2.0
 iso8601>=0.1.11 # MIT
 python-mistralclient!=3.2.0,>=3.1.0 # Apache-2.0
 PyYAML>=3.12 # MIT
+horizon>=16.1.0 # Apache-2.0

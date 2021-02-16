@@ -55,9 +55,9 @@ def get_data(self, datum, column, row):
 
         if (template.defaultfilters.urlize in column.filters or
            template.defaultfilters.yesno in column.filters):
-                data = widget.render(widget_name,
-                                     column.get_raw_data(datum),
-                                     form_field_attributes)
+            data = widget.render(widget_name,
+                                 column.get_raw_data(datum),
+                                 form_field_attributes)
         else:
             data = widget.render(widget_name,
                                  column.get_data(datum),
