@@ -16,7 +16,7 @@ from mistraldashboard import exceptions
 
 DASHBOARD = 'mistral'
 ADD_INSTALLED_APPS = ['mistraldashboard']
-DEFAULT = True
+DEFAULT = False
 
 ADD_EXCEPTIONS = {
     'recoverable': exceptions.RECOVERABLE,
