@@ -1,0 +1,8 @@
+---
+security:
+  - |
+    `Bug #1931558 <https://launchpad.net/bugs/1931558>`_:
+    Previosuly Mistral Dashboard leaked contents of local files if a user put
+    in a local file path in definitions. Now Mistral Dashboard no longer treats
+    inputs as file path or URL but it always use the raw input as resource
+    definitions.
