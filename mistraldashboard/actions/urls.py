@@ -12,16 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import url  # noqa
+from django.urls import re_path
 
 from mistraldashboard.actions import views
 
 ACTIONS = r'^(?P<action_name>[^/]+)/%s$'
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(ACTIONS % 'detail', views.DetailView.as_view(), name='detail'),
-    url(ACTIONS % 'run', views.RunView.as_view(), name='run'),
-    url(r'^create$', views.CreateView.as_view(), name='create'),
-    url(r'^update$', views.UpdateView.as_view(), name='update'),
+    re_path(r'^$', views.IndexView.as_view(), name='index'),
+    re_path(ACTIONS % 'detail', views.DetailView.as_view(), name='detail'),
+    re_path(ACTIONS % 'run', views.RunView.as_view(), name='run'),
+    re_path(r'^create$', views.CreateView.as_view(), name='create'),
+    re_path(r'^update$', views.UpdateView.as_view(), name='update'),
 ]

@@ -12,21 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import url  # noqa
+from django.urls import re_path
 
 from mistraldashboard.workbooks import views
 
 WORKBOOKS = r'^(?P<workbook_name>[^/]+)/%s$'
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'^select_definition$',
-        views.SelectDefinitionView.as_view(),
-        name='select_definition'),
-    url(r'^change_definition$',
-        views.ChangeDefinitionView.as_view(),
-        name='change_definition'),
-    url(r'^create$', views.CreateView.as_view(), name='create'),
-    url(r'^update$', views.UpdateView.as_view(), name='update'),
-    url(WORKBOOKS % 'detail', views.DetailView.as_view(), name='detail'),
+    re_path(r'^$', views.IndexView.as_view(), name='index'),
+    re_path(r'^select_definition$',
+            views.SelectDefinitionView.as_view(),
+            name='select_definition'),
+    re_path(r'^change_definition$',
+            views.ChangeDefinitionView.as_view(),
+            name='change_definition'),
+    re_path(r'^create$', views.CreateView.as_view(), name='create'),
+    re_path(r'^update$', views.UpdateView.as_view(), name='update'),
+    re_path(WORKBOOKS % 'detail', views.DetailView.as_view(), name='detail'),
 ]

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import url  # noqa
+from django.urls import re_path
 
 from mistraldashboard.executions import views
 
@@ -20,16 +20,16 @@ EXECUTIONS = r'^(?P<execution_id>[^/]+)/%s$'
 TASKS = r'^(?P<task_execution_id>[^/]+)/%s$'
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(EXECUTIONS % 'detail', views.DetailView.as_view(), name='detail'),
-    url(TASKS % 'tasks', views.TasksView.as_view(), name='tasks'),
-    url(EXECUTIONS % 'detail_task_id', views.DetailView.as_view(),
-        {'caller': 'task'}, name='detail_task_id'),
-    url(EXECUTIONS % 'output', views.CodeView.as_view(),
-        {'column': 'output'}, name='output'),
-    url(EXECUTIONS % 'input', views.CodeView.as_view(),
-        {'column': 'input'}, name='input'),
-    url(EXECUTIONS % 'update_description',
-        views.UpdateDescriptionView.as_view(),
-        name='update_description'),
+    re_path(r'^$', views.IndexView.as_view(), name='index'),
+    re_path(EXECUTIONS % 'detail', views.DetailView.as_view(), name='detail'),
+    re_path(TASKS % 'tasks', views.TasksView.as_view(), name='tasks'),
+    re_path(EXECUTIONS % 'detail_task_id', views.DetailView.as_view(),
+            {'caller': 'task'}, name='detail_task_id'),
+    re_path(EXECUTIONS % 'output', views.CodeView.as_view(),
+            {'column': 'output'}, name='output'),
+    re_path(EXECUTIONS % 'input', views.CodeView.as_view(),
+            {'column': 'input'}, name='input'),
+    re_path(EXECUTIONS % 'update_description',
+            views.UpdateDescriptionView.as_view(),
+            name='update_description'),
 ]
