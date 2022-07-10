@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import exceptions
 from horizon import tables
@@ -29,7 +29,7 @@ smart_cell.init()
 class DeleteExecution(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Delete Execution",
             u"Delete Executions",
             count
@@ -37,7 +37,7 @@ class DeleteExecution(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Deleted Execution",
             u"Deleted Executions",
             count
@@ -53,7 +53,7 @@ class CancelExecution(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Cancel Execution",
             u"Cancel Executions",
             count
@@ -61,7 +61,7 @@ class CancelExecution(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Canceled Execution",
             u"Canceled Executions",
             count
@@ -81,7 +81,7 @@ class PauseExecution(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Pause Execution",
             u"Pause Executions",
             count
@@ -89,7 +89,7 @@ class PauseExecution(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Paused Execution",
             u"Paused Executions",
             count
@@ -109,7 +109,7 @@ class ResumeExecution(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Resume Execution",
             u"Resume Executions",
             count
@@ -117,7 +117,7 @@ class ResumeExecution(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Resumed Execution",
             u"Resumed Executions",
             count

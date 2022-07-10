@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import tables
 from horizon.utils import filters
@@ -40,7 +40,7 @@ class UpdateWorkbook(tables.LinkAction):
 class DeleteWorkbook(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Delete Workbook",
             u"Delete Workbooks",
             count
@@ -48,7 +48,7 @@ class DeleteWorkbook(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Deleted Workbook",
             u"Deleted Workbooks",
             count

@@ -14,8 +14,8 @@
 
 from django.urls import reverse
 
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import tables
 
@@ -37,7 +37,7 @@ class UpdateRow(tables.Row):
 class DeleteActionExecution(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Delete Action Execution",
             u"Delete Action Executions",
             count
@@ -45,7 +45,7 @@ class DeleteActionExecution(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Deleted Action Execution",
             u"Deleted Action Executions",
             count

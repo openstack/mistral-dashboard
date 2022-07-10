@@ -14,8 +14,8 @@
 
 from django.urls import reverse
 
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import tables
 
@@ -34,7 +34,7 @@ class CreateCronTrigger(tables.LinkAction):
 class DeleteCronTrigger(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Delete Cron Trigger",
             u"Delete Cron Triggers",
             count
@@ -42,7 +42,7 @@ class DeleteCronTrigger(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             u"Deleted Cron Trigger",
             u"Deleted Cron Triggers",
             count
