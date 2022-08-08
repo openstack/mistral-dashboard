@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import url  # noqa
+from django.urls import re_path
 
 from mistraldashboard.cron_triggers import views
 
 CRON_TRIGGERS = r'^(?P<cron_trigger_name>[^/]+)/%s$'
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(CRON_TRIGGERS % 'detail', views.OverviewView.as_view(), name='detail'),
-    url(r'^create$', views.CreateView.as_view(), name='create'),
+    re_path(r'^$', views.IndexView.as_view(), name='index'),
+    re_path(CRON_TRIGGERS % 'detail', views.OverviewView.as_view(),
+            name='detail'),
+    re_path(r'^create$', views.CreateView.as_view(), name='create'),
 ]

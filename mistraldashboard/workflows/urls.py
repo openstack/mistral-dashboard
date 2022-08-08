@@ -12,26 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import url  # noqa
+from django.urls import re_path
 
 from mistraldashboard.workflows import views
 
 WORKFLOWS = r'^(?P<workflow_name>[^/]+)/%s$'
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'^select_definition$',
-        views.SelectDefinitionView.as_view(),
-        name='select_definition'),
-    url(r'^change_definition$',
-        views.ChangeDefinitionView.as_view(),
-        name='change_definition'),
-    url(r'^create$', views.CreateView.as_view(), name='create'),
-    url(r'^update$', views.UpdateView.as_view(), name='update'),
-    url(WORKFLOWS % 'execute', views.ExecuteView.as_view(), name='execute'),
-    url(WORKFLOWS % 'detail', views.DetailView.as_view(), name='detail'),
-    url(WORKFLOWS % 'definition', views.CodeView.as_view(),
-        {'column': 'definition'}, name='definition'),
-    url(WORKFLOWS % 'input', views.CodeView.as_view(),
-        {'column': 'input'}, name='input'),
+    re_path(r'^$', views.IndexView.as_view(), name='index'),
+    re_path(r'^select_definition$',
+            views.SelectDefinitionView.as_view(),
+            name='select_definition'),
+    re_path(r'^change_definition$',
+            views.ChangeDefinitionView.as_view(),
+            name='change_definition'),
+    re_path(r'^create$', views.CreateView.as_view(), name='create'),
+    re_path(r'^update$', views.UpdateView.as_view(), name='update'),
+    re_path(WORKFLOWS % 'execute', views.ExecuteView.as_view(),
+            name='execute'),
+    re_path(WORKFLOWS % 'detail', views.DetailView.as_view(), name='detail'),
+    re_path(WORKFLOWS % 'definition', views.CodeView.as_view(),
+            {'column': 'definition'}, name='definition'),
+    re_path(WORKFLOWS % 'input', views.CodeView.as_view(),
+            {'column': 'input'}, name='input'),
 ]

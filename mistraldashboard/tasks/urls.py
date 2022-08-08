@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls import url  # noqa
+from django.urls import re_path
 
 from mistraldashboard.tasks import views
 
@@ -20,13 +20,13 @@ TASKS = r'^(?P<task_id>[^/]+)/%s$'
 EXECUTIONS = r'^(?P<execution_id>[^/]+)/%s$'
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(TASKS % 'detail', views.OverviewView.as_view(), name='detail'),
-    url(EXECUTIONS % 'execution',
-        views.ExecutionView.as_view(),
-        name='execution'),
-    url(TASKS % 'result', views.CodeView.as_view(),
-        {'column': 'result'}, name='result'),
-    url(TASKS % 'published', views.CodeView.as_view(),
-        {'column': 'published'}, name='published'),
+    re_path(r'^$', views.IndexView.as_view(), name='index'),
+    re_path(TASKS % 'detail', views.OverviewView.as_view(), name='detail'),
+    re_path(EXECUTIONS % 'execution',
+            views.ExecutionView.as_view(),
+            name='execution'),
+    re_path(TASKS % 'result', views.CodeView.as_view(),
+            {'column': 'result'}, name='result'),
+    re_path(TASKS % 'published', views.CodeView.as_view(),
+            {'column': 'published'}, name='published'),
 ]
