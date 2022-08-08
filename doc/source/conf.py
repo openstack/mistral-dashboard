@@ -36,8 +36,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'mistral-dashboard'
-copyright = u'2014, OpenStack Foundation'
+project = 'mistral-dashboard'
+copyright = '2014, OpenStack Foundation'
 
 # -- Options for openstackdocstheme -------------------------------------------
 
