@@ -35,8 +35,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Mistral Dashboard Release Notes'
-copyright = u'2016, Mistral developers'
+project = 'Mistral Dashboard Release Notes'
+copyright = '2016, Mistral developers'
 
 # -- Options for openstackdocstheme -------------------------------------------
 
