@@ -42,7 +42,10 @@ def mistralclient(request):
             'OPENSTACK_ENDPOINT_TYPE',
             'internalURL'
         ),
-        service_type=SERVICE_TYPE
+        service_type=SERVICE_TYPE,
+        # We should not treat definition as file path or uri otherwise
+        # we allow access to contents in internal servers
+        enforce_raw_definition=False
     )
 
 
