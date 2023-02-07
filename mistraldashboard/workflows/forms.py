@@ -56,7 +56,7 @@ class ExecuteForm(forms.SelfHandlingForm):
 
     def handle(self, request, data):
         try:
-            data['workflow_identifier'] = data.pop('workflow_name')
+            data['wf_identifier'] = data.pop('workflow_name')
             data['workflow_input'] = {}
             for param in self.workflow_parameters:
                 value = data.pop(param)
