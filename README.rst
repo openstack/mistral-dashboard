@@ -22,19 +22,27 @@ found at https://docs.openstack.org/horizon/latest/contributor/quickstart.html#s
 The installation folder of Mistral Dashboard will be referred to as <mistral-dashboard>.
 
 The following should get you started. Clone the repository into your local
-OpenStack directory::
+OpenStack directory:
+
+.. code:: console
 
     $ git clone https://opendev.org/openstack/mistral-dashboard.git
 
-Install mistral-dashboard
+Install mistral-dashboard:
+
+.. code:: console
 
     $ sudo pip install -e <mistral-dashboard>
 
 Or if you're planning to run Horizon server in a virtual environment (see below):
 
+.. code:: console
+
     $ tox -evenv -- pip install -e ../mistral-dashboard/
 
-and then
+and then:
+
+.. code:: console
 
     $ cp -b <mistral-dashboard>/mistraldashboard/enabled/_50_mistral.py <horizon>/openstack_dashboard/local/enabled/_50_mistral.py
 
@@ -51,11 +59,15 @@ Also, make sure you have changed OPENSTACK_HOST to point to your Keystone
 server and check all endpoints are accessible. You may want to change
 OPENSTACK_ENDPOINT_TYPE to "publicURL" if some of them are not.
 
-When you're ready, you would need to either restart your apache::
+When you're ready, you would need to either restart your apache:
+
+.. code:: console
 
     $ sudo service apache2 restart
 
-or run the development server (in case you have decided to use local horizon)::
+or run the development server (in case you have decided to use local horizon):
+
+.. code:: console
 
     $ cd ../horizon/
     $ tox -evenv -- python manage.py runserver
