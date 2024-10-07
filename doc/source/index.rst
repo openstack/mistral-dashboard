@@ -1,6 +1,6 @@
 
 Welcome to Mistral Dashboard's documentation!
-============================================
+=============================================
 
 Contents:
 
