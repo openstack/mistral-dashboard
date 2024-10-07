@@ -151,8 +151,8 @@ class CreateForm(forms.SelfHandlingForm):
         elif cleaned_data.get('input_data'):
             cleaned_data['input'] = cleaned_data['input_data']
 
-        del(cleaned_data['input_upload'])
-        del(cleaned_data['input_data'])
+        del cleaned_data['input_upload']
+        del cleaned_data['input_data']
 
         if len(cleaned_data['input']) > 0:
             try:
@@ -167,8 +167,8 @@ class CreateForm(forms.SelfHandlingForm):
         elif cleaned_data.get('params_data'):
             cleaned_data['params'] = cleaned_data['params_data']
 
-        del(cleaned_data['params_upload'])
-        del(cleaned_data['params_data'])
+        del cleaned_data['params_upload']
+        del cleaned_data['params_data']
 
         if len(cleaned_data['params']) > 0:
             try:
