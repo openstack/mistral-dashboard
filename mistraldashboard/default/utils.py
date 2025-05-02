@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from dateutil import parser
 from django.template.loader import render_to_string
-import iso8601
 import json
 
 TYPES = {
@@ -53,7 +53,7 @@ def booleanfield(x):
 
 def humantime(x):
     return render_to_string("mistral/default/_humantime.html",
-                            {"datetime": iso8601.parse_date(x)})
+                            {"datetime": parser.parse(x)})
 
 
 def prettyprint(x):
