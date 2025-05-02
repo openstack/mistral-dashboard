@@ -70,5 +70,5 @@ or run the development server (in case you have decided to use local horizon):
 Mistral-Dashboard Debug Instructions
 ------------------------------------
 
-For debug instructions refer to `OpenStack Mistral Troubleshooting
-<https://docs.openstack.org/mistral/latest/contributor/troubleshooting.html>`_
+For debug instructions refer to `OpenStack Mistral Debugging and Testing
+<https://docs.openstack.org/mistral/latest/contributor/debugging_and_testing.html>`_
