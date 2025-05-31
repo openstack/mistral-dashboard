@@ -41,16 +41,16 @@ class DeleteWorkbook(tables.DeleteAction):
     @staticmethod
     def action_present(count):
         return ngettext_lazy(
-            u"Delete Workbook",
-            u"Delete Workbooks",
+            "Delete Workbook",
+            "Delete Workbooks",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ngettext_lazy(
-            u"Deleted Workbook",
-            u"Deleted Workbooks",
+            "Deleted Workbook",
+            "Deleted Workbooks",
             count
         )
 

@@ -30,16 +30,16 @@ class DeleteExecution(tables.DeleteAction):
     @staticmethod
     def action_present(count):
         return ngettext_lazy(
-            u"Delete Execution",
-            u"Delete Executions",
+            "Delete Execution",
+            "Delete Executions",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ngettext_lazy(
-            u"Deleted Execution",
-            u"Deleted Executions",
+            "Deleted Execution",
+            "Deleted Executions",
             count
         )
 
@@ -54,16 +54,16 @@ class CancelExecution(tables.BatchAction):
     @staticmethod
     def action_present(count):
         return ngettext_lazy(
-            u"Cancel Execution",
-            u"Cancel Executions",
+            "Cancel Execution",
+            "Cancel Executions",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ngettext_lazy(
-            u"Canceled Execution",
-            u"Canceled Executions",
+            "Canceled Execution",
+            "Canceled Executions",
             count
         )
 
@@ -82,16 +82,16 @@ class PauseExecution(tables.BatchAction):
     @staticmethod
     def action_present(count):
         return ngettext_lazy(
-            u"Pause Execution",
-            u"Pause Executions",
+            "Pause Execution",
+            "Pause Executions",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ngettext_lazy(
-            u"Paused Execution",
-            u"Paused Executions",
+            "Paused Execution",
+            "Paused Executions",
             count
         )
 
@@ -110,16 +110,16 @@ class ResumeExecution(tables.BatchAction):
     @staticmethod
     def action_present(count):
         return ngettext_lazy(
-            u"Resume Execution",
-            u"Resume Executions",
+            "Resume Execution",
+            "Resume Executions",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ngettext_lazy(
-            u"Resumed Execution",
-            u"Resumed Executions",
+            "Resumed Execution",
+            "Resumed Executions",
             count
         )
 

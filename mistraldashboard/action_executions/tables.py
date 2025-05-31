@@ -38,16 +38,16 @@ class DeleteActionExecution(tables.DeleteAction):
     @staticmethod
     def action_present(count):
         return ngettext_lazy(
-            u"Delete Action Execution",
-            u"Delete Action Executions",
+            "Delete Action Execution",
+            "Delete Action Executions",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ngettext_lazy(
-            u"Deleted Action Execution",
-            u"Deleted Action Executions",
+            "Deleted Action Execution",
+            "Deleted Action Executions",
             count
         )
 

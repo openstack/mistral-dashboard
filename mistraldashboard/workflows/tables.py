@@ -42,16 +42,16 @@ class DeleteWorkflow(tables.DeleteAction):
     @staticmethod
     def action_present(count):
         return ngettext_lazy(
-            u"Delete Workflow",
-            u"Delete Workflows",
+            "Delete Workflow",
+            "Delete Workflows",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ngettext_lazy(
-            u"Deleted Workflow",
-            u"Deleted Workflows",
+            "Deleted Workflow",
+            "Deleted Workflows",
             count
         )
 

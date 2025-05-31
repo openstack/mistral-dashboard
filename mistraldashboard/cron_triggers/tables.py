@@ -35,16 +35,16 @@ class DeleteCronTrigger(tables.DeleteAction):
     @staticmethod
     def action_present(count):
         return ngettext_lazy(
-            u"Delete Cron Trigger",
-            u"Delete Cron Triggers",
+            "Delete Cron Trigger",
+            "Delete Cron Triggers",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ngettext_lazy(
-            u"Deleted Cron Trigger",
-            u"Deleted Cron Triggers",
+            "Deleted Cron Trigger",
+            "Deleted Cron Triggers",
             count
         )
 

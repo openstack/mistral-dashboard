@@ -59,7 +59,7 @@ class CronTriggersTest(test.TestCase):
         self.mock_cron_trigger_create.assert_called_once_with(
             helpers.IsHttpRequest(),
             cron_trigger.name, form_data["workflow_id"],
-            {u'a': u'b'}, {u'a': u'b'},
+            {'a': 'b'}, {'a': 'b'},
             None, None,
             form_data["schedule_count"]
             )
