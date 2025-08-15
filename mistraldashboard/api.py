@@ -45,7 +45,8 @@ def mistralclient(request):
         service_type=SERVICE_TYPE,
         # We should not treat definition as file path or uri otherwise
         # we allow access to contents in internal servers
-        enforce_raw_definition=False
+        enforce_raw_definition=False,
+        cacert=getattr(settings, 'OPENSTACK_SSL_CACERT')
     )
 
 
