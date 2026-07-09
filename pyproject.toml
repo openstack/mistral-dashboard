@@ -31,5 +31,7 @@ classifiers = [
 Homepage = "https://docs.openstack.org/mistral/latest/"
 Repository = "https://opendev.org/openstack/mistral-dashboard"
 
-[tool.setuptools.packages.find]
-include = ["mistraldashboard"]
+[tool.setuptools]
+packages = [
+    "mistraldashboard"
+]
