@@ -18,6 +18,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
+from horizon import exceptions
 from horizon import forms
 from horizon import tables
 
@@ -75,5 +76,51 @@ class IndexView(tables.DataTableView):
     table_class = mistral_tables.CronTriggersTable
     template_name = 'mistral/cron_triggers/index.html'
 
+    def has_prev_data(self, table):
+        return self._prev
+
+    def has_more_data(self, table):
+        return self._more
+
     def get_data(self):
-        return api.cron_trigger_list(self.request)
+        cron_triggers = []
+        prev_marker = self.request.GET.get(
+            mistral_tables.CronTriggersTable._meta.prev_pagination_param,
+            None
+        )
+
+        if prev_marker is not None:
+            sort_dir = 'asc'
+            marker = prev_marker
+        else:
+            sort_dir = 'desc'
+            marker = self.request.GET.get(
+                mistral_tables.CronTriggersTable._meta.pagination_param,
+                None
+            )
+
+        try:
+            cron_triggers, self._more, self._prev = api.pagination_list(
+                entity="cron_triggers",
+                request=self.request,
+                marker=marker,
+                sort_dirs=sort_dir,
+                paginate=True
+            )
+
+            if prev_marker is not None:
+                cron_triggers = sorted(
+                    cron_triggers,
+                    key=lambda execution: getattr(
+                        execution, 'created_at'
+                    ),
+                    reverse=True
+                )
+
+        except Exception as e:
+            self._prev = False
+            self._more = False
+            msg = _('Unable to retrieve cron triggers list: %s') % e
+            exceptions.handle(self.request, msg)
+
+        return cron_triggers

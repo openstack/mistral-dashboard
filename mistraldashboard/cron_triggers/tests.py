@@ -24,15 +24,23 @@ INDEX_URL = reverse('horizon:mistral:cron_triggers:index')
 
 class CronTriggersTest(test.TestCase):
 
-    @helpers.create_mocks({api: ('cron_trigger_list',)})
+    @helpers.create_mocks({api: ('pagination_list',)})
     def test_index(self):
-        self.mock_cron_trigger_list.return_value =\
-            self.mistralclient_cron_triggers.list()
+        self.mock_pagination_list.return_value = (
+            self.mistralclient_cron_triggers.list(),
+            False,
+            False,
+        )
         res = self.client.get(INDEX_URL)
 
         self.assertTemplateUsed(res, 'mistral/cron_triggers/index.html')
-        self.mock_cron_trigger_list.assert_called_once_with(
-            helpers.IsHttpRequest())
+        self.mock_pagination_list.assert_called_once_with(
+            entity="cron_triggers",
+            request=helpers.IsHttpRequest(),
+            marker=None,
+            sort_dirs="desc",
+            paginate=True,
+        )
 
     @helpers.create_mocks({api: ('cron_trigger_create',
                                  'workflow_list')})

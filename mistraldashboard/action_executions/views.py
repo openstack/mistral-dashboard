@@ -18,6 +18,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
+from horizon import exceptions
 from horizon import forms
 from horizon import tables
 
@@ -119,9 +120,54 @@ class IndexView(tables.DataTableView):
     table_class = mistral_tables.ActionExecutionsTable
     template_name = 'mistral/action_executions/index.html'
 
-    def get_data(self):
+    def has_prev_data(self, table):
+        return self._prev
 
-        return api.action_executions_list(self.request)
+    def has_more_data(self, table):
+        return self._more
+
+    def get_data(self):
+        action_executions = []
+        prev_marker = self.request.GET.get(
+            mistral_tables.ActionExecutionsTable._meta.prev_pagination_param,
+            None
+        )
+
+        if prev_marker is not None:
+            sort_dir = 'asc'
+            marker = prev_marker
+        else:
+            sort_dir = 'desc'
+            marker = self.request.GET.get(
+                mistral_tables.ActionExecutionsTable._meta.pagination_param,
+                None
+            )
+
+        try:
+            action_executions, self._more, self._prev = api.pagination_list(
+                entity="action_executions",
+                request=self.request,
+                marker=marker,
+                sort_dirs=sort_dir,
+                paginate=True
+            )
+
+            if prev_marker is not None:
+                action_executions = sorted(
+                    action_executions,
+                    key=lambda execution: getattr(
+                        execution, 'created_at'
+                    ),
+                    reverse=True
+                )
+
+        except Exception as e:
+            self._prev = False
+            self._more = False
+            msg = _('Unable to retrieve action executions list: %s') % e
+            exceptions.handle(self.request, msg)
+
+        return action_executions
 
 
 class UpdateView(forms.ModalFormView):
