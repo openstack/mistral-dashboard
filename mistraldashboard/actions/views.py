@@ -53,6 +53,7 @@ class IndexView(tables.DataTableView):
     table_id = "workflow_action"
     table_class = mistral_tables.ActionsTable
     template_name = 'mistral/actions/index.html'
+    page_title = _("Actions")
 
     def has_prev_data(self, table):
         return self._prev

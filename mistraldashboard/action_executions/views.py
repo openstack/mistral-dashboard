@@ -119,6 +119,7 @@ class CodeView(forms.ModalFormView):
 class IndexView(tables.DataTableView):
     table_class = mistral_tables.ActionExecutionsTable
     template_name = 'mistral/action_executions/index.html'
+    page_title = _("Action Executions")
 
     def has_prev_data(self, table):
         return self._prev
