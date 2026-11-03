@@ -34,6 +34,7 @@ class MistralDashboard(horizon.Dashboard):
     )
     default_panel = 'default'
     roles = ('admin',)
+    permissions = ('openstack.services.workflowv2',)
 
 
 horizon.register(MistralDashboard)

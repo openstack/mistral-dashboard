@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    `Bug #1646780 <https://launchpad.net/bugs/1646780>`_:
+    The Workflow dashboard is now only shown, and its pages only served,
+    when the keystone service catalog has a ``workflowv2`` service in the
+    current region.

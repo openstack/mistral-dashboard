@@ -168,3 +168,19 @@ def data(TEST):
          'updated_at': '1'
          })
     TEST.mistralclient_cron_triggers.add(cron_triggers_1)
+
+    TEST.service_catalog.append(
+        {"type": "workflowv2",
+         "name": "mistral",
+         "endpoints_links": [],
+         "endpoints": [
+             {"region": "RegionOne",
+              "interface": "admin",
+              "url": "http://admin.mistral.example.com:8989/v2"},
+             {"region": "RegionOne",
+              "interface": "internal",
+              "url": "http://int.mistral.example.com:8989/v2"},
+             {"region": "RegionOne",
+              "interface": "public",
+              "url": "http://public.mistral.example.com:8989/v2"}
+         ]})

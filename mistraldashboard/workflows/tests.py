@@ -49,6 +49,17 @@ class WorkflowsTest(test.TestCase):
             reversed_order=True,
         )
 
+    @helpers.create_mocks({api: ('pagination_list',)})
+    def test_index_without_workflow_service(self):
+        self._setup_user(service_catalog=[
+            s for s in self.service_catalog if s['type'] != 'workflowv2'])
+
+        res = self.client.get(INDEX_URL,
+                              HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(403, res.status_code)
+        self.mock_pagination_list.assert_not_called()
+
     def test_create_get(self):
         res = self.client.get(CREATE_URL)
         self.assertTemplateUsed(res, 'mistral/workflows/create.html')
