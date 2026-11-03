@@ -42,6 +42,7 @@ def get_single_data(request, workflow_name):
 class IndexView(tables.DataTableView):
     table_class = workflows_tables.WorkflowsTable
     template_name = 'mistral/workflows/index.html'
+    page_title = _("Workflows")
 
     def has_prev_data(self, table):
         return self._prev

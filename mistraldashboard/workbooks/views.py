@@ -29,6 +29,7 @@ from mistraldashboard.workbooks import tables as mistral_tables
 class IndexView(tables.DataTableView):
     table_class = mistral_tables.WorkbooksTable
     template_name = 'mistral/workbooks/index.html'
+    page_title = _("Workbooks")
 
     def has_prev_data(self, table):
         return self._prev

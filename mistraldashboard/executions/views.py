@@ -71,6 +71,7 @@ def get_single_data(request, id, type="execution"):
 class IndexView(tables.DataTableView):
     table_class = mistral_tables.ExecutionsTable
     template_name = 'mistral/executions/index.html'
+    page_title = _("Workflow Executions")
 
     def has_prev_data(self, table):
         return self._prev

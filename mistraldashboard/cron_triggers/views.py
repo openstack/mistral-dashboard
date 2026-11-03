@@ -75,6 +75,7 @@ class CreateView(forms.ModalFormView):
 class IndexView(tables.DataTableView):
     table_class = mistral_tables.CronTriggersTable
     template_name = 'mistral/cron_triggers/index.html'
+    page_title = _("Cron Triggers")
 
     def has_prev_data(self, table):
         return self._prev
