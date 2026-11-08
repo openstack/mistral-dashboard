@@ -1,0 +1,8 @@
+---
+security:
+  - |
+    `Bug #1933061 <https://launchpad.net/bugs/1933061>`_:
+    The fix for bug #1931558 did not take effect, and definitions entered as
+    direct input could still be resolved as file paths or URLs on the
+    Horizon server. Mistral Dashboard now always sends the raw input as the
+    definition.

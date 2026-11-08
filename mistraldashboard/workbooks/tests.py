@@ -12,6 +12,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import tempfile
+from unittest import mock
+
 from django.urls import reverse
 
 from openstack_dashboard.test import helpers
@@ -152,3 +155,20 @@ class WorkflowsTest(test.TestCase):
         self.assertTemplateUsed(res, 'mistral/workbooks/detail.html')
         self.mock_workbook_get.assert_called_once_with(
             helpers.IsHttpRequest(), workbook.name)
+
+    @mock.patch('mistralclient.api.httpclient.HTTPClient.post')
+    def test_select_definition_raw_path_not_read(self, mock_post):
+        mock_post.return_value = mock.Mock(
+            status_code=200, json=lambda: {'valid': True})
+        url = reverse('horizon:mistral:workbooks:select_definition')
+
+        with tempfile.NamedTemporaryFile('w', suffix='.yaml') as f:
+            f.write('server-side secret')
+            f.flush()
+            for value in (f.name, 'file://' + f.name):
+                mock_post.reset_mock()
+                self.client.post(url, {'definition_source': 'raw',
+                                       'definition_data': value})
+                body = mock_post.call_args[0][1]
+                self.assertEqual(value, body)
+                self.assertNotIn('server-side secret', body)
